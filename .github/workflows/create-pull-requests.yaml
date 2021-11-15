@@ -1,5 +1,7 @@
 name: Create Pull Request Example Command
 on:
+  push:
+    branches: [ main ]
   repository_dispatch:
     types: [cpr-example-command]
 jobs:
