@@ -42,9 +42,9 @@ def git_push():
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
 
-    parser.add_argument('-p','--project', help='The github project', required=True)
-    parser.add_argument('-r','--repo', help='The github repository', required=True)
-    parser.add_argument('-t','--token', help='The github token', required=True)
+    parser.add_argument('-p','--project', help='The github project', required=True, type=str)
+    parser.add_argument('-r','--repo', help='The github repository', required=True, type=str)
+    parser.add_argument('-t','--token', help='The github token', required=True, type=str)
 
     args = parser.parse_args()
     
