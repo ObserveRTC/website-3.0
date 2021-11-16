@@ -66,13 +66,13 @@ def main():
 
     
     create_pull_request(
-        args['project'], # project_name
-        args['repo'], # repo_name
+        args.project, # project_name
+        args.rep, # repo_name
         "My pull request title", # title
         "My pull request description", # description
         new_branch_name, # head_branch
         "main", # base_branch
-        args['token'], # git_token
+        args.token, # git_token
     )
 
 if __name__ == "__main__":
