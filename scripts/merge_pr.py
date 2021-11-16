@@ -30,7 +30,7 @@ def main():
         repo.git.add(A=True)
         repo.git.commit(m=args.commitmessage)
         repo.git.push('--set-upstream', 'origin', current)
-        print('Changes detected')
+        print('Changes detected, (hopefully) PR is created and merged')
     else:
         print('no changes detected, no pr is created')
         exit(0)
@@ -42,10 +42,12 @@ def main():
     body = args.bodymessage
 
     pr = repo.create_pull(title=args.title, body=body, head=new_branch_name, base=main_branch_name)
+    print("Created PR with name {} for branch {}".format(args.title, new_branch_name))
     base = repo.get_branch(main_branch_name)
     head = repo.get_branch(new_branch_name)
 
     merge_to_master = repo.merge(main_branch_name, head.commit.sha, args.commitmessage)
+    print("PR {} for branch {} is merged into {}".format(args.title, new_branch_name, main_branch_name))
 
 if __name__ == "__main__":
     main()
