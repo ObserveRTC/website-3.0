@@ -21,10 +21,11 @@ def main():
     repo = Repo("../.git")
     main_branch_name = "main"  
     new_branch_name = args.branch
-    master = repo.heads.main
-    repo.git.pull('origin', master)
     current = repo.create_head(new_branch_name)
     current.checkout()
+    
+    master = repo.heads.main
+    repo.git.pull('origin', master)
     #creating file
     if repo.index.diff(None) or repo.untracked_files:
         repo.git.add(A=True)
