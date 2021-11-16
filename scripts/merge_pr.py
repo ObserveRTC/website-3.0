@@ -3,6 +3,7 @@ import json
 import requests
 import subprocess
 from git import Repo
+from github import Github
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -35,7 +36,6 @@ def main():
         print('no changes detected, no pr is created')
         exit(0)
 
-    from github import Github
     g = Github(args.token)
 
     repo = g.get_repo("ObserveRTC/website-3.0")

@@ -3,7 +3,7 @@ on:
   repository_dispatch:
     types: [updated-schema]
 jobs:
-  createPullRequest:
+  updateSchema:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -17,6 +17,8 @@ jobs:
           cd scripts
           pip install -r requirements.txt
           python fetch_schemas.py
+          git config --global user.name "Publishing autobot"
+          git config --global user.email "info@observertc.org"
           python merge_pr.py \
             -p ObserveRTC \
             -r website-3.0 \
