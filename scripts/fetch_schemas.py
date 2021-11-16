@@ -26,7 +26,7 @@ def get_commit_infos(commits):
         authors.add(author.name)
     return authors, first_change, last_change
 
-def create_page(title, authors, md_text, date, lastmod):
+def create_page(title, authors, md_text, date, lastmod, weight):
     # refs = map(lambda ref: "[" + ref + "](" + ref + ")", references)
     items = [
         "---",
@@ -39,7 +39,7 @@ def create_page(title, authors, md_text, date, lastmod):
         "menu:",
         "  docs:",
         "    parent: \"schemas\"",
-        "weight: 10",
+        "weight: %s"%weight,
         "toc: true",
         "---",
         md_text,
@@ -77,13 +77,13 @@ def fetch():
     lastmod = datetime.fromtimestamp(last_change)
     md_texts = sorted(md_texts, key=lambda d: d['filename']) 
     md_text = "\n\n".join(map(lambda x: x['text'], md_texts))
-    target_dir = os.path.join(content_dir, "docs", "schemas", "reports.md")
 
     reports_page = create_page("Reports",
         authors, 
         md_text,
         date, 
-        lastmod
+        lastmod,
+        "5010"
     )
     
 
@@ -95,13 +95,13 @@ def fetch():
     lastmod = datetime.fromtimestamp(last_change)
     md_text = Path(source_file).read_text()
     md_texts = []
-    target_dir = os.path.join(content_dir, "docs", "schemas", "client-samples.md")
 
     client_sample_page = create_page("Client Sample",
         authors, 
         md_text,
         date, 
-        lastmod
+        lastmod,
+        "5020"
     )
 
     inside_repo_file = os.path.join("generated-schemas", "samples", "v2", "SfuSample.md")
@@ -117,7 +117,8 @@ def fetch():
         authors, 
         md_text,
         date, 
-        lastmod
+        lastmod,
+        "5030"
     )
     return reports_page, client_sample_page, sfu_sample_page
 

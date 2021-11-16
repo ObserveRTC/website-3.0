@@ -1,7 +1,7 @@
-name: Fetch and publish schema changes
+name: Fetch and publish Client Integration Changes
 on:
   repository_dispatch:
-    types: [updated-schema]
+    types: [updated-client-integrations]
 jobs:
   updateSchema:
     runs-on: ubuntu-latest
@@ -19,13 +19,12 @@ jobs:
           git fetch origin main
           cd scripts
           pip install -r requirements.txt
-          python fetch_schemas.py
+          python fetch_client_integrations.py
           python merge_pr.py \
             -p ObserveRTC \
             -r website-3.0 \
             -t ${{ secrets.PAT }} \
-            -b autobot/update-schema \
-            -cm "update schema changes" \
-            -ti "Autobot/Schema Changes" \
-            -bm "Automatic schema changes"
-      
+            -b autobot/update-client-integrations \
+            -cm "update client integration changes" \
+            -ti "Autobot/Client Integration Changes" \
+            -bm "Automatic client integration changes"
