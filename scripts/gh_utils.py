@@ -49,8 +49,8 @@ def main():
     args = parser.parse_args()
     
     repo = Repo("../.git")    
-    new_branch = 'your_new_branch'
-    current = repo.create_head(new_branch)
+    new_branch_name = 'your_new_branch'
+    current = repo.create_head(new_branch_name)
     current.checkout()
     
     master = repo.heads.main
@@ -65,19 +65,15 @@ def main():
         print('no changes')
 
     
-    # process = subprocess.Popen(['git', 'checkout -b', head_branch], 
-    #                        stdout=subprocess.PIPE,
-    #                        universal_newlines=True)
-
-    # create_pull_request(
-    #     args['project'], # project_name
-    #     args['repo'], # repo_name
-    #     "My pull request title", # title
-    #     "My pull request description", # description
-    #     new_branch_name, # head_branch
-    #     "main", # base_branch
-    #     args['token'], # git_token
-    # )
+    create_pull_request(
+        args['project'], # project_name
+        args['repo'], # repo_name
+        "My pull request title", # title
+        "My pull request description", # description
+        new_branch_name, # head_branch
+        "main", # base_branch
+        args['token'], # git_token
+    )
 
 if __name__ == "__main__":
     main()
