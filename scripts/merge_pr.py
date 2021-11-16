@@ -23,7 +23,7 @@ def main():
     new_branch_name = args.branch
     current = repo.create_head(new_branch_name)
     current.checkout()
-    
+     
     master = repo.heads.main
     repo.git.pull('origin', master)
     #creating file
