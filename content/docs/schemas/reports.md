@@ -1,8 +1,8 @@
 ---
-contributors: {'Balazs Kreith', 'Balázs Kreith'}
+contributors: {'Balázs Kreith', 'Balazs Kreith'}
 title: "Reports"
 date: 2021-06-08 08:11:43
-lastmod: 2021-11-16 08:16:19
+lastmod: 2021-11-16 08:44:32
 draft: false
 images: []
 menu:
@@ -17,10 +17,10 @@ toc: true
 
 Observer created reports related to events (call started, call ended, client joined, etc...) indicated by the incoming samples.
 
-
+ 
 Field | Type | Required | Description 
 --- | --- | --- | ---
-serviceId | string | Yes | The unique identifier of the service the call is reported from
+serviceId | string | Yes | The unique identifier of the service the call is reported from 
 timestamp | long | Yes | The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)
 name | string | Yes | The name of the event. Possible values are: CALL_STARTED, CALL_ENDED, CLIENT_JOINED, CLIENT_LEFT, PEER_CONNECTION_OPENED, PEER_CONNECTION_CLOSED, MEDIA_TRACK_ADDED, MEDIA_TRACK_REMOVED
 mediaUnitId | string | No | The media unit id the report belongs to

@@ -1,8 +1,8 @@
 ---
-contributors: {'Balazs Kreith', 'Balázs Kreith'}
+contributors: {'Balázs Kreith', 'Balazs Kreith'}
 title: "Client Sample"
 date: 2021-06-08 08:11:43
-lastmod: 2021-11-16 08:16:19
+lastmod: 2021-11-16 08:44:32
 draft: false
 images: []
 menu:
