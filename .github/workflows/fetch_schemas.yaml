@@ -17,7 +17,14 @@ jobs:
           cd scripts
           pip install -r requirements.txt
           python fetch_schemas.py
-          python gh_utils.py --project ObserveRTC --repo website-3.0 --token ${{ secrets.PAT }}
+          python merge_pr.py \
+            -p ObserveRTC \
+            -r website-3.0 \
+            -t ${{ secrets.PAT }} \
+            -b autobot/update-schema \
+            -cm "update schema changes" \
+            -ti "Autobot/Schema Changes" \
+            -bm "Automatic schema changes"
       
       # - name: Create Pull Request
       #   uses: peter-evans/create-pull-request@v3
