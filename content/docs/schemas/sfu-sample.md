@@ -2,7 +2,7 @@
 contributors: {'Balázs Kreith', 'Balazs Kreith'}
 title: "SFU Sample"
 date: 2021-06-08 08:11:43
-lastmod: 2021-11-16 08:44:32
+lastmod: 2021-11-16 12:08:09
 draft: false
 images: []
 menu:
