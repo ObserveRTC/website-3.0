@@ -48,7 +48,8 @@ def main():
 
     args = parser.parse_args()
     
-    repo = Repo("../.git")    
+    repo = Repo("../.git")
+    main_branch_name = "main"  
     new_branch_name = 'your_new_branch'
     current = repo.create_head(new_branch_name)
     current.checkout()
@@ -70,7 +71,15 @@ def main():
     # Github Enterprise with custom hostname
     # g = Github(base_url="https://github.com/api/v3", login_or_token="access_token")
     repo = g.get_repo("ObserveRTC/website-3.0")
-    print(repo.stargazers_count)
+    body = '''
+    my commit
+    '''
+    pr = repo.create_pull(title="Publish Schema changes", body=body, head=new_branch_name, base=main_branch_name)
+    base = repo.get_branch(main_branch_name)
+    head = repo.get_branch(new_branch_name)
+
+    merge_to_master = repo.merge(main_branch_name, head.commit.sha, "merge to master")
+
     # create_pull_request(
     #     args.project, # project_name
     #     args.repo, # repo_name
