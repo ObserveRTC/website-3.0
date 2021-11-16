@@ -5,6 +5,14 @@ import subprocess
 from git import Repo
 from github import Github
 
+def delete_branch(branch_name):
+    try:
+        ref = repo.get_git_ref(f"heads/{branch_name}")
+        ref.delete()
+    except UnknownObjectException:
+        print('No such branch', branch_name)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
 
@@ -48,6 +56,8 @@ def main():
 
     merge_to_master = repo.merge(main_branch_name, head.commit.sha, args.commitmessage)
     print("PR {} for branch {} is merged into {}".format(args.title, new_branch_name, main_branch_name))
-
+    delete_branch(new_branch_name)
+    print("Branch {} is deleted".format(new_branch_name))
+    
 if __name__ == "__main__":
     main()
