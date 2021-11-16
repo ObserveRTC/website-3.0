@@ -1,4 +1,4 @@
-name: Create Pull Request Example Command
+name: Fetch and publish schema changes
 on:
   repository_dispatch:
     types: [updated-schema]
@@ -14,11 +14,12 @@ jobs:
           python-version: 3.8 #install the python needed
       - name: execute py script # run the run.py to get the latest data
         run: |
+          git config --global user.name "autobot"
+          git config --global user.email "info@observertc.org"
+          git fetch origin main
           cd scripts
           pip install -r requirements.txt
           python fetch_schemas.py
-          git config --global user.name "Publishing autobot"
-          git config --global user.email "info@observertc.org"
           python merge_pr.py \
             -p ObserveRTC \
             -r website-3.0 \
