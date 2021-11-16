@@ -1,0 +1,38 @@
+name: Create Pull Request Example Command
+on:
+  repository_dispatch:
+    types: [updated-schema]
+jobs:
+  createPullRequest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8 #install the python needed
+      - name: execute py script # run the run.py to get the latest data
+        run: |
+          cd scripts
+          pip install -r requirements.txt
+          python fetch_schemas.py
+      
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.PAT }}
+          commit-message: Update schemas
+          committer: GitHub <noreply@github.com>
+          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+          signoff: false
+          delete-branch: true
+          title: 'Update schemas'
+          base: "main"
+          body: |
+            Update webpage schemas part
+          labels: |
+            report
+            automated pr
+          milestone: 1
+          draft: false
