@@ -1,6 +1,7 @@
 import argparse
 import json
 import requests
+import subprocess
 
 def create_pull_request(project_name, repo_name, title, description, head_branch, base_branch, git_token):
     """Creates the pull request for the head_branch against the base_branch"""
