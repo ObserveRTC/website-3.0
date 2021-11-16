@@ -67,7 +67,7 @@ def main():
     
     create_pull_request(
         args.project, # project_name
-        args.rep, # repo_name
+        args.repo, # repo_name
         "My pull request title", # title
         "My pull request description", # description
         new_branch_name, # head_branch
