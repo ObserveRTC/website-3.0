@@ -68,7 +68,7 @@ def main():
     g = Github(args.token)
 
     # Github Enterprise with custom hostname
-    g = Github(base_url="https://github.com/api/v3", login_or_token="access_token")
+    # g = Github(base_url="https://github.com/api/v3", login_or_token="access_token")
     repo = g.get_repo("ObserveRTC/website-3.0")
     print(repo.stargazers_count)
     # create_pull_request(
