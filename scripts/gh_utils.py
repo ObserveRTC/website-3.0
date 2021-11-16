@@ -64,16 +64,22 @@ def main():
     else:
         print('no changes')
 
-    
-    create_pull_request(
-        args.project, # project_name
-        args.repo, # repo_name
-        "My pull request title", # title
-        "My pull request description", # description
-        new_branch_name, # head_branch
-        "main", # base_branch
-        args.token, # git_token
-    )
+    from github import Github
+    g = Github(args.token)
+
+    # Github Enterprise with custom hostname
+    g = Github(base_url="https://github.com/api/v3", login_or_token="access_token")
+    repo = g.get_repo("ObserveRTC/website-3.0")
+    print(repo.stargazers_count)
+    # create_pull_request(
+    #     args.project, # project_name
+    #     args.repo, # repo_name
+    #     "My pull request title", # title
+    #     "My pull request description", # description
+    #     new_branch_name, # head_branch
+    #     "main", # base_branch
+    #     args.token, # git_token
+    # )
 
 if __name__ == "__main__":
     main()
