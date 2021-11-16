@@ -33,6 +33,7 @@ jobs:
           branch: example-patches
           delete-branch: true
           title: 'Update schemas'
+          base: "main"
           body: |
             Update webpage schemas part
           labels: |
