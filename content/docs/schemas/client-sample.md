@@ -616,3 +616,5 @@ bytesSent | string | No | The amount of bytes sent on the corresponded data chan
 messagesReceived | number | No | The number of messages received on the corresponded data channel
 bytesReceived | number | No | The total amount of bytes received on the corresponded data channel
 peerConnectionId | string | No | The unique generated identifier of the peer connection the data channel belongs to
+## References
+[Schemas](https://github.com/ObserveRTC/schemas-2.0/tree/main/generated-schemas/samples/v2)

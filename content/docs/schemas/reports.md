@@ -918,3 +918,5 @@ sctpBytesReceived | long | No | The total amount of SCTP bytes received on this 
 sctpBytesSent | long | No | The total amount of SCTP bytes sent on this transport
 sctpPacketsReceived | int | No | The total amount of SCTP packets received on this transport
 sctpPacketsSent | int | No | The total amount of SCTP packets sent on this transport
+## References
+[Schemas](https://github.com/ObserveRTC/schemas-2.0/tree/main/generated-schemas/reports/v3)
