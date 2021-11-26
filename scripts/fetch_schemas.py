@@ -12,7 +12,7 @@ from operator import itemgetter
 from operator import attrgetter
 from datetime import datetime
 from pathlib import Path
-
+# https://stackoverflow.com/questions/5930542/check-image-urls-using-python-markdown
 def get_commit_infos(commits):
     authors = set()
     last_change = None
@@ -26,7 +26,7 @@ def get_commit_infos(commits):
         authors.add(author.name)
     return authors, first_change, last_change
 
-def create_page(title, authors, md_text, date, lastmod, weight):
+def create_page(title, authors, md_text, date, lastmod, weight, referneces):
     # refs = map(lambda ref: "[" + ref + "](" + ref + ")", references)
     items = [
         "---",
@@ -43,6 +43,8 @@ def create_page(title, authors, md_text, date, lastmod, weight):
         "toc: true",
         "---",
         md_text,
+        "## References",
+        "\n *".join(referneces)
     ]
     return "\n".join(items)
 
@@ -61,7 +63,7 @@ def fetch():
     md_texts = []
     all_commits = []
     for file in os.listdir(reports_dir):
-        if file.endswith(".md") is False:
+        if file.endswith("Samples.md") is False:
             continue
         in_file = os.path.join(inside_repo_dir, file)
         target_file = os.path.join(reports_dir, file)
@@ -83,7 +85,8 @@ def fetch():
         md_text,
         date, 
         lastmod,
-        "5010"
+        "5010",
+        ["[Schemas](https://github.com/ObserveRTC/schemas-2.0/tree/main/generated-schemas/reports/v3)"]
     )
     
 
@@ -101,7 +104,8 @@ def fetch():
         md_text,
         date, 
         lastmod,
-        "5020"
+        "5020",
+        ["[Schemas](https://github.com/ObserveRTC/schemas-2.0/tree/main/generated-schemas/samples/v2)"]
     )
 
     inside_repo_file = os.path.join("generated-schemas", "samples", "v2", "SfuSample.md")
@@ -118,7 +122,8 @@ def fetch():
         md_text,
         date, 
         lastmod,
-        "5030"
+        "5030",
+        ["[Schemas](https://github.com/ObserveRTC/schemas-2.0/tree/main/generated-schemas/samples/v2)"]
     )
     return reports_page, client_sample_page, sfu_sample_page
 
