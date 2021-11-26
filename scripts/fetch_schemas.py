@@ -63,7 +63,7 @@ def fetch():
     md_texts = []
     all_commits = []
     for file in os.listdir(reports_dir):
-        if file.endswith("Samples.md") is False:
+        if file.endswith(".md") is False:
             continue
         in_file = os.path.join(inside_repo_dir, file)
         target_file = os.path.join(reports_dir, file)
