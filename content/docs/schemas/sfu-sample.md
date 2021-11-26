@@ -177,3 +177,5 @@ sctpBytesReceived | number | No | The total amount of SCTP bytes received on thi
 sctpBytesSent | number | No | The total amount of SCTP bytes sent on this transport
 sctpPacketsReceived | number | No | The total amount of SCTP packets received on this transport
 sctpPacketsSent | number | No | The total amount of SCTP packets sent on this transport
+## References
+[Schemas](https://github.com/ObserveRTC/schemas-2.0/tree/main/generated-schemas/samples/v2)
