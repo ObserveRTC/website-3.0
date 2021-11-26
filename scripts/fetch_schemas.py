@@ -125,7 +125,25 @@ def fetch():
         "5030",
         ["[Schemas](https://github.com/ObserveRTC/schemas-2.0/tree/main/generated-schemas/samples/v2)"]
     )
-    return reports_page, client_sample_page, sfu_sample_page
+
+    inside_repo_file = os.path.join("generated-schemas", "samples", "v2", "Samples.md")
+    source_file = os.path.join(local_dir, inside_repo_file)
+    commits = list(repo.iter_commits('--all', paths=inside_repo_file))
+    authors, first_change, last_change = get_commit_infos(all_commits)
+    date = datetime.fromtimestamp(first_change)
+    lastmod = datetime.fromtimestamp(last_change)
+    md_text = Path(source_file).read_text()
+    md_texts = []
+    
+    samples_page = create_page("Samples",
+        authors, 
+        md_text,
+        date, 
+        lastmod,
+        "5040",
+        ["[Schemas](https://github.com/ObserveRTC/schemas-2.0/tree/main/generated-schemas/samples/v2)"]
+    )
+    return reports_page, client_sample_page, sfu_sample_page, samples_page
 
 
 def main():
@@ -138,11 +156,12 @@ def main():
 
     # args = parser.parse_args()
     target_dir = os.path.join(content_dir, "docs", "schemas")
-    reports_page, client_sample_page, sfu_sample_page = fetch()
+    reports_page, client_sample_page, sfu_sample_page, samples_page = fetch()
     
     print(reports_page, file=open(os.path.join(target_dir, "reports.md"), 'w+'))
     print(client_sample_page, file=open(os.path.join(target_dir, "client-sample.md"), 'w+'))
     print(sfu_sample_page, file=open(os.path.join(target_dir, "sfu-sample.md"), 'w+'))
+    print(samples_page, file=open(os.path.join(target_dir, "samples.md"), 'w+'))
 
 if __name__ == "__main__":
     main()
