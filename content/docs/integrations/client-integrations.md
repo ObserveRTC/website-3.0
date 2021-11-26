@@ -1,8 +1,8 @@
 ---
 contributors: {'Balazs Kreith', 'Pallab'}
 title: "Client Integrations"
-date: 2021-03-27 14:27:18
-lastmod: 2021-05-30 22:37:44
+date: 2021-03-27 12:27:18
+lastmod: 2021-05-30 19:37:44
 draft: false
 images: []
 menu:
