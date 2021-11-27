@@ -1,8 +1,8 @@
 ---
-contributors: {'Balázs Kreith', 'Balazs Kreith'}
+contributors: {'Balazs Kreith', 'Balázs Kreith'}
 title: "Reports"
-date: 2021-06-08 08:11:43
-lastmod: 2021-11-16 12:08:09
+date: 2021-06-08 11:11:43
+lastmod: 2021-11-16 14:08:09
 draft: false
 images: []
 menu:
@@ -918,3 +918,5 @@ sctpBytesReceived | long | No | The total amount of SCTP bytes received on this 
 sctpBytesSent | long | No | The total amount of SCTP bytes sent on this transport
 sctpPacketsReceived | int | No | The total amount of SCTP packets received on this transport
 sctpPacketsSent | int | No | The total amount of SCTP packets sent on this transport
+## References
+[Schemas](https://github.com/ObserveRTC/schemas-2.0/tree/main/generated-schemas/reports/v3)

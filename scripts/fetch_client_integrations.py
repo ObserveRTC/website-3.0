@@ -38,7 +38,7 @@ def create_page(title, authors, md_text, date, lastmod, weight):
         "images: []",
         "menu:",
         "  docs:",
-        "    parent: \"integrations\"",
+        "    parent: \"getting-started\"",
         "weight: %s"%weight,
         "toc: true",
         "---",
@@ -97,7 +97,7 @@ def fetch():
         md_text,
         date, 
         lastmod,
-        "6010"
+        "1030"
     )
     return integration_page
 
@@ -111,10 +111,10 @@ def main():
     #     help="path to the input file (read from stdin if omitted)")
 
     # args = parser.parse_args()
-    target_dir = os.path.join(content_dir, "docs", "integrations")
+    target_dir = os.path.join(content_dir, "docs", "getting-started", "client-integrations")
     integration_page = fetch()
     
-    print(integration_page, file=open(os.path.join(target_dir, "client-integrations.md"), 'w+'))
+    print(integration_page, file=open(os.path.join(target_dir, "index.md"), 'w+'))
 
 if __name__ == "__main__":
     main()

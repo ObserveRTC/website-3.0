@@ -1,8 +1,8 @@
 ---
-contributors: {'Balázs Kreith', 'Balazs Kreith'}
+contributors: {'Balazs Kreith', 'Balázs Kreith'}
 title: "SFU Sample"
-date: 2021-06-08 08:11:43
-lastmod: 2021-11-16 12:08:09
+date: 2021-06-08 11:11:43
+lastmod: 2021-11-16 14:08:09
 draft: false
 images: []
 menu:
@@ -177,3 +177,5 @@ sctpBytesReceived | number | No | The total amount of SCTP bytes received on thi
 sctpBytesSent | number | No | The total amount of SCTP bytes sent on this transport
 sctpPacketsReceived | number | No | The total amount of SCTP packets received on this transport
 sctpPacketsSent | number | No | The total amount of SCTP packets sent on this transport
+## References
+[Schemas](https://github.com/ObserveRTC/schemas-2.0/tree/main/generated-schemas/samples/v2)

@@ -1,14 +1,14 @@
 ---
-contributors: {'Balazs Kreith', 'Pallab'}
+contributors: {'Pallab', 'Balazs Kreith'}
 title: "Client Integrations"
-date: 2021-03-27 12:27:18
-lastmod: 2021-05-30 19:37:44
+date: 2021-03-27 14:27:18
+lastmod: 2021-05-30 22:37:44
 draft: false
 images: []
 menu:
   docs:
-    parent: "integrations"
-weight: 6010
+    parent: "getting-started"
+weight: 1030
 toc: true
 ---
 

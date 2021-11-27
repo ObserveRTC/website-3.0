@@ -93,7 +93,7 @@ def fetch():
     inside_repo_file = os.path.join("generated-schemas", "samples", "v2", "ClientSample.md")
     source_file = os.path.join(local_dir, inside_repo_file)
     commits = list(repo.iter_commits('--all', paths=inside_repo_file))
-    authors, first_change, last_change = get_commit_infos(all_commits)
+    authors, first_change, last_change = get_commit_infos(commits)
     date = datetime.fromtimestamp(first_change)
     lastmod = datetime.fromtimestamp(last_change)
     md_text = Path(source_file).read_text()

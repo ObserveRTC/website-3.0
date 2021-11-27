@@ -1,20 +1,8 @@
 [[docs]]
-  name = "Prologue"
+  name = "Getting Started"
   weight = 10
-  identifier = "prologue"
-  url = "/docs/prologue/"
-
-[[tutorials]]
-  name = "Integrations"
-  weight = 20
-  identifier = "integrations"
-  url = "/tutorials/integrations/"
-
-[[tutorials]]
-  name = "Deployments"
-  weight = 30
-  identifier = "deployments"
-  url = "/tutorials/deployments/"
+  identifier = "getting-started"
+  url = "/docs/getting-started/"
 
 [[docs]]
   name = "Help"
@@ -22,9 +10,21 @@
   identifier = "help"
   url = "/docs/help/"
 
+[[tutorials]]
+  name = "Integrations"
+  weight = 30
+  identifier = "integrations"
+  url = "/tutorials/integrations/"
+
+[[tutorials]]
+  name = "Deployments"
+  weight = 40
+  identifier = "deployments"
+  url = "/tutorials/deployments/"
+
 [[main]]
   name = "Docs"
-  url = "/docs/prologue/introduction/"
+  url = "/docs/getting-started/"
   weight = 10
 
 [[main]]
