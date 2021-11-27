@@ -1,8 +1,8 @@
 ---
 contributors: {'Balazs Kreith', 'Balázs Kreith'}
 title: "Observer"
-date: 2021-11-27 18:00:13
-lastmod: 2021-11-27 18:14:01
+date: 2021-11-27 16:00:13
+lastmod: 2021-11-27 16:14:01
 draft: false
 menu:
   docs:
