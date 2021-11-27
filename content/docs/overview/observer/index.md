@@ -1,18 +1,16 @@
 ---
-contributors: {'Balazs Kreith', 'Balázs Kreith'}
+contributors: {'Balázs Kreith', 'Balazs Kreith'}
 title: "Observer"
 date: 2021-11-27 18:00:13
-lastmod: 2021-11-27 18:14:01
+lastmod: 2021-11-27 22:25:20
 draft: false
 menu:
   docs:
-    parent: "getting-started"
+    parent: "overview"
 weight: 1020
 toc: true
 images: ["superficial-overview.png", "architecture.png", "object-hierarchy.png", "configuration-overview.png"]
 ---
-
-## What is WebRTC-Observer?
 
 {{< img-simple src="superficial-overview.png" alt="Overview" >}}
 

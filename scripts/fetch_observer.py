@@ -38,7 +38,7 @@ def create_page(title, authors, md_text, date, lastmod, weight, images, refernec
         "draft: false",
         "menu:",
         "  docs:",
-        "    parent: \"getting-started\"",
+        "    parent: \"overview\"",
         "weight: %s"%weight,
         "toc: true",
         "images: %s"%images,
@@ -107,7 +107,7 @@ def main():
     #     help="path to the input file (read from stdin if omitted)")
 
     # args = parser.parse_args()
-    target_dir = os.path.join(content_dir, "docs", "getting-started", "observer")
+    target_dir = os.path.join(content_dir, "docs", "overview", "observer")
     user_manual_page, image_src_path, images = fetch()
     for image in images:
         shutil.copy(os.path.join(image_src_path, image), os.path.join(target_dir, image))
