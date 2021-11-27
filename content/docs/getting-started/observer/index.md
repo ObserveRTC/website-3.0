@@ -1,8 +1,8 @@
 ---
-contributors: {'Balazs Kreith', 'Balázs Kreith'}
+contributors: {'Balázs Kreith', 'Balazs Kreith'}
 title: "Observer"
 date: 2021-11-27 16:00:13
-lastmod: 2021-11-27 16:14:01
+lastmod: 2021-11-27 20:25:20
 draft: false
 menu:
   docs:
@@ -11,8 +11,6 @@ weight: 1020
 toc: true
 images: ["superficial-overview.png", "architecture.png", "object-hierarchy.png", "configuration-overview.png"]
 ---
-
-## What is WebRTC-Observer?
 
 {{< img-simple src="superficial-overview.png" alt="Overview" >}}
 
