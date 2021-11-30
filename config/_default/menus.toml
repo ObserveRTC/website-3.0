@@ -1,12 +1,33 @@
+[[main]]
+  name = "Docs"
+  url = "/docs/overview/"
+  weight = 10
+
+[[main]]
+  name = "Tutorials"
+  url = "/tutorials/prologue/quickstart/"
+  weight = 20
+
+[[main]]
+  name = "Contact"
+  url = "/contact/"
+  weight = 30
+
 [[docs]]
   name = "Overview"
-  weight = 10
+  weight = 11
   identifier = "overview"
   url = "/docs/overview/"
 
 [[docs]]
+  name = "Schemas"
+  weight = 12
+  identifier = "schemas"
+  url = "/docs/schemas/"
+
+[[docs]]
   name = "Help"
-  weight = 60
+  weight = 13
   identifier = "help"
   url = "/docs/help/"
 
@@ -22,20 +43,6 @@
   identifier = "deployments"
   url = "/tutorials/deployments/"
 
-[[main]]
-  name = "Docs"
-  url = "/docs/overview/"
-  weight = 10
-
-[[main]]
-  name = "Tutorials"
-  url = "/tutorials/prologue/quickstart/"
-  weight = 20
-
-[[main]]
-  name = "Contact"
-  url = "/contact/"
-  weight = 30
 
 # [[social]]
 #   name = "Twitter"
