@@ -1,47 +1,53 @@
 [[main]]
   name = "Docs"
-  url = "/docs/overview/"
-  weight = 10
+  url = "/docs/overview/introduction"
+  weight = 100
 
 [[main]]
   name = "Tutorials"
-  url = "/tutorials/prologue/quickstart/"
-  weight = 20
+  url = "/tutorials/prologue"
+  weight = 200
 
 [[main]]
   name = "Contact"
   url = "/contact/"
-  weight = 30
+  weight = 300
 
 [[docs]]
   name = "Overview"
-  weight = 11
+  weight = 101
   identifier = "overview"
   url = "/docs/overview/"
 
 [[docs]]
   name = "Schemas"
-  weight = 12
+  weight = 102
   identifier = "schemas"
   url = "/docs/schemas/"
 
 [[docs]]
   name = "Help"
-  weight = 13
+  weight = 103
   identifier = "help"
   url = "/docs/help/"
 
 [[tutorials]]
-  name = "Integrations"
-  weight = 30
-  identifier = "integrations"
-  url = "/tutorials/integrations/"
+  name = "Custom Integrations"
+  weight = 201
+  identifier = "custom-integrations"
+  url = "/tutorials/custom-integrations/"
 
 [[tutorials]]
-  name = "Deployments"
-  weight = 40
-  identifier = "deployments"
-  url = "/tutorials/deployments/"
+  name = "Docker Deployments"
+  weight = 202
+  identifier = "docker"
+  url = "/tutorials/docker/"
+
+[[tutorials]]
+  name = "Helm Deployments"
+  weight = 203
+  identifier = "helm"
+  url = "/tutorials/helm/"
 
 
 # [[social]]

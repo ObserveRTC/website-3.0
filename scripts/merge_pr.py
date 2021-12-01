@@ -53,7 +53,7 @@ def main():
         ref = repo.get_git_ref(f"heads/{new_branch_name}")
         ref.delete()
         print("Branch {} is deleted".format(new_branch_name))
-    except UnknownObjectException:
+    except Exception:
         print('No such branch', new_branch_name)
     
 
