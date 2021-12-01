@@ -1,14 +1,14 @@
 ---
-contributors: {'Balázs Kreith', 'Balazs Kreith'}
+contributors: {'Balazs Kreith', 'Balázs Kreith'}
 title: "Observer Kafka Evaluator Prom Graf"
-date: 2021-11-08 16:49:52
-lastmod: 2021-11-08 20:05:50
+date: 2021-11-08 14:49:52
+lastmod: 2021-11-08 18:05:50
 draft: false
 images: []
 menu:
   tutorials:
     parent: "docker"
-weight: 1040
+weight: 1020
 toc: true
 ---
 
