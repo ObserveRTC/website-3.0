@@ -1,7 +1,7 @@
 ---
 title: "Introduction"
 description: "ObserveRTC is an open-source project provide solutions to monitor your WebRTC Applications"
-lead: "ObserveRTC is an open-source project provide solutions to monitor your WebRTC Applications"
+lead: "ObserveRTC provides open-source tools for monitoring WebRTC Applications"
 date: 2021-04-01
 lastmod: 2021-04-01
 draft: false
@@ -13,28 +13,36 @@ weight: 1010
 toc: true
 ---
 
-Making analytical tools for Real Time Communication (RTC) is challenging. You need to consider strict time limitations of real-time streams, and tightly integrate services that can report to your monitoring solutions with micro second accuracy.
+Making analytics tools for Real Time Communication (RTC) is challenging.
+Technologies like WebRTC generate a tremendous amount statistical data with APIs like `RTCPeerConnection.getStats()`.
+One could aggregate this data, but data volumes quickly become overwhelming.
+In addition, parsing this data for common queries and exploratory analysis is extremely cumbersome.
+Commercial tools are expensive, lack flexibility, and cannot easily be adjusted for specific environments.
 
-Here is how ObserveRTC comes into the picture. We make RTC development easy using open-source tools. ObserveRTC aims to provide client side integrations, infrastructure and monitoring tools to observe and analyse WebRTC applications.
+### ObserveRTC provides:
+* **Client-side libraries** - collect data from your RTC clients with negligible performance impact
+* **Server-side integrations** - options to add data from devices like Selective Forwarding Unit (SFU)
+* **Flexible Database options** - use your preferred data architectures like Kafka, MongoDB, Hazelcast, RedShift, BigQuery, and others
+* **Pre-defined scheme** - start with and expand on the ObserveRTC scheme to simplify data queries
 
-### Why ObserveRTC?
+### ObserveRTC benefits
 
-* **Open-source** - No hidden magic, no secret souce, it is a transparent monitoring solution for everyone.
+* **Free and Open-source** - No hidden magic, no secret source, it is a transparent monitoring solution for everyone.
 * **Own your data** - By deploying it you have full ownership of data from your applications and run further analysis.
-* **Designed for the cloud** - When the size of your memory and compute requirements increase, new resources can be dynamically added to your cluster to scale elastically. e.g. hazelcast as an in-memory distributed databse for resiliance.
+* **Easy to scale** - When the size of your memory and compute requirements increase, new resources can be dynamically added to your cluster to scale elastically.
 
-### What are the benefits?
+### Use cases
 
- * **Performance tuning** - Ability to debug/improve your WebRTC applications.
+ * **Performance tuning** - Debug/improve your WebRTC applications.
  * **Regression analysis** - Quantify the impact of changes you made.
  * **System operations** - Measure and monitor the performance of your application.
  * **Troubleshooting & debugging** - Investigate technical issues.
  * **Usage trends** - Track/Understand how your app is used.
 
-### Use cases
+### Target users
 
- * As an **application developer** you can use ObserveRTC to debug your WebRTC applications.
- * As a **product owner** you can use ObserveRTC to measure and monitor the performance of your application.
- * As an **operations team member** you can monitor the health and get critical alerts about your application.
+ * **Application developers** - debug your WebRTC applications.
+ * **Product Owner** - measure and monitor the performance of your application.
+ * **Operations team** - monitor the health and get critical alerts about your application.
 
 
