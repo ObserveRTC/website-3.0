@@ -1,8 +1,8 @@
 ---
-contributors: {'Balazs Kreith', 'Balázs Kreith'}
+contributors: {'Balazs Kreith'}
 title: "Client Sample"
-date: 2021-06-08 11:11:43
-lastmod: 2021-11-16 14:08:09
+date: 2021-06-09 10:48:59
+lastmod: 2021-11-17 17:47:49
 draft: false
 images: []
 menu:
@@ -616,5 +616,10 @@ bytesSent | string | No | The amount of bytes sent on the corresponded data chan
 messagesReceived | number | No | The number of messages received on the corresponded data channel
 bytesReceived | number | No | The total amount of bytes received on the corresponded data channel
 peerConnectionId | string | No | The unique generated identifier of the peer connection the data channel belongs to
+
+
 ## References
-[Schemas](https://github.com/ObserveRTC/schemas-2.0/tree/main/generated-schemas/samples/v2)
+ * [Json Viewer](https://jsonformatter.org/json-viewer/417c6e)
+ * [JSON Schema](https://github.com/ObserveRTC/schemas-2.0/blob/main/generated-schemas/samples/v2/ClientSample.json)
+ * [Java Class](https://github.com/ObserveRTC/schemas-2.0/blob/main/generated-schemas/samples/v2/ClientSample.java)
+ * [Schemas](https://github.com/ObserveRTC/schemas-2.0/tree/main/generated-schemas/samples/v2)

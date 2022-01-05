@@ -43,8 +43,8 @@ def create_page(title, authors, md_text, date, lastmod, weight, referneces):
         "toc: true",
         "---",
         md_text,
-        "## References",
-        "\n *".join(referneces)
+        "\n\n## References",
+        " * " + "\n * ".join(referneces)
     ]
     return "\n".join(items)
 
@@ -105,7 +105,12 @@ def fetch():
         date, 
         lastmod,
         "5020",
-        ["[Schemas](https://github.com/ObserveRTC/schemas-2.0/tree/main/generated-schemas/samples/v2)"]
+        [
+            "[Json Viewer](https://jsonformatter.org/json-viewer/417c6e)",
+            "[JSON Schema](https://github.com/ObserveRTC/schemas-2.0/blob/main/generated-schemas/samples/v2/ClientSample.json)",
+            "[Java Class](https://github.com/ObserveRTC/schemas-2.0/blob/main/generated-schemas/samples/v2/ClientSample.java)",
+            "[Schemas](https://github.com/ObserveRTC/schemas-2.0/tree/main/generated-schemas/samples/v2)",
+        ]
     )
 
     inside_repo_file = os.path.join("generated-schemas", "samples", "v2", "SfuSample.md")
@@ -123,7 +128,12 @@ def fetch():
         date, 
         lastmod,
         "5030",
-        ["[Schemas](https://github.com/ObserveRTC/schemas-2.0/tree/main/generated-schemas/samples/v2)"]
+        [
+            "[Json Viewer](https://jsonformatter.org/json-viewer/0fe51c)",
+            "[JSON Schema](https://github.com/ObserveRTC/schemas-2.0/blob/main/generated-schemas/samples/v2/SfuSample.json)",
+            "[Java Class](https://github.com/ObserveRTC/schemas-2.0/blob/main/generated-schemas/samples/v2/SfuSample.java)",
+            "[Schemas](https://github.com/ObserveRTC/schemas-2.0/tree/main/generated-schemas/samples/v2)",
+        ]
     )
 
     inside_repo_file = os.path.join("generated-schemas", "samples", "v2", "Samples.md")
@@ -141,7 +151,11 @@ def fetch():
         date, 
         lastmod,
         "5040",
-        ["[Schemas](https://github.com/ObserveRTC/schemas-2.0/tree/main/generated-schemas/samples/v2)"]
+        [
+            "[Json Schema](https://jsonformatter.org/json-viewer/2b618b)",
+            "[Java Class](https://github.com/ObserveRTC/schemas-2.0/blob/main/generated-schemas/samples/v2/Samples.java)",
+            "[Schemas](https://github.com/ObserveRTC/schemas-2.0/tree/main/generated-schemas/samples/v2)",
+        ]
     )
     return reports_page, client_sample_page, sfu_sample_page, samples_page
 
