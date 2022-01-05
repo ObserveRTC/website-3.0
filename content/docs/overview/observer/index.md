@@ -2,14 +2,14 @@
 contributors: {'Balázs Kreith', 'Balazs Kreith'}
 title: "Observer"
 date: 2021-11-27 16:00:13
-lastmod: 2022-01-05 13:49:49
+lastmod: 2022-01-05 14:08:49
 draft: false
 menu:
   docs:
     parent: "overview"
 weight: 1020
 toc: true
-images: ["superficial-overview.png", "architecture.png", "configuration-overview.png"]
+images: ["superficial-overview.png", "architecture.png", "object-hierarchy.png", "configuration-overview.png"]
 ---
 
 {{< img-simple src="superficial-overview.png" alt="Overview" >}}
@@ -57,7 +57,7 @@ Currently the following type of Reports are assembled:
 
 ### Object Hierarchy
 
-{{< img-simple src="object-hierarchy.png" alt="Object hierarchy" >}}
+{{< img-simple src="object-hierarchy.png" alt="Object-Hierarchy" >}}
 
 Observer analyze incoming samples and build an internal object hierarchy stores in its repository.
 Object hierarchy is then used to group the client samples, matching tracks and sfu rtp pads,
