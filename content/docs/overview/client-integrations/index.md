@@ -25,21 +25,21 @@ libraries from GitHub's CDN and initialize by populating the `observerWsEndPoint
   - audio bridge plugin
 
 It should support other plugins as well out of the box. But, if you find some issue with it and if it does not fully support other plugins (s), please create an issue or pull request. Thanks
-    
+
 See the quickstart methodology below for adding this library to your web app.
 
-### Janus Quickstart <a name="quickstart"></a>
+### Janus Quickstart
 
 1. Include core library before including janus javascript library file in your html page.
    We have a public version hosted on GitHub you can use as shown below,
    or use the library you built from the [build and integrate the package yourself](#build) instructions.
-   
+
   - Production version
-    ```html 
+    ```html
     <script src="https://observertc.github.io/observer-js/dist/latest/observer.min.js"></script>
     ```
   - Developer version
-    ```html 
+    ```html
     <script src="https://observertc.github.io/observer-js/dist/latest/observer.js"></script>
     ```
 
@@ -61,12 +61,12 @@ See the quickstart methodology below for adding this library to your web app.
     We recommend the minified version. The unminified version includes extra console logging for debugging purposes.
 
     - Minified version (recommended):
-    ```html 
+    ```html
     <script src="https://observertc.github.io/integrations/dist/latest/janus.integration.min.js"></script>
     ```
 
     - OR Non-minified version:
-    ```html 
+    ```html
     <script src="https://observertc.github.io/integrations/dist/latest/janus.integration.js"></script>
     ```
 
@@ -74,10 +74,10 @@ See the quickstart methodology below for adding this library to your web app.
         ```html
         <html>
         <body>
-      <!--  
+      <!--
       .....
       .....
-      -->      
+      -->
         <script src="http://observertc.github.io/observer-js/dist/latest/observer.js"></script>
         <script>
             let observerWsEndPoint = ObserverRTC.ParserUtil.parseWsServerUrl(
@@ -91,11 +91,11 @@ See the quickstart methodology below for adding this library to your web app.
 
         <script type="text/javascript" src="janus.js" ></script>
         <script type="text/javascript" src="videoroomtest.js"></script>
-      
-      ```
-    
 
-### 💎  **_Additional features in your integration_** 💎 
+      ```
+
+
+### 💎  **_Additional features in your integration_** 💎
 * ➡️ [Tweak your integration](https://github.com/ObserveRTC/integrations/wiki/Tweak-your-integration)
 
 
@@ -109,18 +109,18 @@ libraries from GitHub's CDN and initialize by populating the `observerWsEndPoint
 
 See the quickstart methodology below for adding this library to your web app.
 
-### PeerJS Quickstart <a name="quickstart"></a>
+### PeerJS Quickstart
 
 1. Include core library after peerjs javascript library file in your html page.
    We have a public version hosted on GitHub you can use as shown below,
    or use the library you built from the [build and integrate the package yourself](#build) instructions.
-   
+
   - Production version
-    ```html 
+    ```html
     <script src="https://observertc.github.io/observer-js/dist/latest/observer.min.js"></script>
     ```
   - Developer version
-    ```html 
+    ```html
     <script src="https://observertc.github.io/observer-js/dist/latest/observer.js"></script>
     ```
 
@@ -142,12 +142,12 @@ See the quickstart methodology below for adding this library to your web app.
     We recommend the minified version. The unminified version includes extra console logging for debugging purposes.
 
     - Minified version (recommended):
-    ```html 
+    ```html
     <script src="https://observertc.github.io/integrations/dist/latest/peerjs.integration.min.js"></script>
     ```
 
     - OR Non-minified version:
-    ```html 
+    ```html
     <script src="https://observertc.github.io/integrations/dist/latest/peerjs.integration.js"></script>
     ```
 
@@ -155,10 +155,10 @@ See the quickstart methodology below for adding this library to your web app.
         ```html
         <html>
         <body>
-      <!--  
+      <!--
       .....
       .....
-      -->      
+      -->
         <script
             defer
             src="https://unpkg.com/peerjs@1.2.0/dist/peerjs.min.js"
@@ -174,11 +174,11 @@ See the quickstart methodology below for adding this library to your web app.
             );
         </script>
         <script defer src="https://observertc.github.io/integrations/dist/v2105-08/peerjs.integration.js"></script>
-      
-      ```
-    
 
-### 💎  **_Additional features in your integration_** 💎 
+      ```
+
+
+### 💎  **_Additional features in your integration_** 💎
 * ➡️ [Tweak your integration](https://github.com/ObserveRTC/integrations/wiki/Tweak-your-integration)
 
 
@@ -188,22 +188,22 @@ You can either [build and integrate the package yourself](https://github.com/Obs
 or use our [Mediasoup QuickStart](#quickstart) where you simply load the observer
 libraries from GitHub's CDN and initialize by populating the `observerWsEndPoint` global variable using the
 `ObserverRTC.ParserUtil.parseWsServerUrl` helper function.
-    
+
 See the quickstart methodology below for adding this library to your web app.
 
 
-### Mediasoup Quickstart <a name="quickstart"></a>
+### Mediasoup Quickstart
 
 1. Include core library before including `antiglobal.js` and mediasoup javascript library file in your html page.
    We have a public version hosted on GitHub you can use as shown below,
    or use the library you built from the [build and integrate the package yourself](#build) instructions.
-   
+
   - Production version
-    ```html 
+    ```html
     <script src="https://observertc.github.io/observer-js/dist/latest/observer.min.js"></script>
     ```
   - Developer version
-    ```html 
+    ```html
     <script src="https://observertc.github.io/observer-js/dist/latest/observer.js"></script>
     ```
 
@@ -225,12 +225,12 @@ See the quickstart methodology below for adding this library to your web app.
     We recommend the minified version. The unminified version includes extra console logging for debugging purposes.
 
     - Minified version (recommended):
-    ```html 
+    ```html
     <script src="https://observertc.github.io/integrations/dist/latest/mediasoup.integration.min.js"></script>
     ```
 
     - OR Non-minified version:
-    ```html 
+    ```html
     <script src="https://observertc.github.io/integrations/dist/latest/mediasoup.integration.js"></script>
     ```
 
@@ -238,10 +238,10 @@ See the quickstart methodology below for adding this library to your web app.
         ```html
         <html>
         <body>
-      <!--  
+      <!--
       .....
       .....
-      -->      
+      -->
         <script src="https://observertc.github.io/observer-js/dist/latest/observer.min.js"></script>
         <script>
             let observerWsEndPoint = ObserverRTC.ParserUtil.parseWsServerUrl(
@@ -255,18 +255,18 @@ See the quickstart methodology below for adding this library to your web app.
         <script src='/resources/js/antiglobal.js'></script>
         <script>
         window.localStorage.setItem('debug', '* -engine* -socket* -RIE* *WARN* *ERROR*');
-        
+
         if (window.antiglobal) {
             window.antiglobal('___browserSync___oldSocketIo', 'io', '___browserSync___', '__core-js_shared__');
             setInterval(window.antiglobal, 180000);
         }
         </script>
         <script async src='/mediasoup-demo-app.js?v=foo2'></script>
-      
-      ```
-    
 
-### 💎  **_Additional features in your integration_** 💎 
+      ```
+
+
+### 💎  **_Additional features in your integration_** 💎
 * ➡️ [Tweak your integration](https://github.com/ObserveRTC/integrations/wiki/Tweak-your-integration)
 
 
@@ -281,21 +281,21 @@ libraries from GitHub's CDN and initialize by populating the `observerWsEndPoint
 
 See the quickstart methodology below for adding this library to your web app.
 
-### OpenTok Quickstart <a name="quickstart"></a>
+### OpenTok Quickstart
 
 1. Include core library before including `opentok.js` file in your html page.
    We have a public version hosted on GitHub you can use as shown below,
    or use the library you built from the [build and integrate the package yourself](#opentok-build) instructions.
-    
+
   - Production version
-    ```html 
+    ```html
     <script src="https://observertc.github.io/observer-js/dist/latest/observer.min.js"></script>
     ```
   - Developer version
-    ```html 
+    ```html
     <script src="https://observertc.github.io/observer-js/dist/latest/observer.js"></script>
     ```
- 
+
 2. Define server endpoint in global( window ) scope
     ```html
     <script>
@@ -314,12 +314,12 @@ See the quickstart methodology below for adding this library to your web app.
     We recommend the minified version. The unminified version includes extra console logging for debugging purposes.
 
     - Minified version (recommended):
-    ```html 
+    ```html
     <script src="https://observertc.github.io/integrations/dist/v0.1.1/tokbox.integration.min.js"></script>
     ```
 
     - OR Non-minified version:
-    ```html 
+    ```html
     <script src="https://observertc.github.io/integrations/dist/v0.1.1/tokbox.integration.js"></script>
     ```
 
@@ -327,10 +327,10 @@ See the quickstart methodology below for adding this library to your web app.
         ```html
         <html>
         <body>
-      <!--  
+      <!--
       .....
       .....
-      -->      
+      -->
         <script src="https://observertc.github.io/observer-js/dist/latest/observer.min.js"></script>
         <script>
         let observerWsEndPoint = ObserverRTC.ParserUtil.parseWsServerUrl(
@@ -343,16 +343,16 @@ See the quickstart methodology below for adding this library to your web app.
         <script src="https://observertc.github.io/integrations/dist/v0.1.1/tokbox.integration.min.js"></script>
         <script src="https://static.opentok.com/v2/js/opentok.js" charset="utf-8"></script>
         ```
-      
+
 An example can be found in [OpenTok demo folder](../../__test__/tokbox/index.html).
 
 
-### 💎  **_Additional features in your integration_** 💎 
+### 💎  **_Additional features in your integration_** 💎
 * ➡️ [Tweak your integration](https://github.com/ObserveRTC/integrations/wiki/Tweak-your-integration)
 
 ## Create your own Integration
 
-Currently, we have a couple of integration(s). In addition to that, anyone can write their own integration with a couple of lines. The fundamental part of the integration is to use the [observer-js](https://github.com/ObserveRTC/observer-js) core library to do most of the heavy lifting. 
+Currently, we have a couple of integration(s). In addition to that, anyone can write their own integration with a couple of lines. The fundamental part of the integration is to use the [observer-js](https://github.com/ObserveRTC/observer-js) core library to do most of the heavy lifting.
 
 The integration will mainly handle the different use cases of how you can collect
  - peer connection
@@ -364,7 +364,7 @@ from your application.
 
 ### Include observer-js library
 
-Let's assume you have already imported the [observer-js](https://github.com/ObserveRTC/observer-js) library. List of available versions can be found here. 
+Let's assume you have already imported the [observer-js](https://github.com/ObserveRTC/observer-js) library. List of available versions can be found here.
  - https://github.com/ObserveRTC/observer-js/releases
 
 Also, you can directly include it in your HTML page from Github. We are currently serving all versions from github. Like this
@@ -379,7 +379,7 @@ Once included, observer-js will be available as `ObserverRTC` and expose some us
 - `ObserverRTC.ParserUtil` - Helper function that you can use to construct the WebSocket sender endpoint.
 
 ### Know your application
-The integration will be fairly simple. In order to do that 
+The integration will be fairly simple. In order to do that
  - 🔹  You somehow need to collect or I will say get the reference your peer connection from your application. Everything else is optional. 👍   Some WebRTC applications expose all your active peer connections to the global scope, some simply do not.
  - You might also want to send a `marker` to mark this peer connection session. This is optional, and to know about it please [visit this page](https://github.com/ObserveRTC/integrations/wiki/Tweak-your-integration#add-a-marker-during-build-time)
  - You might also want to send a browser id to uniquely identity this RTC session. More about it [can be found here](https://github.com/ObserveRTC/integrations/wiki/Tweak-your-integration#provide-a-custom-browser-id).
@@ -389,15 +389,15 @@ The integration will be fairly simple. In order to do that
 ### Write the integration
 
 - #### Create integration object
-  
-  ```javascript     
+
+  ```javascript
     const builder = new ObserverRTC.Builder({
       poolingIntervalInMs: 1*1000,
       wsAddress: 'wss://URL-OF-THE-DEPLYED-OBSERVER/',
     })
-    // optional - If we want to set a marker 
+    // optional - If we want to set a marker
     builder.withMarker('my customer marker')
-    // optional - If we want to set a browser id. 
+    // optional - If we want to set a browser id.
     // More details about it - https://github.com/ObserveRTC/integrations/wiki/Tweak-your-integration#provide-a-custom-browser-id
     builder.withBrowserId('my custom browser id')
     // A simple name to your integration
@@ -407,16 +407,16 @@ The integration will be fairly simple. In order to do that
 
 - #### Add peer connection to the integration from your application
   - #### **Approach 1**. Get the peer connection manually
- 
+
       - It assumes that you have full control of your application peer connection. So, as soon as you create the peer connection please pass it via
         `addPC` method
          ```javascript
          const pcObject = aMethodToGetMyNewlyCreatedPC()
          const callId = 'optional call id'
-         const userId = 'optional user id' 
+         const userId = 'optional user id'
          integration.addPC(pcObject, callId, userId)
          ```
-    
+
   - #### **Approach 2**. Or, override the peer connection object and set a callback to fetch the peer connection reference
     - You can also override the `RTCPeerConnection`, and hook it so that `addPC` will be called as soon as a `RTCPeerConnection` is created.
     - In order to override the `RTCPeerConnection`, please make sure you are calling as soon as document/window load.

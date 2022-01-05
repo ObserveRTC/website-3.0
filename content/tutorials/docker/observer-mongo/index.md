@@ -12,21 +12,25 @@ weight: 1000
 toc: true
 ---
 
+<!---
 Observer + Mongo
 ===
+--->
 
-Setup an observer, which sends the generated reports to MongoDB.
+Setup an observer that sends the generated reports to MongoDB.
 
 ### Usage
 
 ```shell
-    docker-compose up 
+    docker-compose up
 ```
 
-Go to http://localhost:8081 mongo express, enter with the username and password (root/password) and there you will find the reports under the database you setup to save them (`ortc_reports`).
+Go to mongo express at [http://localhost:8081](http://localhost:8081) and
+enter the username and password (root/password). You will find the
+reports under the database you set up (default: `ortc_reports`).
 
 ### Configurations
 
-Observer configuration files (`observer-config/config.yaml`) setup a sink to the mongo.
+Observer configuration files (`observer-config/config.yaml`) set up a sink to the mongo.
 
 
