@@ -1,5 +1,5 @@
 ---
-contributors: {'Pallab', 'Balázs Kreith', 'Balazs Kreith'}
+contributors: {'Balázs Kreith', 'Balazs Kreith', 'Pallab'}
 title: "Client Integrations"
 date: 2021-03-27 12:27:18
 lastmod: 2022-01-05 14:35:34
