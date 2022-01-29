@@ -2,7 +2,7 @@
 contributors: {'Balázs Kreith', 'Balazs Kreith'}
 title: "SFU Integrations"
 date: 2021-07-09 06:27:48
-lastmod: 2021-11-30 07:42:32
+lastmod: 2022-01-29 07:28:25
 draft: false
 images: []
 menu:
