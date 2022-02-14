@@ -1,5 +1,5 @@
 ---
-contributors: {'Balazs Kreith', 'Balázs Kreith'}
+contributors: {'Balázs Kreith', 'Balazs Kreith'}
 title: "Client Sample"
 date: 2021-06-09 07:48:59
 lastmod: 2022-02-14 15:19:04
