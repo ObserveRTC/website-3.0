@@ -1,8 +1,8 @@
 ---
 contributors: {'Balazs Kreith', 'Balázs Kreith'}
 title: "Client Sample"
-date: 2021-06-08 11:11:43
-lastmod: 2021-11-16 14:08:09
+date: 2021-06-09 07:48:59
+lastmod: 2022-02-14 15:19:04
 draft: false
 images: []
 menu:
@@ -101,6 +101,20 @@ Field | Type | Required | Description
 name | string | No | Name of the operation system.
 version | string | No | The version number of the operation system
 versionName | string | No | The version name of the operation system
+
+
+### MediaDevice
+---
+
+
+MediaDevice
+
+
+Field | Type | Required | Description 
+--- | --- | --- | ---
+id | string | Yes | the provided id of the media input / output
+kind | string | No | the kind of the device
+label | string | No | The name of the device
 
 
 ### ExtensionStat
@@ -577,7 +591,7 @@ address | string | No | The address of the local endpoint (Ipv4, Ipv6, FQDN)
 port | number | No | The port number of the local endpoint the ICE uses
 protocol | string | No | The protocol for the ICE
 candidateType | string | No | The type of the local candidate
-priority | string | No | The priority of the local candidate
+priority | number | No | The priority of the local candidate
 url | string | No | The url of the ICE server
 relayProtocol | string | No | The relay protocol the local candidate uses
 peerConnectionId | string | No | Refers to the peer connection the local candidate belongs to
@@ -594,7 +608,7 @@ address | string | No | The address of the remote endpoint (Ipv4, Ipv6, FQDN)
 port | number | No | The port number of the remote endpoint the ICE uses
 protocol | string | No | The protocol for the ICE
 candidateType | string | No | The type of the remote candidate
-priority | string | No | The priority of the remote candidate
+priority | number | No | The priority of the remote candidate
 url | string | No | The url of the ICE server
 relayProtocol | string | No | The relay protocol the remote candidate uses
 peerConnectionId | string | No | Refers to the peer connection the remote candidate belongs to
@@ -609,10 +623,10 @@ Field | Type | Required | Description
 id | string | No | Unique identifier of the data channel
 label | string | No | The label the data channel provided at the creation
 protocol | string | No | The protocol the data channel use to transfer data
-dataChannelIdentifier | string | No | The unique identifier of the data channel
+dataChannelIdentifier | number | No | The unique identifier of the data channel
 state | string | No | The state of the data channel
 messagesSent | number | No | The total number of messages sent on this data channel. this is not equal to the number of packets sent, as messages are chunked to packets
-bytesSent | string | No | The amount of bytes sent on the corresponded data channel
+bytesSent | number | No | The amount of bytes sent on the corresponded data channel
 messagesReceived | number | No | The number of messages received on the corresponded data channel
 bytesReceived | number | No | The total amount of bytes received on the corresponded data channel
 peerConnectionId | string | No | The unique generated identifier of the peer connection the data channel belongs to
