@@ -1,5 +1,5 @@
 ---
-contributors: {'Balazs Kreith', 'Balázs Kreith'}
+contributors: {'Balázs Kreith', 'Balazs Kreith'}
 title: "SFU Integrations"
 date: 2021-07-09 06:27:48
 lastmod: 2022-02-23 07:21:51
