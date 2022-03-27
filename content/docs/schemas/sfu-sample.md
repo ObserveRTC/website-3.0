@@ -1,5 +1,5 @@
 ---
-contributors: {'Balázs Kreith', 'Balazs Kreith'}
+contributors: {'Balazs Kreith', 'Balázs Kreith'}
 title: "SFU Sample"
 date: 2021-06-08 08:11:43
 lastmod: 2022-02-14 15:10:26
