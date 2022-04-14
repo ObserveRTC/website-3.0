@@ -1,7 +1,7 @@
 ---
-contributors: {'Balázs Kreith', 'Balazs Kreith'}
+contributors: {'Balázs Kreith'}
 title: "Observer"
-date: 2021-11-27 16:00:13
+date: 2021-11-27 16:14:01
 lastmod: 2022-01-05 14:08:49
 draft: false
 menu:
