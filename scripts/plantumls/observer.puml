@@ -1,0 +1,20 @@
+@startuml
+allowmixing
+skinparam handwritten true
+skinparam roundcorner 20
+skinparam monochrome true
+skinparam arrowThickness 2
+skinparam BoxPadding 60
+
+' hide the spot
+hide circle
+
+component "Observer" as observer 
+
+() "Monitor" as monitor
+() "Database" as database
+
+monitor -r-> observer: Samples
+observer -r-> database: Reports
+
+@enduml

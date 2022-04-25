@@ -4,11 +4,6 @@
   weight = 100
 
 [[main]]
-  name = "Tutorials"
-  url = "/tutorials/prologue"
-  weight = 200
-
-[[main]]
   name = "Contact"
   url = "/contact/"
   weight = 300
@@ -20,34 +15,28 @@
   url = "/docs/overview/"
 
 [[docs]]
-  name = "Schemas"
+  name = "Client Monitor"
   weight = 102
-  identifier = "schemas"
-  url = "/docs/schemas/"
+  identifier = "client-monitor"
+  url = "/docs/client-monitor/"
+
+[[docs]]
+  name = "Sfu Monitor"
+  weight = 103
+  identifier = "sfu-monitor"
+  url = "/docs/sfu-monitor/"
+
+[[docs]]
+  name = "Observer"
+  weight = 104
+  identifier = "observer"
+  url = "/docs/observer/"
 
 [[docs]]
   name = "Help"
-  weight = 103
+  weight = 105
   identifier = "help"
   url = "/docs/help/"
-
-[[tutorials]]
-  name = "Custom Integrations"
-  weight = 201
-  identifier = "custom-integrations"
-  url = "/tutorials/custom-integrations/"
-
-[[tutorials]]
-  name = "Docker Deployments"
-  weight = 202
-  identifier = "docker"
-  url = "/tutorials/docker/"
-
-[[tutorials]]
-  name = "Helm Deployments"
-  weight = 203
-  identifier = "helm"
-  url = "/tutorials/helm/"
 
 
 # [[social]]
