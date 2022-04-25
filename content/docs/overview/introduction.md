@@ -17,6 +17,14 @@ Making analytical tools for Real Time Communication (RTC) is challenging. You ne
 
 Here is how ObserveRTC comes into the picture. We make RTC development easy using open-source tools. ObserveRTC aims to provide client side integrations, infrastructure and monitoring tools to observe and analyse WebRTC applications.
 
+### ObserveRTC provides
+
+* **Client-side libraries** - collect and monitor your RTC clients with negligible performance impact
+* **Sfu-side libraries** - collect and monitor your Selective Forwarding Units
+* **Server-side integrations** - options to add data from devices like Selective Forwarding Unit (SFU)
+* **Flexible Database options** - use your preferred data architectures like Kafka, MongoDB, RedShift, BigQuery, and others
+* **Pre-defined scheme** - start with and expand on the ObserveRTC scheme to simplify data queries
+
 ### Why ObserveRTC?
 
 * **Open-source** - No hidden magic, no secret souce, it is a transparent monitoring solution for everyone.

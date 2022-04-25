@@ -3,8 +3,8 @@
 ## Homepage
 title = "ObserveRTC"
 titleSeparator = "-"
-titleAddition = "Open-Source WebRTC Monitoring Solution"
-description = "ObserveRTC is an open source initiative aimed to provide tools to monitor and analyze applications for real-time communication."
+titleAddition = "Open-Source Monitoring Solution for WebRTC Applications"
+description = "ObserveRTC is an open source project aimed to provide tools to monitor and analyze applications for real-time communication."
 
 ## Open Graph + Twitter Cards
 images = ["logo.jpeg"]
@@ -43,7 +43,7 @@ alert = false
 alertText = "Like Doks? <a class=\"alert-link\" href=\"https://github.com/h-enk/doks/stargazers\">Star on GitHub</a>. Thanks!</a>"
 
 # Edit Page
-docsRepo = "https://github.com/ObserveRTC/website-2.0"
+docsRepo = "https://github.com/ObserveRTC/website-3.0"
 editPage = true
 
 [options]

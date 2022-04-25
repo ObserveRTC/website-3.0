@@ -152,10 +152,27 @@ body {
   }
 }
 
+.docs-content-with-toc {
+  padding-bottom: 3rem;
+  order: 1;
+  align-content: stretch;
+  // background-color: red;
+  text-align: justify;
+}
+
 .docs-content {
   padding-bottom: 3rem;
   order: 1;
+  width: 75%;
+  align-content: stretch;
+  // background-color: red;
+  text-align: justify;
 }
+
+// .docs-content p {
+  
+//   background-color: aqua;
+// }
 
 .docs-navigation {
   border-top: 1px solid $gray-200;
