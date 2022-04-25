@@ -1,8 +1,8 @@
 ---
-contributors: {'Balazs Kreith', 'Balázs Kreith'}
+contributors: {'Balázs Kreith', 'Balazs Kreith'}
 title: "Reports"
-date: 2021-06-08 11:11:43
-lastmod: 2021-11-16 14:08:09
+date: 2021-06-08 08:11:43
+lastmod: 2022-02-14 15:10:26
 draft: false
 images: []
 menu:
@@ -112,29 +112,6 @@ userId | string | No | webrtc app provided user identifier
 peerConnectionId | string | No | The unique identifier of the peer connection
 sampleSeq | int | No | The sequence number of the sample the event may related to
 payload | string | No | the human readable message of the event
-
-## CallMetaReport
----
-
-
-Metadata belongs to a call and can be useful
-
-
-Name | Type | Required | Description 
---- | --- | --- | ---
-serviceId | string | Yes | The unique identifier of the service
-timestamp | long | Yes | The timestamp when the corresponded data is generated for the report (UTC Epoch in ms)
-mediaUnitId | string | No | The media unit id the report belongs to
-marker | string | No | The marker the originated sample is reported with
-callId | string | No | The generated unique identifier of the call
-roomId | string | No | webrtc app provided room id
-clientId | string | No | The generated unique identifier of the client
-userId | string | No | webrtc app provided user identifier
-peerConnectionId | string | No | The unique identifier of the peer connection
-sampleTimestamp | long | No | The timestamp of the sample the event related to
-sampleSeq | int | No | The sequence number of the sample the event may related to
-type | string | No | The type of the meta data reported for the peer connection
-payload | string | No | The payload for the metadata reported for the peeer connection
 
 ## ClientTransportReport
 ---
@@ -255,7 +232,7 @@ burstDiscardRate | double | No | The fraction of RTP packets discarded during bu
 gapLossRate | double | No | The fraction of RTP packets lost during gap proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source
 gapDiscardRate | double | No | The fraction of RTP packets discarded during gap proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source
 voiceActivityFlag | boolean | No | Indicate if the last RTP packet received contained voice activity based on the presence of the V bit in the extension header
-lastPacketReceivedTimestamp | boolean | No | Represents the timestamp at which the last packet was received on the corresponded synchronization source (ssrc)
+lastPacketReceivedTimestamp | double | No | Represents the timestamp at which the last packet was received on the corresponded synchronization source (ssrc)
 averageRtcpInterval | double | No | The average RTCP interval between two consecutive compound RTCP packets sent for the corresponding synchronization source (ssrc)
 headerBytesReceived | long | No | Total number of RTP header and padding bytes received over the corresponding synchronization source (ssrc)
 fecPacketsReceived | int | No | Total number of FEC packets received over the corresponding synchronization source (ssrc)
@@ -334,7 +311,7 @@ qpSum | long | No | sum of QP values of frames decoded on the corresponded synch
 totalDecodeTime | long | No | The total number of seconds spent on decoding frames on the corresponded synchronization source (ssrc)
 totalInterFrameDelay | long | No | The total number of inter frame delay on the corresponded synchronization source (ssrc)
 totalSquaredInterFrameDelay | long | No | The total number of inter frame delay squere on the corresponded synchronization source (ssrc) Useful for variance calculation for interframe delays
-lastPacketReceivedTimestamp | boolean | No | Represents the timestamp at which the last packet was received on the corresponded synchronization source (ssrc)
+lastPacketReceivedTimestamp | double | No | Represents the timestamp at which the last packet was received on the corresponded synchronization source (ssrc)
 averageRtcpInterval | double | No | The average RTCP interval between two consecutive compound RTCP packets sent for the corresponding synchronization source (ssrc)
 headerBytesReceived | long | No | Total number of RTP header and padding bytes received over the corresponding synchronization source (ssrc)
 fecPacketsReceived | int | No | Total number of FEC packets received over the corresponding synchronization source (ssrc)
@@ -404,7 +381,7 @@ burstDiscardRate | double | No | The fraction of RTP packets discarded during bu
 gapLossRate | double | No | The fraction of RTP packets lost during gap proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source
 gapDiscardRate | double | No | The fraction of RTP packets discarded during gap proportionally to the total number of RTP packets expected in the bursts on the corresponding synchronization source
 voiceActivityFlag | boolean | No | Only For Audio Reports<br />Indicate if the last RTP packet received contained voice activity based on the presence of the V bit in the extension header
-lastPacketReceivedTimestamp | boolean | No | Only For Inbound Media Track Reports<br />Represents the timestamp at which the last packet was received on the corresponded synchronization source (ssrc)
+lastPacketReceivedTimestamp | double | No | Only For Inbound Media Track Reports<br />Represents the timestamp at which the last packet was received on the corresponded synchronization source (ssrc)
 averageRtcpInterval | double | No | The average RTCP interval between two consecutive compound RTCP packets sent for the corresponding synchronization source (ssrc)
 headerBytesReceived | long | No | Only For Inbound Media Track Reports<br />Total number of RTP header and padding bytes received over the corresponding synchronization source (ssrc)
 fecPacketsReceived | int | No | Only For Inbound Media Track Reports<br />Total number of FEC packets received over the corresponding synchronization source (ssrc)

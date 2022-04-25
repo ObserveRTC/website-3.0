@@ -1,5 +1,5 @@
 ---
-contributors: {'Balazs Kreith', 'Balázs Kreith'}
+contributors: {'Balázs Kreith', 'Balazs Kreith'}
 title: "Observer Kafka"
 date: 2021-08-26 06:29:09
 lastmod: 2021-11-08 18:05:50

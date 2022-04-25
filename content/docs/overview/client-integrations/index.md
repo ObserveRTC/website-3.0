@@ -1,8 +1,8 @@
 ---
-contributors: {'Pallab', 'Balazs Kreith'}
+contributors: {'Pallab', 'Balazs Kreith', 'Balázs Kreith'}
 title: "Client Integrations"
-date: 2021-03-27 14:27:18
-lastmod: 2021-05-30 22:37:44
+date: 2021-03-27 12:27:18
+lastmod: 2022-01-05 14:35:34
 draft: false
 images: []
 menu:
@@ -189,7 +189,7 @@ or use our [Mediasoup QuickStart](#quickstart) where you simply load the observe
 libraries from GitHub's CDN and initialize by populating the `observerWsEndPoint` global variable using the
 `ObserverRTC.ParserUtil.parseWsServerUrl` helper function.
     
-See the quickstart methodology below for adding this library to your web app.
+See the quickstart methodology below for adding this library to your web app .
 
 
 ### Mediasoup Quickstart <a name="quickstart"></a>
