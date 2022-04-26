@@ -14,15 +14,13 @@ images: ["sfu-monitor.png"]
 ---
 {{< img-simple src="sfu-monitor.png" alt="SFU Monitor" >}}
 
+Sfu-Monitor is a backend component runs with the selective forwarding unit. 
 
-SFU Monitor is embedded in the selective forwarding units. Based on the configuration the monitor applied, 
-it collects measurements from the SFU and can send Samples to the observer.
+### Javascript library
 
-## Javascript library
-
-[https://github.com/ObserveRTC/sfu-monitor-js](https://github.com/ObserveRTC/sfu-monitor-js) is a javascript written 
-to monitor webrtc applications in the browser. 
+[sfu-monitor-js](https://github.com/ObserveRTC/sfu-monitor-js) is a javascript library written 
+for monitoring selective forwarding units. 
 
 ### Mediasoup integration
 
-An example of a mediasoup integration can be looked [here](https://github.com/ObserveRTC/full-stack-examples/tree/main/mediasoup-sfu)
+For an example of mediasoup integration take a look [here](https://github.com/ObserveRTC/full-stack-examples/tree/main/mediasoup-sfu).
