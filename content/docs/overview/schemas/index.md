@@ -115,8 +115,8 @@ The structure of a report message is the following:
     - [SFU_META_DATA](#sfu-extension-reports)
     - [SFU_INBOUND_RTP_PAD](#sfu-inbound-rtp-pad-reports)
     - [SFU_OUTBOUND_RTP_PAD](#sfu-outbound-rtp-pad-reports)
-    - [SFU_SCTP_STREAM](#sfu-sctp-stream-reports): 
-    - [SFU_TRANSPORT](#sfu-transport-reports): 
+    - [SFU_SCTP_STREAM](#sfu-sctp-stream-reports)
+    - [SFU_TRANSPORT](#sfu-transport-reports)
  * **payload**: The payload of the actual report
  * **schemaVersion**: The version of the schema the payload holds
 
@@ -158,6 +158,10 @@ Fields:
  * **sampleSeq**: The sequence number of the sample the event may related to
  * **payload**: The payload for the metadata reported for the peeer connection
  * **type**: The type of the meta data. Possible values are: 
+    - OPERATION_SYSTEM
+    - ENGINE
+    - PLATFORM
+    - BROWSER,
     - CERTIFICATE
     - CODEC
     - ICE_LOCAL_CANDIDATE
