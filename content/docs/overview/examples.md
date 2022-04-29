@@ -15,4 +15,4 @@ toc: false
 
 ## Full stack example
 
-[https://github.com/ObserveRTC/full-stack-examples](https://github.com/ObserveRTC/full-stack-examples) is the ObserveRTC team created repository to show a full stack integration examples.
+[full-stack-examples](https://github.com/ObserveRTC/full-stack-examples) is the ObserveRTC team created repository to show a full stack integration examples.
