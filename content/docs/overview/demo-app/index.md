@@ -4,6 +4,11 @@ description: "Documentation to run the demo application"
 date: 2023-04-10
 lastmod: 2023-04-10
 draft: false
+menu:
+  docs:
+    parent: "overview"
+weight: 1080
+toc: true
 images: []
 ---
 

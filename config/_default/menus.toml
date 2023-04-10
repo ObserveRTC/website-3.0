@@ -4,9 +4,9 @@
   weight = 100
 
 [[main]]
-  name = "Demo App"
-  url = "/demo-app/"
-  weight = 200
+  name = "Contact"
+  url = "/contact/"
+  weight = 300
 
 [[docs]]
   name = "Overview"
