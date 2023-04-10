@@ -1,7 +1,7 @@
 ---
 title: "Introduction"
-description: "ObserveRTC is an open-source project provide solutions to monitor your WebRTC Applications"
-lead: "ObserveRTC is an open-source project provide solutions to monitor your WebRTC Applications"
+description: "ObserveRTC is an open-source project provide solutions to monitor RTC stacks"
+lead: "ObserveRTC is an open-source project provide solutions to monitor RTC stacks"
 date: 2021-04-01
 lastmod: 2021-04-01
 draft: false
@@ -29,7 +29,8 @@ Here is how ObserveRTC comes into the picture. We make RTC development easy usin
 
 * **Open-source** - No hidden magic, no secret souce, it is a transparent monitoring solution for everyone.
 * **Own your data** - By deploying it you have full ownership of data from your applications and run further analysis.
-* **Designed for the cloud** - When the size of your memory and compute requirements increase, new resources can be dynamically added to your cluster to scale elastically. e.g. hazelcast as an in-memory distributed databse for resiliance.
+* **Build what you need** - ObserveRTC provide libraries focusing on collecting, unifying stats, and structurizing metrics from RTC components. You include the library and only build what you really need, no more, no less.
+
 
 ### What are the benefits?
 
@@ -44,5 +45,4 @@ Here is how ObserveRTC comes into the picture. We make RTC development easy usin
  * As an **application developer** you can use ObserveRTC to debug your WebRTC applications.
  * As a **product owner** you can use ObserveRTC to measure and monitor the performance of your application.
  * As an **operations team member** you can monitor the health and get critical alerts about your application.
-
 

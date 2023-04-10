@@ -15,22 +15,10 @@
   url = "/docs/overview/"
 
 [[docs]]
-  name = "Client Monitor"
+  name = "API"
   weight = 102
-  identifier = "client-monitor"
-  url = "/docs/client-monitor/"
-
-[[docs]]
-  name = "Sfu Monitor"
-  weight = 103
-  identifier = "sfu-monitor"
-  url = "/docs/sfu-monitor/"
-
-[[docs]]
-  name = "Observer"
-  weight = 104
-  identifier = "observer"
-  url = "/docs/observer/"
+  identifier = "api"
+  url = "/docs/api/"
 
 [[docs]]
   name = "Help"
