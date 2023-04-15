@@ -121,7 +121,7 @@ monitor.on('stats-collected', stats => {
 import * as ObserveRTC from '@observertc/client-monitor-js';
 
 // configuration for the client-monitor
-const config: ObserveRTC.ClientMontorConfig = {
+const config: ObserveRTC.ClientMonitorConfig = {
   /**
    * By setting it, the monitor calls the added statsCollectors periodically
    * and pulls the stats.
@@ -372,7 +372,6 @@ console.log(
 const closed = monitor.closed;
 console.log('Flag indicating whether the monitor is closed or not:', closed);
 
-
 ```
 
 ### addTrackRelation
@@ -505,7 +504,7 @@ monitor.addCustomCallEvent({
 Adds an application-provided custom payload object to the observer. This is typically extra information that the application wants to obtain and send to the backend. The added information is obtained by the sampler, and the ClientSample holds and sends this information to the observer. The observer will forward this information along with the call it belongs to.
 
 ```javascript
-monitor.addExtensionStats({ key: 'customStats', value: 'example' });
+monitor.addExtensionStats({ name: 'customStats', value: 'example' });
 ```
 
 ### setMediaDevices
