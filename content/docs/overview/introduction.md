@@ -27,7 +27,7 @@ Here is how ObserveRTC comes into the picture. We make RTC development easy usin
 
 ### Why ObserveRTC?
 
-* **Open-source** - No hidden magic, no secret souce, it is a transparent monitoring solution for everyone.
+* **Open-source** - No hidden magic, no secret sauce, it is a transparent monitoring solution for everyone.
 * **Own your data** - By deploying it you have full ownership of data from your applications and run further analysis.
 * **Build what you need** - ObserveRTC provide libraries focusing on collecting, unifying stats, and structurizing metrics from RTC components. You include the library and only build what you really need, no more, no less.
 
