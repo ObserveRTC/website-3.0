@@ -1,0 +1,9 @@
+// Put your custom SCSS code here
+.btn-primary {
+    background-color: $orange-500;
+    border: 0;
+}
+
+.btn-primary:hover {
+    background-color: $orange-600;
+}
