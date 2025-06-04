@@ -1,0 +1,33 @@
+ObserveRTC Superficial Overview (ASCII Art)
+============================================
+
+                                      ╔══════════════════════════════════╗
+                                      ║           Your Cloud             ║
+                                      ║                                  ║
+    ┌─────────┐      Samples         ║  ┌──────────────┐                ║
+    │         │    ············>     ║  │              │     Reports    ║    ┌─────────────┐
+    │ Monitor │                      ║  │   Observer   │ ··········>    ║    │             │
+    │         │                      ║  │              │                ║    │  Database   │
+    └─────────┘                      ║  └──────────────┘                ║    │             │
+                                      ║                                  ║    └─────────────┘
+                                      ╚══════════════════════════════════╝
+
+Flow:
+-----
+1. Monitor sends Samples to Observer (dotted line)
+2. Observer processes and sends Reports to Database (dotted line)
+3. Observer and Database are both hosted in Your Cloud environment
+
+Components:
+-----------
+• Monitor    - External monitoring client that sends WebRTC samples
+• Observer   - Core component that processes incoming samples
+• Database   - Storage for processed reports and metrics
+• Your Cloud - The hosting environment for the ObserveRTC service
+
+Legend:
+-------
+┌─────┐  = External component
+│     │  = Internal component
+║     ║  = Cloud boundary
+····>   = Data flow (dotted arrows in original)

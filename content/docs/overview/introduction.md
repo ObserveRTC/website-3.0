@@ -1,48 +1,77 @@
 ---
 title: "Introduction"
-description: "ObserveRTC is an open-source project provide solutions to monitor RTC stacks"
-lead: "ObserveRTC is an open-source project provide solutions to monitor RTC stacks"
-date: 2021-04-01
-lastmod: 2021-04-01
+description: "Introduction to ObserveRTC monitoring platform"
+lead: "WebRTC call quality monitoring and analytics platform"
+date: 2023-09-07T16:33:54+02:00
+lastmod: 2023-09-07T16:33:54+02:00
 draft: false
-images: []
-menu:
-  docs:
-    parent: "overview"
-weight: 1010
+weight: 110
 toc: true
 ---
 
-Making analytical tools for Real Time Communication (RTC) is challenging. You need to consider strict time limitations of real-time streams, and tightly integrate services that can report to your monitoring solutions with micro second accuracy.
+## What is ObserveRTC?
 
-Here is how ObserveRTC comes into the picture. We make RTC development easy using open-source tools. ObserveRTC aims to provide client side integrations, infrastructure and monitoring tools to observe and analyse WebRTC applications.
+ObserveRTC is an open-source, full-stack monitoring solution specifically designed for WebRTC applications. Making analytical tools for Real Time Communication (RTC) is challenging. You need to consider strict time limitations of real-time streams, and tightly integrate services that can report to your monitoring solutions with microsecond accuracy.
 
-### ObserveRTC provides
+Here is how ObserveRTC comes into the picture. We make RTC development easy using open-source tools. ObserveRTC aims to provide client-side integrations, infrastructure and monitoring tools to observe and analyse WebRTC applications with comprehensive visibility into your WebRTC infrastructure.
 
-* **Client-side libraries** - collect and monitor your RTC clients with negligible performance impact
-* **Sfu-side libraries** - collect and monitor your Selective Forwarding Units
-* **Server-side integrations** - options to add data from devices like Selective Forwarding Unit (SFU)
-* **Flexible Database options** - use your preferred data architectures like Kafka, MongoDB, RedShift, BigQuery, and others
-* **Pre-defined scheme** - start with and expand on the ObserveRTC scheme to simplify data queries
+## What ObserveRTC Provides
 
-### Why ObserveRTC?
+- **Client-side Libraries** - Collect and monitor your RTC clients with negligible performance impact
+- **Server-side Libraries** - Collect and monitor your server-side WebRTC components
+- **Pre-defined Schema** - Start with and expand on the ObserveRTC schema to simplify data queries
+- **Modular Libraries** - Developer-friendly modules for monitoring, analyzing, and evaluating WebRTC applications
 
-* **Open-source** - No hidden magic, no secret sauce, it is a transparent monitoring solution for everyone.
-* **Own your data** - By deploying it you have full ownership of data from your applications and run further analysis.
-* **Build what you need** - ObserveRTC provide libraries focusing on collecting, unifying stats, and structurizing metrics from RTC components. You include the library and only build what you really need, no more, no less.
+## Key Features
 
+- **Real-time Analytics** - Get instant insights into call quality and performance
+- **Reporting Tools** - Provides the tools and data structure for developers to easily generate detailed reports on WebRTC infrastructure
+- **Event-driven Architecture** - React to events like call start/end, client join/leave
+- **Open Source** - Full transparency and community-driven development
 
-### What are the benefits?
+## Why ObserveRTC?
 
- * **Performance tuning** - Ability to debug/improve your WebRTC applications.
- * **Regression analysis** - Quantify the impact of changes you made.
- * **System operations** - Measure and monitor the performance of your application.
- * **Troubleshooting & debugging** - Investigate technical issues.
- * **Usage trends** - Track/Understand how your app is used.
+- **Open-source** - No hidden magic, no secret sauce, it is a transparent monitoring solution for everyone
+- **Own Your Data** - By deploying it you have full ownership of data from your applications and run further analysis
+- **Build What You Need** - ObserveRTC provides libraries focusing on collecting, unifying stats, and structuring metrics from RTC components. You include the library and only build what you really need, no more, no less
 
-### Use cases
+## What are the Benefits?
 
- * As an **application developer** you can use ObserveRTC to debug your WebRTC applications.
- * As a **product owner** you can use ObserveRTC to measure and monitor the performance of your application.
- * As an **operations team member** you can monitor the health and get critical alerts about your application.
+- **Performance Tuning** - Ability to debug/improve your WebRTC applications
+- **Regression Analysis** - Quantify the impact of changes you made
+- **System Operations** - Measure and monitor the performance of your application
+- **Troubleshooting & Debugging** - Investigate technical issues
+- **Usage Trends** - Track/understand how your app is used
 
+## Getting Started
+
+To start using ObserveRTC in your application:
+
+### For Client-side Monitoring
+
+```bash
+npm install @observertc/client-monitor-js
+```
+
+### For Building an Observer
+
+```bash
+npm install @observertc/observer-js
+```
+
+## Use Cases
+
+ObserveRTC is perfect for:
+
+- **Application Developers** - Use ObserveRTC to debug your WebRTC applications
+- **Product Owners** - Measure and monitor the performance of your application
+- **Operations Teams** - Monitor the health and get critical alerts about your application
+- **Call Quality Monitoring** - Track audio/video quality metrics
+- **Performance Analysis** - Identify bottlenecks and optimization opportunities
+- **User Experience Monitoring** - Understand how users experience your WebRTC application
+
+## Next Steps
+
+1. [Learn about the Architecture](/docs/overview/architecture/)
+2. Browse the [Schema Documentation](/docs/schema/)
+3. Explore the [Client Libraries](/docs/libraries/)

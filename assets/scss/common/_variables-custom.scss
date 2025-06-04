@@ -1,1 +1,19 @@
 // Put your custom SCSS variables here
+
+// ObserveRTC Orange Color Scheme
+$primary: #ff6b35 !default; // Vibrant orange for primary elements
+$primary-dark: #e55a2b !default; // Darker orange for hover states
+$orange: #ff6b35 !default;
+
+// Button colors
+$btn-primary-bg: $primary !default;
+$btn-primary-border-color: $primary !default;
+$btn-primary-hover-bg: $primary-dark !default;
+$btn-primary-hover-border-color: $primary-dark !default;
+
+// Link colors
+$link-color: $primary !default;
+$link-hover-color: $primary-dark !default;
+
+// Accent colors
+$accent-color: $primary !default;

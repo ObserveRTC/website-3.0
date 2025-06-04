@@ -1,0 +1,117 @@
+@startuml k8s-deployment-modern
+!include theme.puml
+
+title **ObserveRTC Kubernetes Deployment**\n//Cloud-Native Architecture//
+
+left to right direction
+
+' External traffic
+actor "End Users" as users
+cloud "Load Balancer" as lb <<External>>
+
+' Kubernetes cluster boundary
+rectangle "Kubernetes Cluster" as k8s_cluster {
+
+    ' Ingress layer
+    package "Ingress Layer" as ingress {
+        component "NGINX\nIngress" as nginx_ingress
+        component "TLS\nTermination" as tls
+    }
+
+    ' Application namespace
+    package "observertc-service Namespace" as app_ns {
+
+        ' Application pods
+        rectangle "Application Tier" as app_tier {
+            component "ObserveRTC\nPod 1" as pod1 <<Replica>>
+            component "ObserveRTC\nPod 2" as pod2 <<Replica>>
+            component "ObserveRTC\nPod 3" as pod3 <<Replica>>
+
+            component "Service\nDiscovery" as service_discovery
+        }
+
+        ' Storage tier
+        rectangle "Storage Tier" as storage_tier {
+            database "TimescaleDB\nStatefulSet" as timescale
+            database "Redis\nCache" as redis
+            database "Config\nConfigMap" as configmap
+        }
+
+        ' Monitoring tier
+        rectangle "Monitoring Tier" as monitoring_tier {
+            component "Prometheus\nServer" as prometheus
+            component "Grafana\nDashboard" as grafana
+            component "Alert\nManager" as alertmanager
+        }
+    }
+
+    ' System namespace
+    package "kube-system" as kube_system {
+        component "Metrics\nServer" as metrics_server
+        component "Cluster\nDNS" as coredns
+    }
+}
+
+' External services
+cloud "External\nStorage" as external_storage <<Backup>>
+cloud "Notification\nServices" as notifications <<External>>
+
+' Traffic flow
+users --> lb : **HTTPS**
+lb --> nginx_ingress : **HTTP/HTTPS**
+nginx_ingress --> tls : //terminates SSL//
+
+tls --> service_discovery : **HTTP**
+service_discovery --> pod1 : //load balances//
+service_discovery --> pod2 : //load balances//
+service_discovery --> pod3 : //load balances//
+
+' Storage connections
+pod1 --> timescale : **queries/writes**
+pod2 --> timescale : **queries/writes**
+pod3 --> timescale : **queries/writes**
+
+pod1 --> redis : //caching//
+pod2 --> redis : //caching//
+pod3 --> redis : //caching//
+
+pod1 --> configmap : //reads config//
+pod2 --> configmap : //reads config//
+pod3 --> configmap : //reads config//
+
+' Monitoring connections
+pod1 ..> prometheus : //metrics scraping//
+pod2 ..> prometheus : //metrics scraping//
+pod3 ..> prometheus : //metrics scraping//
+
+prometheus --> grafana : **visualization**
+prometheus --> alertmanager : **alerting**
+
+' System connections
+metrics_server ..> pod1 : //resource metrics//
+metrics_server ..> pod2 : //resource metrics//
+metrics_server ..> pod3 : //resource metrics//
+
+coredns ..> service_discovery : //DNS resolution//
+
+' External integrations
+timescale --> external_storage : **backup**
+alertmanager --> notifications : **alerts**
+
+' Notes
+note right of pod1 : Horizontally scalable\nstateless replicas\nwith health checks
+
+note bottom of timescale : Persistent storage\nwith automated\nbackup strategies
+
+note top of prometheus : Scrapes metrics from\napplication pods and\nKubernetes cluster
+
+legend bottom left
+    **Deployment Strategy**
+    ----
+    • **Rolling updates** for zero-downtime
+    • **Horizontal Pod Autoscaling** based on CPU/memory
+    • **Persistent Volumes** for database storage
+    • **Network Policies** for security isolation
+end legend
+
+@enduml

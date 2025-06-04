@@ -1,0 +1,37 @@
+@startuml k8s-clean
+!include theme.puml
+
+title Kubernetes Deployment
+
+' External
+actor "Users" as users
+cloud "Load Balancer" as lb
+
+' K8s components
+component "Ingress" as ingress
+component "Service" as service
+component "Pod 1" as pod1
+component "Pod 2" as pod2
+component "Pod 3" as pod3
+database "TimescaleDB" as db
+database "Redis" as redis
+component "Prometheus" as prom
+
+' Flow
+users --> lb
+lb --> ingress
+ingress --> service
+service --> pod1
+service --> pod2
+service --> pod3
+pod1 --> db
+pod2 --> db
+pod3 --> db
+pod1 --> redis
+pod2 --> redis
+pod3 --> redis
+pod1 --> prom
+pod2 --> prom
+pod3 --> prom
+
+@enduml

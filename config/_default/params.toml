@@ -1,20 +1,18 @@
 # Hugo
 title = "ObserveRTC"
-titleSeparator = "-"
-titleAddition = "Open-Source Monitoring Solution for WebRTC Applications"
-description = "ObserveRTC is an open source project aimed to provide tools to monitor and analyze applications for real-time communication."
-images = ["observertc.png"]
+description = "Open-Source Monitoring Solution for WebRTC Applications"
+images = ["cover.png"]
 
 # mainSections
 mainSections = ["docs"]
 
 [social]
-  twitter = "getdoks"
+  twitter = "observertc"
 
 # Doks (@thulite/doks-core)
 [doks]
   # Color mode
-  colorMode = "light" # auto (default), light or dark
+  colorMode = "auto" # auto (default), light or dark
   colorModeToggler = true # true (default) or false (this setting is only relevant when colorMode = auto)
 
   # Navbar
@@ -23,7 +21,7 @@ mainSections = ["docs"]
 
   ## Button
   navBarButton = false # false (default) or true
-  navBarButtonUrl = "/docs/prologue/introduction/"
+  navBarButtonUrl = "/docs/overview/introduction/"
   navBarButtonText = "Get started"
 
   # FlexSearch
@@ -62,10 +60,10 @@ mainSections = ["docs"]
 
   # UX
   headerBar = false # true (default) or false
-  backgroundDots = false # true (default) or false
+  backgroundDots = true # true (default) or false
 
   # Homepage
-  sectionFooter = false # false (default) or true
+  sectionFooter = true # false (default) or true
 
   # Blog
   relatedPosts = false # false (default) or true
@@ -76,7 +74,7 @@ mainSections = ["docs"]
   editPage = false # false (default) or true
   lastMod = false # false (default) or true
   repoHost = "GitHub" # GitHub (default), Gitea, GitLab, Bitbucket, or BitbucketServer
-  docsRepo = "https://github.com/ObserveRTC/website-3.0"
+  docsRepo = "https://github.com/observertc/observertc-new"
   docsRepoBranch = "main" # main (default), master, or <branch name>
   docsRepoSubPath = "" # "" (none, default) or <sub path>
 
@@ -84,10 +82,10 @@ mainSections = ["docs"]
   # backGround = "yellowgreen"
   ## Dark theme
   # textDark = "#dee2e6" # "#dee2e6" (default), "#dee2e6" (orignal), or custom color
-  # accentDark = "#5d2f86" # "#5d2f86" (default), "#5d2f86" (original), or custom color
+  accentDark = "#ff6b35" # "#5d2f86" (default), "#5d2f86" (original), or custom color
   ## Light theme
   # textLight = "#1d2d35" # "#1d2d35" (default), "#1d2d35" (orignal), or custom color
-  # accentLight = "#8ed6fb" # "#8ed6fb" (default), "#8ed6fb" (orignal), or custom color
+  accentLight = "#ff6b35" # "#8ed6fb" (default), "#8ed6fb" (orignal), or custom color
 
   # [doks.menu]
   #   [doks.menu.section]
@@ -127,12 +125,12 @@ mainSections = ["docs"]
     icon = "favicon.png" # favicon.png (default)
     svgIcon = "favicon.svg" # favicon.svg (default)
     maskIcon = "mask-icon.svg" # mask-icon.svg (default)
-    maskIconColor = "white" # white (default)
+    maskIconColor = "#ff6b35" # ObserveRTC orange color
   [seo.schemas]
     type = "Organization" # Organization (default) or Person
-    logo = "favicon-512x512.png" # Logo of Organization — favicon-512x512.png (default)
-    name = "ObserveRTC" # Name of Organization or Person
-    sameAs = [] # E.g. ["https://github.com/thuliteio/thulite", "https://fosstodon.org/@thulite"]
+    logo = "android-chrome-512x512.png" # ObserveRTC logo
+    name = "ObserveRTC" # Name of Organization
+    sameAs = ["https://github.com/observertc/observertc"] # ObserveRTC GitHub
     images = ["cover.png"] # ["cover.png"] (default)
     article = [] # Article sections
     newsArticle = [] # NewsArticle sections

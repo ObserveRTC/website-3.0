@@ -1,9 +1,86 @@
 // Put your custom SCSS code here
-.btn-primary {
-    background-color: $orange-500;
-    border: 0;
+
+// Logo styling
+.hero-logo {
+  max-height: 250px;
+  width: 100%;
+  max-width: 100%;
+  object-fit: contain;
+
+  @media (max-width: 768px) {
+    max-height: 200px;
+  }
+
+  @media (max-width: 480px) {
+    max-height: 160px;
+  }
 }
 
-.btn-primary:hover {
-    background-color: $orange-600;
+// Navbar brand logo replacement
+.navbar-brand {
+  background-image: url('/logo/logo-squere-small.jpg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: left center;
+  width: 120px;
+  height: 40px;
+  text-indent: -9999px;
+  overflow: hidden;
+
+  @media (max-width: 768px) {
+    width: 100px;
+    height: 35px;
+  }
+
+  @media (max-width: 480px) {
+    width: 80px;
+    height: 30px;
+  }
+}
+
+// ObserveRTC Orange Styling
+.btn-primary {
+  background-color: #ff6b35;
+  border-color: #ff6b35;
+
+  &:hover,
+  &:focus,
+  &:active {
+    background-color: #e55a2b;
+    border-color: #e55a2b;
+  }
+}
+
+.btn-outline-primary {
+  color: #ff6b35;
+  border-color: #ff6b35;
+
+  &:hover,
+  &:focus,
+  &:active {
+    background-color: #ff6b35;
+    border-color: #ff6b35;
+    color: #fff;
+  }
+}
+
+// Links
+a {
+  color: #ff6b35;
+
+  &:hover {
+    color: #e55a2b;
+  }
+}
+
+// Navigation active states
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link:focus {
+  color: #ff6b35;
+}
+
+// Search box focus
+.form-control:focus {
+  border-color: #ff6b35;
+  box-shadow: 0 0 0 0.2rem rgba(255, 107, 53, 0.25);
 }
