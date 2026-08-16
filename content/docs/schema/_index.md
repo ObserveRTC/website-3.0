@@ -1,37 +1,69 @@
 ---
 title: "Schema"
-description: "ObserveRTC Schema Package"
-lead: "Strongly typed, versioned schema for monitoring data"
+description: "The ObserveRTC schema — versioned, strongly typed monitoring data"
+lead: "One contract shared by every ObserveRTC component, generated from Avro into TypeScript, protobuf and documentation"
 date: 2023-09-07T16:33:54+02:00
-lastmod: 2023-09-07T16:33:54+02:00
+lastmod: 2026-08-16T10:00:00+02:00
 draft: false
 weight: 200
 toc: true
 ---
 
-## Overview
+The schema is the interface between everything in ObserveRTC. A client-side monitor produces a
+[`ClientSample`](./clientsample/); a server-side observer consumes one; a storage layer persists
+one. Because all three agree on the shape, none of them needs to know about the others.
 
-The ObserveRTC Schema package provides a strongly typed, versioned schema system for collected monitoring data. It ensures interoperability and consistency between all ObserveRTC components while supporting forward compatibility for evolving metrics and requirements.
+**Current version: `3.3.0`** — see the [version history](./versions/) for what changed since
+`3.0.0`.
 
-## Key Features
+## What it is, concretely
 
-### Strongly Typed Schema
-- **Type safety** - Comprehensive TypeScript definitions for all data structures
-- **Compile-time validation** - Catch schema mismatches during development
-- **IDE support** - Full IntelliSense and autocomplete for schema fields
-- **Runtime validation** - Optional runtime type checking for production environments
+Avro schema files in `sources/samples/` are the single source of truth. A TypeScript generator
+reads them and emits everything else:
 
-### Version Management
-- **Semantic versioning** - Clear versioning strategy for schema evolution
-- **Forward compatibility** - Newer components can work with older schema versions
-- **Backward compatibility** - Legacy data remains accessible with schema upgrades
-- **Migration support** - Automated migration tools between schema versions
+| Output | Where it goes | Used by |
+|---|---|---|
+| TypeScript type definitions | `outputs/typescript/`, `@observertc/schemas` | Application code, both libraries |
+| Protocol Buffers | `outputs/proto/` | Binary transport |
+| Flattened Avro | `outputs/avsc/` | Schema registries, other languages |
+| Markdown reference | `schemaList.md` | Documentation |
+| Binary encoder | `@observertc/samples-encoder` | Browsers, before upload |
+| Binary decoder | `@observertc/samples-decoder` | Servers, on ingest |
 
-### Interoperability
-- **Component consistency** - All ObserveRTC libraries use the same schema definitions
-- **Cross-platform support** - Schema available for JavaScript, TypeScript, and other languages
-- **Standardized formats** - JSON Schema and Protocol Buffer definitions
-- **Validation tools** - Built-in validators for data integrity
+All three npm packages are versioned **in lockstep** with the schema version.
+
+## Why a shared schema at all
+
+{{< callout context="tip" title="The practical payoff" icon="rocket" >}}
+Without a shared schema, every integration point is a private agreement: the client and the backend
+negotiate a JSON shape, the backend and the warehouse negotiate a table, and each of them drifts
+independently. Adding one WebRTC field means touching all of them.
+
+With one, adding a field is a minor schema release, and the type definitions, protobuf encoding,
+documentation and both libraries update from the same edit.
+{{< /callout >}}
+
+## The shape
+
+```text
+ClientSample
+├─ timestamp, callId, clientId, score, scoreReasons, attachments
+├─ peerConnections[]  (PeerConnectionSample)
+│   └─ fifteen arrays mirroring the W3C getStats() dictionaries
+├─ clientEvents[]      — things that happened
+├─ clientIssues[]      — problem states, raised and resolved
+├─ clientMetaItems[]   — devices, browser, OS, SDP
+└─ extensionStats[]    — your own application metrics
+```
+
+Three conventions run through every record:
+
+- **`timestamp` + `id`** — collection time and the browser's own identifier, so records correlate
+  across samples.
+- **`attachments`** — a free-form slot on every record. This is how an SSRC becomes "Alice's screen
+  share", and how a server can link a publisher to its subscribers.
+- **`score` + `scoreReasons`** — computed 0–5 quality with a machine-readable breakdown, at client,
+  peer connection and track level.
 
 ## Installation
 
@@ -39,66 +71,69 @@ The ObserveRTC Schema package provides a strongly typed, versioned schema system
 npm install @observertc/schemas
 ```
 
-## Quick Start
+```typescript
+import { ClientSample, PeerConnectionSample, schemaVersion } from "@observertc/schemas";
 
-### TypeScript Integration
+console.log(schemaVersion);   // "3.3.0"
+```
+
+Both libraries re-export these types, so you usually do not need the package directly:
 
 ```typescript
-import {
-  ClientSample,
-  SfuSample,
-  ObserverEventReport
-} from '@observertc/schemas';
-
-// Type-safe sample creation
-const clientSample: ClientSample = {
-  timestamp: Date.now(),
-  clientId: 'client-123',
-  type: 'outbound-rtp',
-  data: {
-    ssrc: 12345,
-    bytesSent: 1024,
-    packetsSent: 100
-  }
-};
-
-// Validate sample structure
-import { validateClientSample } from '@observertc/schemas/validators';
-
-const isValid = validateClientSample(clientSample);
-if (!isValid) {
-  console.error('Invalid client sample structure');
-}
+import { ClientSample } from "@observertc/observer-js";
 ```
 
-### JavaScript Usage
+## Binary transport
 
-```javascript
-import { schemas, validators } from '@observertc/schemas';
-
-// Access schema definitions
-const clientSampleSchema = schemas.ClientSample;
-
-// Validate data against schema
-const sample = {
-  timestamp: Date.now(),
-  clientId: 'client-123'
-  // ... sample data
-};
-
-if (validators.validateClientSample(sample)) {
-  console.log('Sample is valid');
-} else {
-  console.error('Sample validation failed');
-}
+```bash
+npm install @observertc/samples-encoder    # client side
+npm install @observertc/samples-decoder    # server side
 ```
 
-## Documentation Sections
+```typescript
+// Browser — one encoder per client, kept for the life of the stream.
+import { ClientSampleEncoder } from "@observertc/samples-encoder";
 
-Explore the detailed documentation for different aspects of the Schema package:
+const encoder = new ClientSampleEncoder(clientId);
 
-### [Code Generation & Versioning](./general)
-Learn about generating type-safe language bindings, managing schema versions, and the development workflow.
+await fetch(`/api/samples/${clientId}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/octet-stream" },
+    body: encoder.encodeToBytes(sample),
+});
+```
 
-### [ClientSample Types](./clientsample)
-Complete reference for ClientSample schema structure, field definitions, and all available statistics types.
+```typescript
+// Server — one decoder per client stream, fed in order.
+import { ClientSampleDecoder } from "@observertc/samples-decoder";
+
+const decoder = new ClientSampleDecoder();
+
+const sample = decoder.decodeFromBytes(bytes);
+if (sample) observer.accept(sample);
+```
+
+{{< callout context="caution" title="Both sides are stateful" icon="alert-triangle" >}}
+The encoder elides values that have not changed since the previous sample, so **one encoder per
+client** and **one decoder per client stream, fed in order**. A shared or restarted decoder does
+not throw — it produces samples with missing ids. See
+[samples-encoder](/docs/libraries/sample-encoder-js/).
+{{< /callout >}}
+
+{{< callout context="caution" title="Keep encoder and decoder on the same version" icon="alert-triangle" >}}
+Protobuf field numbers are derived from field order, so inserting a field anywhere but the end of
+its group renumbers everything after it. A decoder built against an older schema can misread a
+newer sample without erroring. See [3.3.0](./versions/v3-3-0/) for a concrete case.
+{{< /callout >}}
+
+## Sections
+
+{{< card-grid >}}
+{{< link-card title="ClientSample reference" description="Every record and every field, generated from the 3.3.0 sources." href="./clientsample/" >}}
+{{< link-card title="Version history" description="What changed in 3.1.0, 3.2.0 and 3.3.0, field by field." href="./versions/" >}}
+{{< link-card title="Code generation & versioning" description="How the generator works, what it emits, and the versioning rules." href="./general/" >}}
+{{< /card-grid >}}
+
+## Repository
+
+[github.com/observertc/schemas](https://github.com/observertc/schemas)

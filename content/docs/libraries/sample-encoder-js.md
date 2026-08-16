@@ -1,158 +1,194 @@
 ---
-title: "samples-encoder-js"
-description: "Binary encoding utilities for ObserveRTC samples"
-lead: "Efficient encoding and serialization of WebRTC monitoring samples for transmission"
+title: "samples-encoder"
+slug: "sample-encoder-js"
+description: "Binary encoding for ObserveRTC ClientSamples"
+lead: "Compress a ClientSample into the protobuf representation defined by the schema, before you upload it"
 date: 2023-09-07T16:33:54+02:00
-lastmod: 2024-01-15T10:00:00+02:00
+lastmod: 2026-08-16T10:00:00+02:00
 draft: false
-weight: 20
+weight: 330
 toc: true
 ---
 
-## Overview
+`@observertc/samples-encoder` encodes a [`ClientSample`](/docs/schema/clientsample/) into the
+protobuf representation generated from the [schema](/docs/schema/). It is generated in lockstep
+with the schema, so the encoder version **is** the schema version.
 
-`@observertc/samples-encoder` provides efficient binary encoding for ObserveRTC monitoring samples. It converts JavaScript monitoring data into compact binary formats optimized for network transmission.
-
-## Key Capabilities
-
-### Binary Encoding & Compression
-- **Optimized serialization** - Convert JavaScript objects to compact binary formats using Avro schemas
-- **Built-in compression** - Automatic gzip compression for maximum efficiency
-- **Type-safe encoding** - Full TypeScript support with schema validation
-- **Cross-platform compatibility** - Works in browsers, Node.js, and WebWorker environments
-
-### Sample Type Support
-- **ClientSample encoding** - WebRTC client-side statistics from `@observertc/client-monitor-js`
-- **SfuSample encoding** - SFU (Selective Forwarding Unit) server metrics
-- **TurnSample encoding** - TURN server statistics and relay information
-
-### Performance Benefits
-- **60-80% size reduction** - Significantly smaller than equivalent JSON data
-- **Fast encoding** - Optimized algorithms for real-time performance
-- **Transport agnostic** - Compatible with WebSocket, HTTP, WebRTC DataChannel, and custom transports
-
-## Installation
+**Current: `3.3.0`**
 
 ```bash
 npm install @observertc/samples-encoder
 ```
 
-## Quick Example
-
-### Basic Sample Encoding
+## Quick example
 
 ```javascript
-import { ClientSampleEncoder } from '@observertc/samples-encoder';
+import { ClientSampleEncoder } from "@observertc/samples-encoder";
 
-// Create encoder
-const encoder = new ClientSampleEncoder();
+// One encoder per client — the clientId is baked in.
+const encoder = new ClientSampleEncoder(clientId);
 
-// Encode client monitoring sample
-const clientSample = {
-    clientId: 'client-123',
-    callId: 'call-456',
-    timestamp: Date.now(),
-    samples: [
-        // PeerConnection samples from client-monitor-js
-        { /* peer connection stats */ }
-    ]
-};
+monitor.on("sample-created", (sample) => {
+    const bytes = encoder.encodeToBytes(sample);
 
-// Encode to binary format (60-80% smaller than JSON)
-const encodedData = encoder.encode(clientSample);
-
-// Send to analytics backend
-fetch('/api/samples', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/octet-stream' },
-    body: encodedData
-});
-```
-
-## What You Can Encode
-
-### Client Monitoring Data
-- **WebRTC Statistics** - Complete peer connection, track, and RTP stream metrics
-- **Issue Detection** - Congestion, CPU performance, audio desync events
-- **Performance Scores** - Quality scores with detailed reasoning
-- **Custom Events** - Application-specific events and metadata
-
-### Server-Side Metrics
-- **SFU Statistics** - Transport states, media routing, participant metrics
-- **TURN Server Data** - Relay statistics, allocation details, bandwidth usage
-
-## Real-World Integration
-
-### Client Monitor Integration
-```javascript
-import { ClientMonitor } from '@observertc/client-monitor-js';
-import { ClientSampleEncoder } from '@observertc/samples-encoder';
-
-const monitor = new ClientMonitor({ /* config */ });
-const encoder = new ClientSampleEncoder();
-
-// Automatically encode and send samples
-monitor.on('sample-created', async (sample) => {
-    const encoded = encoder.encode(sample);
-
-    // Send to analytics server
-    await fetch('/api/analytics', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/octet-stream' },
-        body: encoded
+    fetch("/api/samples", {
+        method: "POST",
+        headers: { "Content-Type": "application/octet-stream" },
+        body: bytes,
     });
 });
 ```
 
-### WebSocket Streaming
+## The encoder is stateful — this matters
+
+{{< callout context="caution" title="One encoder instance per client stream, and the decoder must match" icon="alert-triangle" >}}
+The encoder does more than serialise. It is **delta-aware**: values that do not change between
+samples — the `clientId`, the `callId`, peer connection ids, track ids, and any field whose value
+repeats — are written **once** and omitted afterwards. That is where most of the size reduction
+comes from.
+
+The consequences:
+
+- Create **one `ClientSampleEncoder` per client** and keep it for the life of that client's stream.
+  A fresh encoder per sample throws away the benefit and produces larger output.
+- The receiving side must use **one `ClientSampleDecoder` per stream**, fed the samples **in
+  order**. A decoder that misses an earlier sample never learns the omitted values.
+- Do not load-balance one client's samples across servers that each hold their own decoder unless
+  you also route by client and preserve order.
+
+If your transport cannot guarantee ordering per client, send JSON instead — the savings are not
+worth silently corrupted ids.
+{{< /callout >}}
+
+## API
+
+### `new ClientSampleEncoder(clientId, settings?)`
+
+```typescript
+type ClientSampleEncoderSettings = {
+    callIdIsUuid?: boolean;             // default false
+    clientIdIsUuid?: boolean;           // default false
+    peerConnectionIdIsUuid?: boolean;   // default false
+    trackIdIsUuid?: boolean;            // default false
+};
+```
+
+The `*IsUuid` flags are a real optimisation: a UUID written as text is 36 bytes, and written as
+bytes is 16. If your ids genuinely are UUIDs, turn the corresponding flag on — **and set the same
+flags on the decoder**, or the ids come back wrong.
 
 ```javascript
-import { ClientSampleEncoder } from '@observertc/samples-encoder';
-
-const encoder = new ClientSampleEncoder();
-const websocket = new WebSocket('wss://analytics.example.com');
-
-// Encode and stream samples
-monitor.on('sample-created', (sample) => {
-    const encoded = encoder.encode(sample);
-    websocket.send(encoded);
+const encoder = new ClientSampleEncoder(clientId, {
+    clientIdIsUuid: true,
+    callIdIsUuid: true,
+    peerConnectionIdIsUuid: true,
+    trackIdIsUuid: true,
 });
 ```
 
-## Integration with Other Libraries
+### Methods
 
-### Server-Side Processing
+| Method | Returns | Use when |
+|---|---|---|
+| `encodeToBytes(sample)` | `Uint8Array` | Binary transports: `fetch` with `application/octet-stream`, WebSocket binary frames, a data channel |
+| `encodeToBase64(sample)` | `string` | The payload must be text — JSON envelopes, log lines, some message queues |
+| `encodeToProtobufSamples(sample)` | protobuf message | You want to serialise it yourself, or forward it into an existing protobuf pipeline |
+
+### Pluggable sub-encoders
+
+Payloads that are opaque to the schema — event, issue, metadata and extension-stat payloads, and
+`attachments` — go through replaceable encoders, so you can compress your own payload shapes rather
+than shipping JSON strings:
+
 ```javascript
-// Server receives and processes encoded samples
-import { SampleDecoder } from '@observertc/sample-decoder-js';
+encoder.clientEventEncoder = myEventEncoder;
+encoder.clientIssueEncoder = myIssueEncoder;
+encoder.clientMetaDataEncoder = myMetaEncoder;
+encoder.extensionStatsEncoder = myExtensionStatsEncoder;
+```
 
-app.post('/api/samples', async (req, res) => {
-    const decoder = new SampleDecoder();
-    const sample = decoder.decode(req.body);
+Each implements the exported `Encoder` interface, and each needs a matching decoder on the server.
 
-    await processMonitoringData(sample);
-    res.status(200).send('OK');
+## Sizing expectation
+
+The saving depends heavily on your sample shape — how many peer connections, how many tracks, how
+much you put in `attachments`. In practice the two large wins are the protobuf field encoding
+itself and the delta/one-time-pass behaviour across a stream. Measure with your own traffic before
+committing to a number:
+
+```javascript
+const json = JSON.stringify(sample).length;
+const bin = encoder.encodeToBytes(sample).byteLength;
+console.log(`${bin} / ${json} = ${((bin / json) * 100).toFixed(1)}%`);
+```
+
+Run that over a few minutes of a real call rather than on the first sample — the first one carries
+the join snapshot and the not-yet-elided ids, so it is the least representative sample you will
+ever encode.
+
+## Integration patterns
+
+{{< tabs "encoder-transport" >}}
+{{< tab "HTTP" >}}
+```javascript
+const encoder = new ClientSampleEncoder(clientId);
+
+monitor.on("sample-created", async (sample) => {
+    await fetch("/api/samples", {
+        method: "POST",
+        headers: { "Content-Type": "application/octet-stream" },
+        body: encoder.encodeToBytes(sample),
+    });
+});
+```
+{{< /tab >}}
+{{< tab "WebSocket" >}}
+Ordering is preserved per connection, which suits the stateful encoder well.
+
+```javascript
+const encoder = new ClientSampleEncoder(clientId);
+const ws = new WebSocket("wss://analytics.example.com");
+
+monitor.on("sample-created", (sample) => {
+    if (ws.readyState !== WebSocket.OPEN) return;
+    ws.send(encoder.encodeToBytes(sample));
+});
+```
+{{< /tab >}}
+{{< tab "Text envelope" >}}
+```javascript
+const encoder = new ClientSampleEncoder(clientId);
+
+monitor.on("sample-created", (sample) => {
+    queue.publish({
+        clientId,
+        seq: seq++,
+        payload: encoder.encodeToBase64(sample),
+    });
 });
 ```
 
-## API Overview
+Carry a sequence number so the consumer can detect gaps — the decoder needs the samples in order.
+{{< /tab >}}
+{{< /tabs >}}
 
-### Core Classes
-- `ClientSampleEncoder` - Encode client monitoring samples
-- `SfuSampleEncoder` - Encode SFU server metrics
-- `TurnSampleEncoder` - Encode TURN server statistics
+## Version compatibility
 
-### Key Methods
-- `encode(sample)` - Encode single sample to binary format
+{{< callout context="caution" title="Encoder and decoder must be the same version" icon="alert-triangle" >}}
+Protobuf field numbers are derived from field order, so a schema release that inserts a field
+before an existing one renumbers everything after it. A mismatched pair can misread a sample
+**without erroring**.
 
-## Related Libraries
+`3.3.0` is exactly such a release — `ClientIssue.payload` moved from field 2 to 3. See the
+[version history](/docs/schema/versions/v3-3-0/).
+{{< /callout >}}
 
-- **[@observertc/client-monitor-js](./client-monitor-js)** - Generates samples for encoding
-- **[@observertc/sample-decoder-js](./sample-decoder-js)** - Decodes encoded samples
-- **[@observertc/observer-js](./observer-js)** - Server-side sample processing
+## Related
 
-## Complete Documentation
+- [`@observertc/samples-decoder`](../sample-decoder-js/) — the other half
+- [`client-monitor-js`](../client-monitor-js/) — produces the samples
+- [`observer-js`](../observer-js/) — consumes the decoded samples
+- [Schema](/docs/schema/) — what is being encoded
 
-For comprehensive documentation including detailed configuration options, advanced encoding strategies, and complete API reference:
-
-**📦 [NPM Package Documentation](https://www.npmjs.com/package/@observertc/samples-encoder)**
+[npm](https://www.npmjs.com/package/@observertc/samples-encoder) ·
+[GitHub](https://github.com/observertc/schemas)

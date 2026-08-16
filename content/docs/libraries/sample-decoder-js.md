@@ -1,199 +1,201 @@
 ---
-title: "sample-decoder-js"
-description: "Sample Decoding Library"
-lead: "Efficient decoding and validation of monitoring samples"
+title: "samples-decoder"
+slug: "sample-decoder-js"
+description: "Binary decoding for ObserveRTC ClientSamples"
+lead: "Restore an encoded ClientSample on the server, ready to hand to observer-js"
 date: 2023-09-07T16:33:54+02:00
-lastmod: 2024-01-15T10:00:00+02:00
+lastmod: 2026-08-16T10:00:00+02:00
 draft: false
-weight: 30
+weight: 340
 toc: true
 ---
 
-## Overview
+`@observertc/samples-decoder` is the server-side counterpart to
+[`@observertc/samples-encoder`](../sample-encoder-js/). It restores a
+[`ClientSample`](/docs/schema/clientsample/) from the protobuf representation, ready for
+`observer.accept()` or your own storage.
 
-`@observertc/sample-decoder-js` provides efficient decoding for binary-encoded ObserveRTC monitoring samples. It converts compressed binary data back to JavaScript objects with schema validation.
-
-## Key Capabilities
-
-### High-Performance Decoding
-- **Fast decompression** - Optimized algorithms for rapid binary-to-object conversion
-- **Schema-aware decoding** - Leverages Avro schemas for efficient type reconstruction
-- **Type safety** - Full TypeScript support with proper type reconstruction
-- **Memory efficient** - Minimal memory footprint during decoding operations
-
-### Validation & Recovery
-- **Automatic schema validation** - Ensures decoded data matches expected structure
-- **Version compatibility** - Handles multiple schema versions gracefully
-- **Error recovery** - Robust handling of corrupted or malformed data
-
-## Installation
+**Current: `3.3.0`** — released in lockstep with the schema and the encoder.
 
 ```bash
-npm install @observertc/sample-decoder-js
+npm install @observertc/samples-decoder
 ```
 
-## Quick Example
+## Quick example
 
-### Basic Sample Decoding
+```typescript
+import { ClientSampleDecoder } from "@observertc/samples-decoder";
 
-```javascript
-import { SampleDecoder } from '@observertc/sample-decoder-js';
+// One decoder per client stream — see below.
+const decoder = new ClientSampleDecoder();
 
-// Create decoder
-const decoder = new SampleDecoder();
-
-// Decode binary data received from network
-const encodedData = receivedFromNetwork(); // Binary data from samples-encoder
-
-// Decode single sample
-const decodedSample = decoder.decode(encodedData);
-
-console.log('Decoded sample:', {
-    clientId: decodedSample.clientId,
-    timestamp: decodedSample.timestamp,
-    peerConnections: decodedSample.peerConnectionSamples?.length || 0,
-    events: decodedSample.clientEvents?.length || 0
-});
+const sample = decoder.decodeFromBytes(bytes);
+if (sample) observer.accept(sample);
 ```
 
-## What You Can Decode
+## The decoder is stateful — one per stream, in order
 
-### Client Sample Data
-- **WebRTC Statistics** - Complete peer connection, track, and RTP stream metrics
-- **Performance Metrics** - Bitrates, packet loss, RTT, jitter measurements
-- **Issue Detection Results** - Congestion events, CPU limitations, video freezes
-- **Quality Scores** - Performance scores with detailed reasoning
-- **Custom Events** - Application-specific events and metadata
+{{< callout context="caution" title="This is the thing to get right" icon="alert-triangle" >}}
+The encoder omits values that have not changed since the previous sample — `clientId`, `callId`,
+peer connection ids, track ids and repeated field values are written once and elided afterwards.
+The decoder reconstructs them from what it has already seen.
 
-### Server Sample Data
-- **SFU Metrics** - Transport states, media routing, participant statistics
-- **TURN Statistics** - Relay usage, allocation details, bandwidth metrics
+Therefore:
 
-## Real-World Integration
+- **One `ClientSampleDecoder` per client stream**, kept alive for the life of that stream.
+- **Samples must arrive in order.** A decoder that missed the sample carrying an id will never
+  learn it.
+- **Do not share one decoder across clients**, and do not round-robin one client's samples across
+  server instances that each hold their own decoder.
 
-### HTTP Endpoint Processing
+A shared or restarted decoder does not throw — it produces samples with missing or wrong ids,
+which is much worse. If your transport cannot guarantee per-client ordering, use JSON.
+{{< /callout >}}
 
-```javascript
-import express from 'express';
-import { SampleDecoder } from '@observertc/sample-decoder-js';
+### Keeping decoders per client
 
-const app = express();
-const decoder = new SampleDecoder();
+```typescript
+const decoders = new Map<string, ClientSampleDecoder>();
 
-// Process encoded samples from clients
-app.post('/api/samples', express.raw({ type: 'application/octet-stream' }), async (req, res) => {
-    try {
-        const sample = decoder.decode(req.body);
-
-        // Process the sample
-        await analytics.store(sample);
-        await alerts.checkThresholds(sample);
-
-        res.status(200).json({ processed: 1 });
-    } catch (error) {
-        console.error('Decoding failed:', error);
-        res.status(400).json({ error: 'Invalid sample data' });
+function decoderFor(clientId: string) {
+    let decoder = decoders.get(clientId);
+    if (!decoder) {
+        decoder = new ClientSampleDecoder({ clientIdIsUuid: true, callIdIsUuid: true });
+        decoders.set(clientId, decoder);
     }
+    return decoder;
+}
+
+// Release it when the client goes away, or the map grows forever.
+observer.on("client-closed", ({ observedClient }) => {
+    decoders.delete(observedClient.clientId);
 });
 ```
 
-### WebSocket Processing
+Because the decoder needs a routing key before it has decoded the sample, carry the `clientId`
+outside the payload — a URL path segment, a header, the WebSocket connection identity, or a queue
+partition key.
 
-```javascript
-import WebSocket from 'ws';
-import { SampleDecoder } from '@observertc/sample-decoder-js';
+## API
 
-const wss = new WebSocket.Server({ port: 8080 });
-const decoder = new SampleDecoder();
+### `new ClientSampleDecoder(settings?)`
 
-wss.on('connection', (ws) => {
-    ws.on('message', async (data) => {
-        try {
-            const sample = decoder.decode(data);
-            await realTimeProcessor.handle(sample);
-        } catch (error) {
-            console.warn('Invalid data received:', error.message);
-        }
+```typescript
+type ClientSampleDecoderSettings = {
+    callIdIsUuid?: boolean;             // default false
+    clientIdIsUuid?: boolean;           // default false
+    peerConnectionIdIsUuid?: boolean;   // default false
+    trackIdIsUuid?: boolean;            // default false
+};
+```
+
+{{< callout context="caution" title="These must match the encoder exactly" icon="alert-triangle" >}}
+The `*IsUuid` flags change how ids are represented on the wire — 16 raw bytes instead of 36 text
+characters. If the encoder sets a flag and the decoder does not (or vice versa), ids come back
+mangled rather than erroring.
+{{< /callout >}}
+
+### Methods
+
+| Method | Input | Pairs with |
+|---|---|---|
+| `decodeFromBytes(bytes: Uint8Array)` | Binary payload | `encodeToBytes` |
+| `decodeFromBase64(base64: string)` | Text payload | `encodeToBase64` |
+| `decodeFromProtobuf(message)` | A protobuf message you deserialised yourself | `encodeToProtobufSamples` |
+
+All three return `ClientSample | undefined`. **They do not throw** — a malformed payload is logged
+and `undefined` is returned, so a single bad message cannot take your ingestion path down.
+
+```typescript
+const sample = decoder.decodeFromBytes(bytes);
+if (!sample) {
+    metrics.increment("samples.decode_failed");
+    return;
+}
+observer.accept(sample);
+```
+
+### Pluggable sub-decoders
+
+If you replaced any encoder-side payload encoder, replace its counterpart here:
+
+```typescript
+decoder.clientEventDecoder = myEventDecoder;
+decoder.clientIssueDecoder = myIssueDecoder;
+decoder.clientMetaDataDecoder = myMetaDecoder;
+decoder.extensionStatsDecoder = myExtensionStatsDecoder;
+```
+
+## Integration patterns
+
+{{< tabs "decoder-transport" >}}
+{{< tab "HTTP" >}}
+```typescript
+import express from "express";
+
+app.post(
+    "/api/samples/:clientId",
+    express.raw({ type: "application/octet-stream", limit: "2mb" }),
+    (req, res) => {
+        const sample = decoderFor(req.params.clientId).decodeFromBytes(req.body);
+        if (!sample) return res.sendStatus(400);
+
+        observer.accept(sample, { receivedAt: Date.now() });
+        res.sendStatus(202);
+    },
+);
+```
+
+Routing by `clientId` in the path is what lets you keep the right decoder — and, if you scale out,
+what you shard on.
+{{< /tab >}}
+{{< tab "WebSocket" >}}
+The natural fit: one connection is one client stream, ordered by construction.
+
+```typescript
+wss.on("connection", (ws) => {
+    const decoder = new ClientSampleDecoder();
+
+    ws.on("message", (data: Buffer) => {
+        const sample = decoder.decodeFromBytes(new Uint8Array(data));
+        if (sample) observer.accept(sample);
     });
 });
 ```
-
-## Integration Examples
-
-### Analytics Pipeline
-
-```javascript
-import { SampleDecoder } from '@observertc/sample-decoder-js';
-
-class AnalyticsPipeline {
-    constructor() {
-        this.decoder = new SampleDecoder();
-    }
-
-    async processSample(encodedData) {
-        try {
-            const sample = this.decoder.decode(encodedData);
-
-            // Extract metrics
-            const metrics = this.extractMetrics(sample);
-            await this.metricsDb.insert(metrics);
-
-            // Check alerts
-            await this.alerting.evaluate(sample);
-
-            // Update dashboards
-            await this.dashboards.update(sample);
-        } catch (error) {
-            console.error('Processing failed:', error);
-        }
-    }
-}
+{{< /tab >}}
+{{< tab "Queue" >}}
+```typescript
+consumer.on("message", ({ key, value }) => {
+    // Partition by clientId upstream so ordering is preserved per client.
+    const sample = decoderFor(key).decodeFromBase64(value.payload);
+    if (sample) observer.accept(sample);
+});
 ```
+{{< /tab >}}
+{{< /tabs >}}
 
-### Real-time Monitoring
+## Version compatibility
 
-```javascript
-import { SampleDecoder } from '@observertc/sample-decoder-js';
+Keep `@observertc/samples-encoder` and `@observertc/samples-decoder` on the **same version**.
+Protobuf field numbers derive from field order, so a schema release that inserts a field before an
+existing one renumbers what follows.
 
-class RealTimeMonitor {
-    constructor() {
-        this.decoder = new SampleDecoder();
-    }
+`3.3.0` is such a release — adding `ClientIssue.key` moved `payload` from field 2 to 3 and
+`timestamp` from 3 to 4. A `3.2.0` decoder reading a `3.3.0` sample misreads those fields.
 
-    async handleEncodedSample(encodedData) {
-        const sample = this.decoder.decode(encodedData);
+See the [version history](/docs/schema/versions/v3-3-0/).
 
-        // Update real-time dashboard
-        this.dashboard.updateClientMetrics(sample.clientId, {
-            timestamp: sample.timestamp,
-            score: sample.score,
-            issueCount: sample.clientEvents?.filter(e => e.name === 'ISSUE')?.length || 0
-        });
+{{< callout context="note" title="3.3.0 also fixed a hard import failure" icon="info-circle" >}}
+Before `3.3.0`, `ClientSampleDecoder` imported from a protobuf-es internal path that stopped
+existing in v2, so requiring the package threw `ERR_PACKAGE_PATH_NOT_EXPORTED`. If you tried the
+binary path earlier and it would not even load, that was this.
+{{< /callout >}}
 
-        // Trigger alerts for critical issues
-        if (sample.score < 2.0) {
-            this.alerts.triggerQualityAlert(sample);
-        }
-    }
-}
-```
+## Related
 
-## API Overview
+- [`@observertc/samples-encoder`](../sample-encoder-js/) — the other half
+- [`observer-js`](../observer-js/) — hand it the decoded sample
+- [Schema](/docs/schema/) — what is being decoded
 
-### Core Classes
-- `SampleDecoder` - Main decoder for sample decoding
-
-### Key Methods
-- `decode(binaryData)` - Decode single sample from binary format
-
-## Related Libraries
-
-- **[@observertc/samples-encoder](./sample-encoder-js)** - Binary encoding for efficient transmission
-- **[@observertc/client-monitor-js](./client-monitor-js)** - Generates samples for encoding/decoding
-- **[@observertc/observer-js](./observer-js)** - Server-side sample processing and analysis
-
-## Complete Documentation
-
-For comprehensive documentation including detailed configuration options, advanced validation strategies, and complete API reference:
-
-**📦 [NPM Package Documentation](https://www.npmjs.com/package/@observertc/sample-decoder-js)**
+[npm](https://www.npmjs.com/package/@observertc/samples-decoder) ·
+[GitHub](https://github.com/observertc/schemas)
