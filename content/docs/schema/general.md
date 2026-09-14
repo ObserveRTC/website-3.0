@@ -4,9 +4,9 @@ slug: "general"
 description: "How the ObserveRTC schema generator works and how versions are managed"
 lead: "Avro sources in, TypeScript / protobuf / Markdown bindings out"
 date: 2023-09-07T16:33:54+02:00
-lastmod: 2026-08-16T10:00:00+02:00
+lastmod: 2026-09-13T10:00:00+02:00
 draft: false
-weight: 210
+weight: 640
 toc: true
 ---
 
@@ -31,7 +31,7 @@ That one command:
 {{< step >}}Writes flattened Avro schemas — all chunks expanded — to `outputs/avsc/`.{{< /step >}}
 {{< step >}}Writes TypeScript type definitions to `outputs/typescript/`.{{< /step >}}
 {{< step >}}Writes Protocol Buffer definitions to `outputs/proto/` and compiles them with `buf`.{{< /step >}}
-{{< step >}}Assembles the three npm packages and bumps their versions.{{< /step >}}
+{{< step >}}Assembles the three npm packages — the sample types and the two codecs — and bumps their versions.{{< /step >}}
 {{< step >}}Writes the Markdown reference to `schemaList.md` and the schema library README.{{< /step >}}
 {{< /steps >}}
 
@@ -43,7 +43,8 @@ npm run generate:check      # fail if the committed outputs are stale (CI)
 npm run generate:dry-run    # show what would change, write nothing
 npm run generate:types      # regenerate only TypeScript and Avro
 npm run generate:proto      # regenerate only protobuf
-npm run generate:packages   # proto, samples-lib, encoder, decoder
+npm run generate:packages   # proto, samples-lib, both codecs
+npm run generate:codec      # the protobuf and JSON codec packages
 npm run generate:docs       # markdown + samples-lib
 npm run schemas:list        # list the discovered schemas and chunks
 npm run schemas:validate    # validate, and check every field is documented
@@ -64,11 +65,21 @@ npm run verify              # typecheck + generate:check
 
 | Package | Contents |
 |---|---|
-| [`@observertc/schemas`](https://www.npmjs.com/package/@observertc/schemas) | Core TypeScript / JavaScript type definitions |
-| [`@observertc/samples-encoder`](https://www.npmjs.com/package/@observertc/samples-encoder) | Binary encoding utilities |
-| [`@observertc/samples-decoder`](https://www.npmjs.com/package/@observertc/samples-decoder) | Binary decoding utilities |
+| Sample schema types | Core TypeScript / JavaScript type definitions, built from `npm-samples-lib/` |
+| [`@observertc/samples-protobuf-codec`](/docs/samples-protobuf-codec/) | Protobuf delta codec — encode **and** decode |
+| [`@observertc/samples-json-codec`](/docs/samples-json-codec/) | JSON delta codec — zero dependencies, ~2 KB gzipped |
 
-All three are versioned in lockstep with `sources/version.txt` by the generator.
+All three are versioned in lockstep with `sources/version.txt` by the generator, so **a package
+version is the schema version it speaks**. Each exports `schemaVersion`.
+
+{{< callout context="caution" title="samples-encoder and samples-decoder are deprecated" icon="alert-triangle" >}}
+They were the same codec split across two published artefacts, they stopped at `3.3.0`, and their
+sources were removed from the repository in [3.4.0](../versions/v3-4-0/) along with the `encoder`
+and `decoder` generator artifacts — `--only encoder` is now an unknown-artifact error.
+
+`3.3.0` stays installable from npm and its wire format is unchanged, so either package still
+interoperates with the protobuf codec and the two ends of a stream can migrate independently.
+{{< /callout >}}
 
 ## Project structure
 
@@ -82,9 +93,9 @@ All three are versioned in lockstep with `sources/version.txt` by the generator.
 │   ├── typescript/
 │   ├── proto/
 │   └── avsc/
-├── npm-samples-lib/         # Generated core TypeScript library
-├── npm-samples-encoder/     # Encoding utilities
-├── npm-samples-decoder/     # Decoding utilities
+├── npm-samples-lib/             # Generated core TypeScript library
+├── npm-samples-protobuf-codec/  # Protobuf delta codec (encode + decode)
+├── npm-samples-json-codec/      # JSON delta codec
 ├── CHANGELOG.md             # Schema change history
 └── docs/GENERATOR.md        # How the generator works
 ```
@@ -126,8 +137,13 @@ Semantic versioning, with these conventions:
 |---|---|---|
 | Field addition | Minor | Additive — but check protobuf renumbering |
 | Field removal | Major | Breaking |
-| Type change | Major | Breaking |
+| Field **type** change | Minor or major, depending on the wire | Producers and consumers should move together |
 | Documentation | Patch | Non-breaking |
+
+The 3.x line has had three type changes and no removals: `scoreReasons` in
+[3.4.0](../versions/v3-4-0/) and again in [3.6.0](../versions/v3-6-0/), and the four payload fields
+in [3.5.0](../versions/v3-5-0/) and again in [3.7.0](../versions/v3-7-0/) — the last of which did
+not move either wire format at all.
 
 - **PATCH** — library bugfixes and improvements
 - **MINOR** — new fields and schema updates
@@ -135,7 +151,7 @@ Semantic versioning, with these conventions:
 
 The current version lives in `sources/version.txt` and is stamped into every generated artifact.
 
-**Current: `3.3.0`.** See the [version history](../versions/) for the full 3.x record, or
+**Current: `3.7.0`.** See the [version history](../versions/) for the full 3.x record, or
 [`CHANGELOG.md`](https://github.com/observertc/schemas/blob/master/CHANGELOG.md) for everything
 back to 2.0.0.
 
@@ -151,7 +167,7 @@ back to 2.0.0.
 
 {{< steps >}}
 {{< step >}}Review the [release page](../versions/) for every version you are skipping.{{< /step >}}
-{{< step >}}Upgrade `@observertc/samples-encoder` and `@observertc/samples-decoder` together.{{< /step >}}
+{{< step >}}Upgrade both halves of your codec together — they are generated in lockstep for a reason.{{< /step >}}
 {{< step >}}Decode stored binary samples with a version matching what wrote them, or re-encode.{{< /step >}}
 {{< step >}}Update processing for new fields you want to consume.{{< /step >}}
 {{< step >}}Deploy incrementally and watch for decode errors before switching writers over.{{< /step >}}

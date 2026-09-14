@@ -24,16 +24,34 @@ identifier = "overview"
 url = "/docs/overview/"
 
 [[docs]]
-name = "Schema"
+name = "Client Monitor"
 weight = 20
-identifier = "schema"
-url = "/docs/schema/"
+identifier = "client-monitor-js"
+url = "/docs/client-monitor-js/"
 
 [[docs]]
-name = "Libraries"
+name = "Observer"
 weight = 30
-identifier = "libraries"
-url = "/docs/libraries/"
+identifier = "observer-js"
+url = "/docs/observer-js/"
+
+[[docs]]
+name = "Protobuf Codec"
+weight = 40
+identifier = "samples-protobuf-codec"
+url = "/docs/samples-protobuf-codec/"
+
+[[docs]]
+name = "JSON Codec"
+weight = 50
+identifier = "samples-json-codec"
+url = "/docs/samples-json-codec/"
+
+[[docs]]
+name = "Schema"
+weight = 60
+identifier = "schema"
+url = "/docs/schema/"
 
 [[guide]]
 name = "Lorem"
@@ -81,14 +99,29 @@ pageRef = "/docs/overview"
 weight = 10
 
 [[sidebar_docs]]
-name = "Schema"
-pageRef = "/docs/schema"
+name = "Client Monitor"
+pageRef = "/docs/client-monitor-js"
 weight = 20
 
 [[sidebar_docs]]
-name = "Libraries"
-pageRef = "/docs/libraries"
+name = "Observer"
+pageRef = "/docs/observer-js"
 weight = 30
+
+[[sidebar_docs]]
+name = "Protobuf Codec"
+pageRef = "/docs/samples-protobuf-codec"
+weight = 40
+
+[[sidebar_docs]]
+name = "JSON Codec"
+pageRef = "/docs/samples-json-codec"
+weight = 50
+
+[[sidebar_docs]]
+name = "Schema"
+pageRef = "/docs/schema"
+weight = 60
 
 [[footer]]
 name = "Privacy Policy"

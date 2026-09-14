@@ -4,7 +4,7 @@ slug: "architecture"
 description: "ObserveRTC system architecture and where responsibility is drawn"
 lead: "How the pieces fit together — and why the client/server line sits where it does"
 date: 2023-09-07T16:33:54+02:00
-lastmod: 2026-08-16T10:00:00+02:00
+lastmod: 2026-09-13T10:00:00+02:00
 draft: false
 weight: 120
 toc: true
@@ -62,13 +62,22 @@ extension stats — into a [`ClientSample`](/docs/schema/clientsample/).
 Nothing here requires a server. A monitor with no `sample-created` handler is a perfectly good
 in-browser diagnostics tool.
 
-[client-monitor-js →](/docs/libraries/client-monitor-js/)
+[client-monitor-js →](/docs/client-monitor-js/)
 
 ## Transport
 
 `ClientSample` is plain JSON, so any transport works: `fetch`, `sendBeacon`, a WebSocket, a message
-queue. For volume, `@observertc/samples-encoder` compresses it into the protobuf representation
-defined by the schema and `@observertc/samples-decoder` restores it server-side.
+queue. For volume, two **delta codecs** send only what changed since the previous sample — which is
+where nearly all of the saving is, because a sample mostly repeats itself from one interval to the
+next:
+
+| Codec | Take it when |
+|---|---|
+| [`samples-protobuf-codec`](/docs/samples-protobuf-codec/) | Bytes on the wire are the binding constraint |
+| [`samples-json-codec`](/docs/samples-json-codec/) | The transport already compresses, and you would rather have zero dependencies (~2 KB) and a payload you can read in a log |
+
+Both are stateful: **one encoder per client, one decoder per client stream, fed in order**, over an
+ordered lossless transport.
 
 The library does not ship a transport, and does not want to — the right choice depends on your
 existing telemetry pipeline.
@@ -91,7 +100,7 @@ On top of that model sit two kinds of analysis:
 - **Validators** run once and answer *"is this deployment built correctly?"* — is the resolver
   wired, does the SFU adapt layers per receiver, is everyone on the codec you configured.
 
-[observer-js →](/docs/libraries/observer-js/)
+[observer-js →](/docs/observer-js/)
 
 ## What the server adds that a browser cannot
 
@@ -115,7 +124,7 @@ Peer connections and mediasoup WebRTC transports share ids, so the observer can 
 client's peer connection corresponds to one of the router's transports. It emits that as an event
 and steps back: how you associate the two is application-specific.
 
-[SFU integration →](/docs/libraries/observer-js/sfu/)
+[SFU integration →](/docs/observer-js/sfu/)
 
 ## Where your system takes over
 
@@ -157,7 +166,7 @@ Samples flow into a live `observer-js` instance alongside archival.
 - Real-time cross-participant and cross-call detection
 - Publisher ↔ subscriber correlation
 - Deployment validation at start-up and after each deploy
-- Post-call reports built on `call-closed`
+- Post-call reports built on [`call-summary`](/docs/observer-js/call-summaries/)
 
 This is where the questions a browser cannot answer get answered.
 {{< /tab >}}

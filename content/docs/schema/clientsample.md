@@ -2,22 +2,23 @@
 title: "ClientSample reference"
 slug: "clientsample"
 description: "Field-by-field reference for the ClientSample schema"
-lead: "Every field of the ClientSample schema, generated from schema version 3.3.0"
+lead: "Every field of the ClientSample schema, generated from schema version 3.7.0"
 date: 2023-09-07T16:33:54+02:00
-lastmod: 2026-08-16T10:00:00+02:00
+lastmod: 2026-09-13T10:00:00+02:00
 draft: false
-weight: 220
+weight: 620
 toc: true
 ---
 
 `ClientSample` is the object a client-side monitor produces and an observer consumes. It is the
-contract between [`client-monitor-js`](/docs/libraries/client-monitor-js/) and
-[`observer-js`](/docs/libraries/observer-js/), and the thing you store if you build your own
-pipeline.
+contract between [`client-monitor-js`](/docs/client-monitor-js/) and
+[`observer-js`](/docs/observer-js/), and the thing you store if you build your own pipeline.
 
-{{< callout context="note" title="Schema version 3.3.0" icon="info-circle" >}}
-This page is generated from the `3.3.0` Avro sources. Fields added since `3.0.0` are marked
-inline. See the [version history](/docs/schema/versions/) for what changed and when.
+{{< callout context="note" title="Schema version 3.7.0" icon="info-circle" >}}
+This page is generated from the `3.7.0` Avro sources. Fields added since `3.0.0` are marked inline.
+No field has ever been **removed** in the 3.x line; what changed since `3.3.0` is the *type* of the
+four payload fields and of `scoreReasons`. See the [version history](/docs/schema/versions/) for
+what changed and when.
 {{< /callout >}}
 
 ## Shape at a glance
@@ -64,7 +65,7 @@ The root object. One `ClientSample` is a snapshot of one participant at one poin
 | `clientId` | `string`<br>*optional* | Unique id of the client providing samples. |
 | `attachments` | `Record<string, unknown>`<br>*optional* | Additional information attached to this sample (e.g.: roomId, userId, displayName, etc...) |
 | `score` | `number`<br>*optional* | Calculated score for client (details should be added to scoreReasons) |
-| `scoreReasons` | `string`<br>*optional* | Details for score calculation |
+| `scoreReasons` | `Record<string, number>`<br>*optional* | Reasons for the score calculation, mapping each reason to how much it contributed **`changed in 3.6.0`** |
 | `peerConnections` | `PeerConnectionSample[]`<br>*optional* | Samples taken PeerConnections |
 | `clientEvents` | `ClientEvent[]`<br>*optional* | A list of client events. |
 | `clientIssues` | `ClientIssue[]`<br>*optional* | A list of client issues. |
@@ -81,7 +82,7 @@ Everything observed on a single `RTCPeerConnection` during the sampling interval
 | `peerConnectionId` | `string` | Unique identifier of the stats object. |
 | `attachments` | `Record<string, unknown>`<br>*optional* | Additional information attached to this sample |
 | `score` | `number`<br>*optional* | Calculated score for peer connection (details should be added to scoreReasons) |
-| `scoreReasons` | `string`<br>*optional* | Details for score calculation |
+| `scoreReasons` | `Record<string, number>`<br>*optional* | Reasons for the score calculation, mapping each reason to how much it contributed **`changed in 3.6.0`** |
 | `inboundTracks` | `InboundTrackSample[]`<br>*optional* | Inbound Track Stats items |
 | `outboundTracks` | `OutboundTrackSample[]`<br>*optional* | Outbound Track Stats items |
 | `codecs` | `CodecStats[]`<br>*optional* | Codec items |
@@ -112,7 +113,7 @@ A received media track, scored by the client.
 | `id` | `string` | The unique identifier for the stats object. |
 | `kind` | `string` | Kind of the media (e.g., 'audio' or 'video'). |
 | `score` | `number`<br>*optional* | Calculated score for track (details should be added to scoreReasons) |
-| `scoreReasons` | `string`<br>*optional* | Details for score calculation |
+| `scoreReasons` | `Record<string, number>`<br>*optional* | Reasons for the score calculation, mapping each reason to how much it contributed **`changed in 3.6.0`** |
 | `attachments` | `Record<string, unknown>`<br>*optional* | Additional information attached to this stats |
 
 
@@ -126,7 +127,7 @@ A sent media track, scored by the client.
 | `id` | `string` | The unique identifier for the stats object. |
 | `kind` | `string` | Kind of the media (e.g., 'audio' or 'video'). |
 | `score` | `number`<br>*optional* | Calculated score for track (details should be added to scoreReasons) |
-| `scoreReasons` | `string`<br>*optional* | Details for score calculation |
+| `scoreReasons` | `Record<string, number>`<br>*optional* | Reasons for the score calculation, mapping each reason to how much it contributed **`changed in 3.6.0`** |
 | `attachments` | `Record<string, unknown>`<br>*optional* | Additional information attached to this stats |
 
 
@@ -541,7 +542,7 @@ A discrete thing that happened on the client (joined, track added, ICE state cha
 | Field | Type | Description |
 |---|---|---|
 | `type` | `string` | The name of the event used as an identifier (e.g., MEDIA_TRACK_MUTED, USER_REJOINED, etc.). |
-| `payload` | `string`<br>*optional* | The value associated with the event, if applicable. |
+| `payload` | `Record<string, unknown>`<br>*optional* | Free-form JSON associated with the event. Was a pre-serialised string before 3.5.0, a flat record of primitives in 3.5.0–3.6.0 **`changed in 3.7.0`** |
 | `timestamp` | `number`<br>*optional* | The timestamp in epoch format when the event was generated. |
 
 
@@ -553,7 +554,7 @@ A problem state reported by the client, with an optional `key` tying a raise to 
 |---|---|---|
 | `type` | `string` | The name of the issue |
 | `key` | `string`<br>*optional* | Identifier of the related issue or resolution when it is provided. **`new in 3.3.0`** |
-| `payload` | `string`<br>*optional* | The value associated with the event, if applicable. |
+| `payload` | `Record<string, unknown>`<br>*optional* | Free-form JSON associated with the issue **`changed in 3.7.0`** |
 | `timestamp` | `number`<br>*optional* | The timestamp in epoch format when the event was generated. |
 
 
@@ -564,7 +565,7 @@ Environment and device information (browser, OS, media devices, SDP, …).
 | Field | Type | Description |
 |---|---|---|
 | `type` | `string` | The name of the event used as an identifier (e.g., MEDIA_TRACK_MUTED, USER_REJOINED, etc.). |
-| `payload` | `string`<br>*optional* | The value associated with the event, if applicable. |
+| `payload` | `Record<string, unknown>`<br>*optional* | Free-form JSON associated with the meta item **`changed in 3.7.0`** |
 | `peerConnectionId` | `string`<br>*optional* | The unique identifier of the peer connection for which the event was generated. |
 | `trackId` | `string`<br>*optional* | The identifier of the media track related to the event, if applicable. |
 | `ssrc` | `number`<br>*optional* | The SSRC (Synchronization Source) identifier associated with the event, if applicable. |
@@ -578,21 +579,41 @@ Free-form application statistics carried alongside the WebRTC stats.
 | Field | Type | Description |
 |---|---|---|
 | `type` | `string` | The type of the extension stats the custom app provides |
-| `payload` | `string`<br>*optional* | The payload of the extension stats the custom app provides |
+| `payload` | `Record<string, unknown>`<br>*optional* | Free-form JSON provided by the application **`changed in 3.7.0`** |
 
 
 ## Notes on selected fields
 
-### `payload` fields are JSON strings
+### `payload` fields are free-form JSON, and have been through three shapes
 
 `ClientEvent.payload`, `ClientIssue.payload`, `ClientMetaData.payload` and `ExtensionStat.payload`
-are transported as strings so the schema does not have to model every application's shape. Serialize
-on the way in, parse on the way out. `observer-js` parses the payloads it recognises for you.
+are `Record<string, unknown>` as of **3.7.0**, so a payload may nest objects and arrays freely —
+structured context such as `{ device: { os: { name, version } } }` no longer has to be flattened
+into dotted keys or stringified into one field.
 
-### `attachments` is a string on the wire
+| Generation | Payload shape |
+|---|---|
+| pre-3.5.0 | A pre-serialised JSON **string** |
+| 3.5.0 – 3.6.0 | A flat record of primitives — `Record<string, boolean \| string \| number>` |
+| 3.7.0 | Free-form JSON — `Record<string, unknown>` |
 
-In the Avro/protobuf encoding `attachments` is a JSON string; the TypeScript bindings and both
-libraries expose it as `Record<string, unknown>`.
+**A fleet does not have to move in step.** `observer-js` passes an object through untouched and
+parses a string, so an old client and a new one produce the same object downstream.
+
+**Reading a payload value now needs narrowing**: `payload.role` was `boolean | string | number` and
+is `unknown`, so `String(payload.role)` or a type guard replaces a bare read. Writers need no
+change — everything that was valid before still is.
+
+### `attachments` is free-form JSON too
+
+It has been `Record<string, unknown>` since it stopped being a string, and it is the model the
+payload fields caught up with in 3.7.0.
+
+### Non-finite numbers are rejected, not silently nulled
+
+Both codecs walk an opaque value before copying it and reject a `NaN`, an `Infinity` or a `bigint`
+anywhere inside a payload or `attachments`, reporting the path that reached it. `JSON.stringify`
+would have turned the first two into `null` without complaint.
 
 ### ECN and RFC 8888 counters
 

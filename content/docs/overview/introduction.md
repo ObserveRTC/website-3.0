@@ -4,7 +4,7 @@ slug: "introduction"
 description: "Introduction to the ObserveRTC monitoring toolkit"
 lead: "Open-source WebRTC call quality monitoring you own end to end"
 date: 2023-09-07T16:33:54+02:00
-lastmod: 2026-08-16T10:00:00+02:00
+lastmod: 2026-09-13T10:00:00+02:00
 draft: false
 weight: 110
 toc: true
@@ -31,15 +31,15 @@ That is the work these libraries do.
 {{< link-card
   title="Metrics, not counters"
   description="Per-interval bitrates, packet rates, RTT, jitter, loss, frame rates and their volatility — computed for you, on a navigable object graph."
-  href="/docs/libraries/client-monitor-js/metrics/" >}}
+  href="/docs/client-monitor-js/metrics/" >}}
 {{< link-card
   title="Verdicts, not thresholds"
   description="Detectors with on/off hysteresis that raise an issue when a condition starts and resolve it when it ends, with a duration attached."
-  href="/docs/libraries/client-monitor-js/detectors/" >}}
+  href="/docs/client-monitor-js/detectors/" >}}
 {{< link-card
   title="Correlation across participants"
   description="Server-side detection that separates 'one person's Wi-Fi' from 'this room is broken' from 'our infrastructure is in trouble'."
-  href="/docs/libraries/observer-js/detectors/" >}}
+  href="/docs/observer-js/detectors/" >}}
 {{< link-card
   title="A versioned schema"
   description="One typed contract shared by every component, generated into TypeScript, protobuf and documentation from a single Avro source."
@@ -89,17 +89,17 @@ import { ClientMonitor } from "@observertc/client-monitor-js";
 const monitor = new ClientMonitor({
     clientId: "user-42",
     callId: "room-abc",
-    collectingPeriodInMs: 2000,
-    samplingPeriodInMs: 4000,
+    collectingPeriodInMs: 5000,
+    samplingPeriodInMs: 5000,
 });
 
 monitor.addSource(peerConnection);
 
 monitor.on("issue", (issue) => console.warn(issue.type, issue.payload));
-monitor.on("sample-created", (sample) => transport.send(sample));
+monitor.on("sample-created", ({ sample }) => transport.send(sample));
 ```
 
-[Full documentation →](/docs/libraries/client-monitor-js/)
+[Full documentation →](/docs/client-monitor-js/)
 {{< /tab >}}
 {{< tab "Server" >}}
 ```bash
@@ -122,7 +122,7 @@ observer.on("client-issue-resolved", ({ observedClient, resolvedIssue }) => {
 transport.on("sample", (sample) => observer.accept(sample));
 ```
 
-[Full documentation →](/docs/libraries/observer-js/)
+[Full documentation →](/docs/observer-js/)
 {{< /tab >}}
 {{< /tabs >}}
 
@@ -130,6 +130,7 @@ transport.on("sample", (sample) => observer.accept(sample));
 
 {{< card-grid >}}
 {{< link-card title="Architecture" description="How the pieces fit together and where the client/server line is drawn." href="/docs/overview/architecture/" >}}
-{{< link-card title="Libraries" description="What each package does, and which ones you need." href="/docs/libraries/" >}}
+{{< link-card title="Client Monitor" description="The browser library: derived metrics, 46 detectors, quality scores." href="/docs/client-monitor-js/" >}}
+{{< link-card title="Observer" description="The Node.js library: a live call model and cross-participant detection." href="/docs/observer-js/" >}}
 {{< link-card title="Schema" description="The shared contract, and what changed in each version." href="/docs/schema/" >}}
 {{< /card-grid >}}
