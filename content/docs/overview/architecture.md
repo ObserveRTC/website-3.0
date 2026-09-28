@@ -1,173 +1,195 @@
 ---
 title: "Architecture"
 slug: "architecture"
-description: "ObserveRTC system architecture and where responsibility is drawn"
-lead: "How the pieces fit together — and why the client/server line sits where it does"
-date: 2023-09-07T16:33:54+02:00
-lastmod: 2026-09-13T10:00:00+02:00
+description: "Browser diagnostics, sample transport and server-side call analysis."
+lead: "What runs in the browser, what reaches the server, and where your application takes over."
+lastmod: 2026-09-28T12:00:00+03:00
 draft: false
-weight: 120
+weight: 20
 toc: true
 ---
 
-```text
-   BROWSER                                    SERVER                            YOUR SYSTEM
-┌───────────────────────┐              ┌────────────────────────┐          ┌──────────────────┐
-│  client-monitor-js    │              │      observer-js       │          │                  │
-│                       │              │                        │          │  Metrics         │
-│  • poll getStats()    │ ClientSample │  • live call model     │  events  │  Alerting        │
-│  • derive metrics     │─────────────►│  • cross-client        │─────────►│  Dashboards      │
-│  • run detectors      │  (JSON or    │    detectors           │          │  Storage         │
-│  • score quality      │   protobuf)  │  • publisher↔subscriber│          │  Post-call       │
-│  • emit samples       │              │    correlation         │          │    reports       │
-└───────────────────────┘              └───────────┬────────────┘          └──────────────────┘
-                                                   │
-                                          ┌────────▼────────┐
-                                          │   mediasoup     │
-                                          │   Router        │  ← optional: the SFU's own
-                                          │   observation   │    ground truth
-                                          └─────────────────┘
-```
-
-## The organising principle
-
-{{< callout context="tip" title="If a condition is detectable on the client, the client's verdict is the source of truth" icon="rocket" >}}
-This one rule explains most of ObserveRTC's design.
-
-The browser has information the server never gets: whether an ICE `disconnected` persisted or
-healed in 200 ms, whether `concealedSamples` rose during speech or during silence, whether the
-jitter buffer grew *and* NetEQ is time-stretching or grew and succeeded. A server re-deriving those
-from raw counters sees less and guesses more.
-
-So `client-monitor-js` decides **what is wrong with this endpoint**, and `observer-js` never
-repeats that work. It answers the orthogonal question: **who else is in this state, what do they
-share, and where does the fault begin?**
-{{< /callout >}}
-
-## Client side
-
-`client-monitor-js` polls `getStats()` on a configurable period and does four things with the
-result:
-
-| Step | Output |
-|---|---|
-| **Adapt** | Browser-specific differences normalised away |
-| **Derive** | Counters differenced into bitrates, rates, deltas, smoothed and volatility metrics |
-| **Detect** | Detectors raise and resolve stateful issues with hysteresis |
-| **Score** | 0–5 quality per track, per connection and per client, with reasons |
-
-On the sampling period it snapshots all of it — plus events, issues, metadata and your own
-extension stats — into a [`ClientSample`](/docs/schema/clientsample/).
-
-Nothing here requires a server. A monitor with no `sample-created` handler is a perfectly good
-in-browser diagnostics tool.
-
-[client-monitor-js →](/docs/client-monitor-js/)
-
-## Transport
-
-`ClientSample` is plain JSON, so any transport works: `fetch`, `sendBeacon`, a WebSocket, a message
-queue. For volume, two **delta codecs** send only what changed since the previous sample — which is
-where nearly all of the saving is, because a sample mostly repeats itself from one interval to the
-next:
-
-| Codec | Take it when |
-|---|---|
-| [`samples-protobuf-codec`](/docs/samples-protobuf-codec/) | Bytes on the wire are the binding constraint |
-| [`samples-json-codec`](/docs/samples-json-codec/) | The transport already compresses, and you would rather have zero dependencies (~2 KB) and a payload you can read in a log |
-
-Both are stateful: **one encoder per client, one decoder per client stream, fed in order**, over an
-ordered lossless transport.
-
-The library does not ship a transport, and does not want to — the right choice depends on your
-existing telemetry pipeline.
-
-## Server side
-
-`observer-js` accepts samples through one method and maintains a live in-memory tree:
+ObserveRTC adds a monitoring pipeline beside your existing WebRTC application. **Client Monitor** diagnoses an endpoint. **Observer** combines samples from multiple endpoints into a live view of calls and their issues.
 
 ```text
-Observer → ObservedCall → ObservedClient → ObservedPeerConnection → sub-stats
+ BROWSER                         YOUR BACKEND
++----------------------+        +-----------------------------+
+| Client Monitor       |        | Observer                    |
+|                      |        |                             |
+| getStats()           | sample | Live calls, clients, tracks  |
+|   -> adapt           +------->| Client issue lifecycles      |
+|   -> derive metrics  |  via   | Cross-client analysis        |
+|   -> detect issues   |  API   | Publisher / receiver links   |
+|   -> score quality   |        +--------------+--------------+
++----------+-----------+                       |
+           | local events                      | events / sinks
+           v                                   v
++----------------------+        +-----------------------------+
+| In-call diagnostics  |        | Your metrics, alerts,       |
+| and application UI   |        | storage and reporting       |
++----------------------+        +-----------------------------+
 ```
 
-Entities are created lazily by id and garbage-collected when they stop appearing. Everything is
-reachable from one typed event bus, where each payload carries its full ancestry.
+The sample arrow carries **telemetry**, not audio or video. Your peer connections, media servers and signaling keep their existing roles.
 
-On top of that model sit two kinds of analysis:
+## Diagnose at the endpoint, correlate on the server
 
-- **Detectors** run every tick and answer *"is something wrong right now?"* — across the
-  participants of a call, or across the calls of a fleet.
-- **Validators** run once and answer *"is this deployment built correctly?"* — is the resolver
-  wired, does the SFU adapt layers per receiver, is everyone on the codec you configured.
+The browser can combine stats with local track state, application intent and a sequence of observations. That is where Client Monitor calculates metrics and decides whether an endpoint condition should raise or resolve an issue.
 
-[observer-js →](/docs/observer-js/)
+The server adds scope: which participants have overlapping issues, which publisher their tracks belong to, and whether similar conditions appear across calls. Shared symptoms provide evidence for a cause; they do not automatically prove an infrastructure fault.
 
-## What the server adds that a browser cannot
-
-| Question | Mechanism |
+| Responsibility | Owner |
 |---|---|
-| Is this the room or this person? | Concurrent-issue detection across participants of one call |
-| Is this our infrastructure? | The same symptom across **independent** calls — they share only the servers |
-| Is this the publisher or the receiver? | Publisher ↔ subscriber track links from a `RemoteTrackResolver` |
-| Is the SFU forwarding, or did the camera stop? | Publisher's outbound RTP versus every subscriber's dry-track verdict |
-| Is this one kind of client? | Grouping by browser / engine / platform / OS, gated on relative risk |
-| Is a TURN server down? | Population collapse plus a healthy control group elsewhere |
-| Is anyone even subscribed to this track? | The resolver's silence — an empty subscriber set |
+| Browser adaptation, interval metrics, endpoint detectors | Client Monitor |
+| Sample fields and wire types | ObserveRTC schemas |
+| Delivery, authentication and input validation | Your application |
+| Live call state, track correlation, cross-client analysis | Observer |
+| Persistence, dashboards and actions | Your application, using events and sinks |
 
-## Optional: the SFU's own view
+## In the browser
 
-When you run mediasoup, `observer-js` can attach to a live `Router` and passively record the
-server's ground truth — transports, producers, consumers, their exact lifetimes and state
-transitions — into a `MediasoupRouterSample`, completely independent of the client pipeline.
+Client Monitor attaches to an existing `RTCPeerConnection`, or to mediasoup-client devices and transports. Collection and sampling both default to five seconds, but they are separate operations.
 
-Peer connections and mediasoup WebRTC transports share ids, so the observer can tell you when a
-client's peer connection corresponds to one of the router's transports. It emits that as an event
-and steps back: how you associate the two is application-specific.
+```text
+RTCPeerConnection.getStats()
+            |
+            v
+Browser adapters -> linked monitor graph
+                         |
+                         +--> interval metrics
+                         +--> detectors -> issues / events
+                         +--> quality scores
+                         |
+                         v
+                   createSample()
+                         |
+                         v
+                    ClientSample
+```
 
-[SFU integration →](/docs/observer-js/sfu/)
+The graph links RTP streams to tracks, codecs, remote reports and ICE transports. A track can have multiple outbound encodings; a peer connection can have multiple transports.
 
-## Where your system takes over
+Local code can read metrics after `stats-collected` and react to issue events without sending samples anywhere. ObserveRTC reports conditions; your application chooses whether to update a quality indicator, prompt the user or change media settings.
 
-ObserveRTC deliberately stops at the event boundary. It does not ship a database, a dashboard, an
-alert router or a retention policy, because those are exactly the parts every organisation already
-has opinions about.
+**A sample contains selected state, not every live monitor property.** Explicit `createSample()` methods project counters, references, scores and attachments, together with buffered events, issues, metadata and extension stats. Most derived rates, detector state and declared context stay local. Sampling less often does not create an average of the intervening collections.
 
-What it gives you instead:
+[Monitor graph and API](/docs/client-monitor-js/api-reference/) · [Collection and sampling](/docs/client-monitor-js/sampling/) · [Metric calculations](/docs/client-monitor-js/metrics/)
 
-- **Events** to feed your alerting and metrics pipeline
-- **A live model** to query for real-time views
-- **Sinks** that persist the exact samples that were accepted — which means past incidents can be
-  replayed through a fresh observer with different detector settings, offline, in seconds
+## Across the wire
 
-## Deployment shapes
+`ClientSample` is the shared contract. It can travel as ordinary JSON, or through an optional delta codec. The schema defines the record; it is not another processing service.
 
-{{< tabs "shapes" >}}
-{{< tab "Client only" >}}
-No server component. The monitor drives in-call UX and adaptive behaviour directly.
+```text
+ClientSample -> JSON ----------------------------> ClientSample
 
-- Network quality indicator
-- Pause screen share on congestion, lower encoding on CPU pressure
-- Prompt a device check on a dry outbound track
+ClientSample -> delta encoder -> your transport
+                                      |
+                                      v
+                               delta decoder ----> ClientSample
+                                                       |
+                                                       v
+                                                Observer.accept()
+```
 
-Nothing leaves the browser.
-{{< /tab >}}
-{{< tab "Client + storage" >}}
-Samples are uploaded and archived; no live analysis.
+| Representation | Integration choice |
+|---|---|
+| Plain JSON sample | Send complete samples through your existing telemetry endpoint. |
+| [JSON codec](/docs/samples-json-codec/) | Encode changes between samples in a JSON representation. |
+| [Protobuf codec](/docs/samples-protobuf-codec/) | Encode changes between samples in a binary representation. |
 
-- Per-user support triage: what was wrong, when, and for how long
-- Release comparison via `attachments`
-- Replay archives through `observer-js` later, whenever you want the correlation
+Both delta codecs keep state. Use one encoder per client and one decoder per client stream; preserve message order and reliable delivery. Decode before passing a sample to Observer.
 
-The cheapest path to answering "what happened in this call?".
-{{< /tab >}}
-{{< tab "Full stack" >}}
-Samples flow into a live `observer-js` instance alongside archival.
+Your ingestion boundary authenticates the sender, validates the payload and checks call/client identity. `Observer.accept()` requires `callId` and `clientId`, but does not perform complete schema validation. In the documented Observer 1.0.0 implementation, middleware cannot be relied on to drop or replace samples; filter before calling `accept()`.
 
-- Real-time cross-participant and cross-call detection
-- Publisher ↔ subscriber correlation
-- Deployment validation at start-up and after each deploy
-- Post-call reports built on [`call-summary`](/docs/observer-js/call-summaries/)
+[ClientSample fields](/docs/schema/clientsample/) · [Ingestion behavior](/docs/observer-js/ingestion/)
 
-This is where the questions a browser cannot answer get answered.
-{{< /tab >}}
-{{< /tabs >}}
+## On the server
+
+Observer creates entities as samples arrive and maintains their current state in memory:
+
+```text
+Observer
++-- ObservedCall
+|   +-- ObservedClient
+|   |   +-- ObservedPeerConnection
+|   |       +-- Tracks and RTP streams
+|   |       +-- Remote RTP reports
+|   |       +-- ICE transports, pairs and candidates
+|   |       +-- Codecs, media sources and playout
+|   |       +-- Data channels and certificates
+|   +-- ObservedClient
++-- ObservedCall
+```
+
+Peer-connection updates create, refresh and clean up child entities. Idle clients and empty calls have configurable timeouts. This model is live state, not a historical database.
+
+Client issue records with matching keys let Observer maintain active issue intervals. The central event bus includes the relevant call, client and entity ancestry in its payloads.
+
+A new Observer has **no detectors registered**. Register the analysis your application needs:
+
+- **Call detectors** compare participants, linked tracks and issue overlap within a call.
+- **Observer detectors** analyze populations and patterns across calls.
+- **Validators** gather evidence for a structural check, then report a result when they can decide.
+
+Analysis runs on updates, not on a separate universal detector timer. When disabling automatic updates, your application must drive them explicitly.
+
+[Entities and state](/docs/observer-js/entities/) · [Server detectors](/docs/observer-js/detectors/) · [Event bus](/docs/observer-js/event-bus/)
+
+## Publisher, SFU and receiver
+
+To explain a delivery problem, Observer needs to know which outbound track feeds which receivers. A `RemoteTrackResolver` supplies that relationship using identifiers from your signaling and track attachments.
+
+```text
+Publisher                 Media path                 Receivers
+outbound track -----------> SFU --------------------> inbound track
+                             +----------------------> inbound track
+
+              Signaling IDs / track attachments
+                             |
+                             v
+                      RemoteTrackResolver
+                             |
+                             v
+             Observer links publisher to receivers
+```
+
+The mediasoup resolver uses producer/consumer identifiers. Other SFUs need an appropriate resolver; matching browser stats IDs alone is not a general publisher-to-receiver mapping.
+
+For mediasoup, Observer can also attach to a live server `Router`. This supplies transport, producer and consumer lifecycle data in a separate `MediasoupRouterSample`. It complements client samples rather than replacing them. Your application decides when and where to persist it.
+
+[SFU integration](/docs/observer-js/sfu/)
+
+## Choose your deployment
+
+Start with the smallest pipeline that answers your question. These can grow independently.
+
+```text
+Local diagnostics
+  Client Monitor -> in-call UI
+
+Support history
+  Client Monitor -> your endpoint -> stored samples
+
+Live call analysis
+  Client Monitor -> your endpoint -> Observer -> events / alerts
+                         |               |
+                         v               v
+                   sample archive   call summaries
+```
+
+For full-stack deployments, per-client sinks can persist accepted samples and opt-in call summaries can record selected call-level results. Your application owns storage, retention and downstream actions.
+
+Archived samples are useful for later analysis, but a fast replay is not timing-equivalent to live ingestion: some Observer rates use server arrival intervals. Account for those timing rules when comparing replay results.
+
+[Sinks and persistence](/docs/observer-js/sinks/) · [Call summaries](/docs/observer-js/call-summaries/) · [Try the live example](https://webrtc-observer.org/)
+
+## Implementation sources
+
+This architecture follows the released versions listed in [Versions & compatibility](/docs/reference/versions/).
+
+- [ClientMonitor: collection and sample creation](https://github.com/ObserveRTC/client-monitor-js/blob/0f08bd5d110a4e9d53cf0486962e638c5b393c49/src/ClientMonitor.ts)
+- [ClientSample: authoritative schema](https://github.com/ObserveRTC/schemas/blob/eb7fe28062b81d6db9dfb7ca565b1fb9c88b5d17/sources/samples/ClientSample.avsc)
+- [Observer: ingestion and registration](https://github.com/ObserveRTC/observer-js/blob/b4a1ccb85468c94084a89ed2c007708c14ead551/src/Observer.ts)
+- [ObservedClient: sample processing and timing](https://github.com/ObserveRTC/observer-js/blob/b4a1ccb85468c94084a89ed2c007708c14ead551/src/ObservedClient.ts)
+- [Remote track resolver factories](https://github.com/ObserveRTC/observer-js/blob/b4a1ccb85468c94084a89ed2c007708c14ead551/src/resolvers/RemoteTrackResolverFactories.ts)
+- [Mediasoup router observation](https://github.com/ObserveRTC/observer-js/blob/b4a1ccb85468c94084a89ed2c007708c14ead551/src/ObservedMediasoupRouter.ts)

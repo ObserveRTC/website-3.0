@@ -1,378 +1,98 @@
 ---
-title: "Monitors & derived metrics"
-description: "The object graph and every computed field on it"
-lead: "The monitors compute the facts; the detectors hold the opinions about them"
-date: 2023-09-07T16:33:54+02:00
-lastmod: 2026-09-13T10:00:00+02:00
+slug: "metrics"
+title: "Metrics & missing values"
+description: "Distinguish browser measurements, adapted stats and calculated values."
+lead: "Distinguish browser measurements, adapted stats and calculated values."
+lastmod: 2026-09-28T12:00:00+03:00
 draft: false
-weight: 260
+weight: 30
 toc: true
 ---
 
-Every derived value is a property of the stats — a bitrate, a mean, a delta — and is published
-whether or not any detector reads it.
+Use at least six origins in a future catalog: **browser stat**, **adapted/inferred stat**, **derived measurement**, **declared context**, **detector/score result**, **identity/lifecycle metadata**. A seventh useful presentation group is **application extension**.
 
-Three conventions run through all of them:
+The authoritative raw-stat families and exact field sets are in the schema inventory. Their monitor ownership is:
 
-- **A value the browser did not report is `undefined`, never `0`.** "Nothing arrived" and "nothing
-  was lost" must not look the same.
-- **Means exclude streams that carried nothing this tick** rather than counting them as healthy.
-- **Every duration is stats time**, aged on the gaps between stats reports rather than on
-  `Date.now()`.
-
-## The monitor tree
-
-```text
-ClientMonitor
-└── PeerConnectionMonitor
-    ├── InboundTrackMonitor / OutboundTrackMonitor
-    ├── InboundRtpMonitor / OutboundRtpMonitor
-    ├── RemoteInboundRtpMonitor / RemoteOutboundRtpMonitor
-    ├── IceTransportMonitor → IceCandidatePairMonitor → IceCandidateMonitor
-    ├── CodecMonitor, MediaSourceMonitor, MediaPlayoutMonitor
-    ├── DataChannelMonitor, CertificateMonitor
-    └── PeerConnectionTransportMonitor
-```
-
-### Reaching a monitor
-
-Every collection getter returns a **fresh array**, so hold the result rather than calling it in a
-loop.
-
-```typescript
-monitor.peerConnections;      // PeerConnectionMonitor[]
-monitor.tracks;               // TrackMonitor[] — both directions, every connection
-monitor.inboundRtps;
-monitor.outboundRtps;
-monitor.remoteInboundRtps;
-monitor.remoteOutboundRtps;
-monitor.iceTransports;
-monitor.codecs;
-monitor.certificates;
-
-monitor.getPeerConnectionMonitor(peerConnectionId);
-monitor.getTrackMonitor(trackId);                    // either direction
-monitor.mappedPeerConnections;                       // the underlying Map, to iterate without allocating
-
-const pc = monitor.peerConnections[0];
-pc.getTrackMonitor(trackId);
-pc.getInboundTrackMonitor(trackId);
-pc.getOutboundTrackMonitor(trackId);
-```
-
-### Walking the graph
-
-`getStats()` reports a flat list of objects that reference each other by id. The monitors resolve
-those joins once, so *"what codec is this inbound stream using, and which ICE transport carries
-it?"* is two property accesses. Every accessor returns `undefined` when the browser did not report
-the link, or when the object it points at has gone away.
-
-| From | Accessor | To |
+| Monitor | Browser report / content | Wire location under a PeerConnectionSample |
 |---|---|---|
-| any monitor | `getPeerConnection()` | `PeerConnectionMonitor` |
-| `InboundRtpMonitor` | `getTrack()` | `InboundTrackMonitor` |
-| | `getCodec()` | `CodecMonitor` |
-| | `getRemoteOutboundRtp()` | the sender's own view |
-| | `getMediaPlayout()` | `MediaPlayoutMonitor` |
-| | `getIceTransport()`, `getSelectedCandidatePair()` | the path carrying it |
-| `OutboundRtpMonitor` | `getTrack()`, `getCodec()`, `getMediaSource()` | |
-| | `getRemoteInboundRtp()` | the receiver's report about us |
-| | `getIceTransport()`, `getSelectedCandidatePair()` | as above |
-| `InboundTrackMonitor` | `getInboundRtp()` | `InboundRtpMonitor` |
-| | `getLinkedVideoTrack()` | the video track this audio track is paired with |
-| `OutboundTrackMonitor` | `getMediaSource()` | `MediaSourceMonitor` |
-| | `getOutboundRtps()` | one per simulcast layer |
-| | `highestLayer` | the layer carrying the most bits |
-| `MediaSourceMonitor` | `getTrack()`, `getOutboundRtps()` | the track and its layers |
-| `IceTransportMonitor` | `getSelectedCandidatePair()`, `getSelectedIcePath()` | |
-| | `getInboundRtps()`, `getOutboundRtps()` | the streams attributed to this transport |
-| `IceCandidatePairMonitor` | `getLocalCandidate()`, `getRemoteCandidate()` | `IceCandidateMonitor` |
-| `RemoteInboundRtpMonitor` | `getOutboundRtp()` | the local stream it reports on |
-| `RemoteOutboundRtpMonitor` | `getInboundRtp()` | the local stream it describes |
+| InboundRtpMonitor | inbound-rtp: received/lost packets, jitter, received bytes, frame decode/render/freeze counters, jitter buffer, concealment, FEC/RTX, corruption | `inboundRtps[]` |
+| OutboundRtpMonitor | outbound-rtp: sent packets/bytes, encoded frames, target bitrate, encode cost, QP, limitation durations, retransmission and feedback | `outboundRtps[]` |
+| RemoteInboundRtpMonitor | remote-inbound-rtp: receiver-reported loss/jitter/RTT for local outbound stream | `remoteInboundRtps[]` |
+| RemoteOutboundRtpMonitor | remote-outbound-rtp: sender reports for a local inbound stream | `remoteOutboundRtps[]` |
+| CodecMonitor | codec identifiers, MIME type, clock rate, channels, FMTP, transport link | `codecs[]` |
+| MediaSourceMonitor | media-source capture geometry/fps/frames and audio energy/duration | `mediaSources[]` |
+| MediaPlayoutMonitor | media-playout synthesized audio duration/events, playout delay, sample totals | `mediaPlayouts[]` |
+| IceTransportMonitor | transport: packets/bytes, ICE/DTLS state/roles, pair/certificate references, negotiated crypto | `iceTransports[]` |
+| IceCandidateMonitor | local-candidate/remote-candidate addresses, ports, type, protocol, relay metadata | `iceCandidates[]` |
+| IceCandidatePairMonitor | candidate-pair states, nomination, connectivity checks, RTT, throughput/BWE, endpoint refs | `iceCandidatePairs[]` |
+| CertificateMonitor | certificate fingerprint/algorithm/base64 and issuer reference | `certificates[]` |
+| DataChannelMonitor | data-channel state, label, protocol, identifier, messages/bytes | `dataChannels[]` |
+| PeerConnectionTransportMonitor | peer-connection report: dataChannelsOpened/Closed | `peerConnectionTransports[]` |
+| InboundTrackMonitor / OutboundTrackMonitor | MediaStreamTrack binding, context, aggregate/derived values; no matching browser track report assumed | `inboundTracks[]` / `outboundTracks[]`, limited projection |
+| PeerConnectionMonitor | graph owner and aggregate, not the browser's peer-connection report | PC envelope |
+| ClientMonitor | cross-PC aggregates, events, issues, extensions and score | ClientSample root |
+| ExtensionStatsMonitor | application-defined payload, identity and freshness | `extensionStats[]` at root |
+| SelectedIcePath | history/view over selected ICE tuple and its evidence | no dedicated sample record |
 
-```typescript
-const track = monitor.getTrackMonitor(trackId);
-const rtp = track?.direction === 'inbound' ? track.getInboundRtp() : undefined;
+Source: [client-monitor-js/src/monitors/PeerConnectionMonitor.ts · createSample](https://github.com/ObserveRTC/client-monitor-js/blob/0f08bd5d110a4e9d53cf0486962e638c5b393c49/src/monitors/PeerConnectionMonitor.ts#L924), [schemas/sources/samples/PeerConnectionSample.chunk.avsc](https://github.com/ObserveRTC/schemas/blob/eb7fe28062b81d6db9dfb7ca565b1fb9c88b5d17/sources/samples/PeerConnectionSample.chunk.avsc). The full field inventory is intentionally not reduced to the above examples.
 
-const codec = rtp?.getCodec()?.mimeType;               // 'video/VP8'
-const pair = rtp?.getSelectedCandidatePair();
-const relayed = pair?.getRemoteCandidate()?.candidateType === 'relay';
-const senderView = rtp?.getRemoteOutboundRtp();        // what the far end says it sent
-```
+### Core formulas
 
-{{< callout context="caution" title="Renamed in 4.9" icon="alert-triangle" >}}
-`OutboundTrackMonitor.getHighestLayer()` is now the property `highestLayer`.
-`PeerConnectionMonitor.attributeRtpToTransport()` is withdrawn — `hasInboundMedia`,
-`hasInboundVideo` and `hasOutboundMedia` answer what the detectors used it for, and
-`IceTransportMonitor.getInboundRtps()` / `getOutboundRtps()` are a plain `transportId` lookup.
-{{< /callout >}}
+Let `Δx = positiveDelta(current, previous)`, `dtMs = current.timestamp − previous.timestamp`, `dt = dtMs/1000`. `positiveDelta` returns **undefined**, not zero, on missing inputs or a backwards counter. Each consumer may handle that differently; some explicitly coalesce to zero. Read the formula appendix for every assignment and its guards.
 
-## Client level
+| Value | Implemented calculation / scope |
+|---|---|
+| RTP bitrate | `max(0, Δbytes × 8 / dt)` |
+| RTP packet rate | `Δpackets / dt` |
+| Outbound payloadBitrate | `max(0, (ΔbytesSent − ΔheaderBytesSent − (ΔretransmittedBytesSent ?? 0)) × 8 / dt)`; this is the implementation even if the field name invites a different byte accounting assumption |
+| Inbound deltaFractionLost | `Δlost/(Δlost+Δreceived)` only when both deltas are present and both are positive; otherwise zero in that guarded block. This means all-loss/zero-received is not represented as 1 by this expression |
+| Remote inbound deltaFractionLost | `Δlost/(Δlost+Δreceived)` when denominator >0, else 0; no-new-RTCP-report resets interval readings |
+| BitPerPixel | `bitrate/(width × height × framesPerSecond)` with truthy geometry/fps/bitrate gates |
+| Inbound avgFramesPerSec | mean of last at most 10 truthy browser FPS readings |
+| fpsVolatility | mean absolute deviation of those FPS readings divided by their mean; deprecated |
+| ewmaFps | existing EWMA ×0.9 + new FPS ×0.1; first/truthy-state handling matters |
+| interFrameDelayVariation | `sqrt(max(0, ΔsquaredGap/N − (Δgap/N)²)) / (Δgap/N)`, N=`ΔframesDecoded`, N>1 |
+| inventedSpeechRatio | `max(0, ΔconcealedSamples − (ΔsilentConcealedSamples ?? 0)) / ΔtotalSamplesReceived` |
+| timeStretchRate | `((ΔinsertedSamplesForDeceleration ?? 0)+(ΔremovedSamplesForAcceleration ?? 0))/ΔtotalSamplesReceived`; a fraction, not per-second rate |
+| concealmentEventRate | `ΔconcealmentEvents/dt` |
+| discardRate | `ΔpacketsDiscarded/(ΔpacketsDiscarded+(ΔpacketsReceived ?? 0))`; zero if consumed count is zero |
+| avgJitterBufferDelayInMs | `1000 × ΔjitterBufferDelay / ΔjitterBufferEmittedCount` |
+| jitterBufferTargetDelayInMs | analogous target-delay delta / emitted count ×1000 |
+| decodeTimePerFrameInMs | `1000 × ΔtotalDecodeTime / ΔframesDecoded` |
+| avgEncodeTimePerFrameInMs | `1000 × ΔtotalEncodeTime / ΔframesEncoded` |
+| avgQpPerFrame | ΔqpSum divided by decoded/encoded frames, depending on direction |
+| normalizedQp | inbound average QP divided by codec scale from `qpScaleOf`, clamped 0..1; unknown codec => undefined |
+| droppedFrameRatio / renderRatio | ΔframesDropped/ΔframesReceived; ΔframesRendered/ΔframesDecoded |
+| frozenTimeRatio / pausedTimeRatio | ΔtotalFreezesDuration/dt; ΔtotalPausesDuration/dt |
+| keyFrameRate, PLI/FIR/NACK rates | corresponding counter delta / dt |
+| retransmissionRatio | retransmitted byte delta / total byte delta, capped at 1; zero/undefined behavior differs by direction |
+| avgPacketSendDelayInMs | `1000 × ΔtotalPacketSendDelay/ΔpacketsSent` |
+| qualityLimitationDurationShares | nonnegative deltas of none/cpu/bandwidth/other divided by sum of those deltas; undefined for no progress |
+| source producedFps | nonnegative Δsource.frames/dt |
+| source rmsAudioLevel | `sqrt(ΔtotalAudioEnergy/ΔtotalSamplesDuration)` when duration >0 |
+| playoutDelayPerSampleInMs | `1000 × ΔtotalPlayoutDelay/ΔtotalSamplesCount` |
+| synthesizedSamplesRatio | ΔsynthesizedSamplesDuration/ΔtotalSamplesDuration, with explicit fallback behavior in MediaPlayoutMonitor |
+| ICE mean RTT | ΔtotalRoundTripTime/ΔresponsesReceived |
+| RTCP mean RTT | ΔtotalRoundTripTime/ΔroundTripTimeMeasurements |
 
-```javascript
-monitor.sendingAudioBitrate;      // bps, aggregated across every peer connection
-monitor.sendingVideoBitrate;
-monitor.receivingAudioBitrate;
-monitor.receivingVideoBitrate;
+Sources: [client-monitor-js/src/utils/common.ts · positiveDelta](https://github.com/ObserveRTC/client-monitor-js/blob/0f08bd5d110a4e9d53cf0486962e638c5b393c49/src/utils/common.ts#L54), [client-monitor-js/src/monitors/InboundRtpMonitor.ts · accept](https://github.com/ObserveRTC/client-monitor-js/blob/0f08bd5d110a4e9d53cf0486962e638c5b393c49/src/monitors/InboundRtpMonitor.ts#L322), [client-monitor-js/src/monitors/OutboundRtpMonitor.ts · accept](https://github.com/ObserveRTC/client-monitor-js/blob/0f08bd5d110a4e9d53cf0486962e638c5b393c49/src/monitors/OutboundRtpMonitor.ts#L174), [client-monitor-js/src/monitors/RemoteInboundRtpMonitor.ts · accept](https://github.com/ObserveRTC/client-monitor-js/blob/0f08bd5d110a4e9d53cf0486962e638c5b393c49/src/monitors/RemoteInboundRtpMonitor.ts#L97), [client-monitor-js/src/monitors/MediaSourceMonitor.ts · accept](https://github.com/ObserveRTC/client-monitor-js/blob/0f08bd5d110a4e9d53cf0486962e638c5b393c49/src/monitors/MediaSourceMonitor.ts#L82), [client-monitor-js/src/monitors/MediaPlayoutMonitor.ts · accept](https://github.com/ObserveRTC/client-monitor-js/blob/0f08bd5d110a4e9d53cf0486962e638c5b393c49/src/monitors/MediaPlayoutMonitor.ts#L72), [client-monitor-js/src/monitors/IceCandidatePairMonitor.ts · accept](https://github.com/ObserveRTC/client-monitor-js/blob/0f08bd5d110a4e9d53cf0486962e638c5b393c49/src/monitors/IceCandidatePairMonitor.ts#L95), [client-monitor-js/src/utils/quantizer.ts](https://github.com/ObserveRTC/client-monitor-js/blob/0f08bd5d110a4e9d53cf0486962e638c5b393c49/src/utils/quantizer.ts).
 
-monitor.totalAvailableIncomingBitrate;
-monitor.totalAvailableOutgoingBitrate;
+PC sums distinguish audio/video/data-channel directions. Quality-loss averages include streams that actually carried relevant packets; missing measurement differs from zero loss. RTT paths are kept separate (`rtcpRttInSec`, `iceRttInSec`), with current RTT preferring RTCP and falling back to ICE. Root `avgRttInSec` averages PC values and returns -1 with no PCs. PC legacy loss sums and newer per-stream means are not interchangeable. See [client-monitor-js/src/monitors/PeerConnectionMonitor.ts · _updateTransportQualityAverages](https://github.com/ObserveRTC/client-monitor-js/blob/0f08bd5d110a4e9d53cf0486962e638c5b393c49/src/monitors/PeerConnectionMonitor.ts#L1253), [client-monitor-js/src/ClientMonitor.ts · collect](https://github.com/ObserveRTC/client-monitor-js/blob/0f08bd5d110a4e9d53cf0486962e638c5b393c49/src/ClientMonitor.ts#L610).
 
-monitor.avgRttInSec;                      // mean across connections
-monitor.score;                            // 0.0–5.0, undefined until it settles
-monitor.scoreReasons;                     // this entity's own subtractions
-monitor.cpuUtilization;                   // the reading behind `cpulimitation`, published either way
-monitor.durationOfCollectingStatsInMs;    // how long the collection took — wall clock, on purpose
-monitor.createdAt;  monitor.uptimeInMs;   // how long this monitor has been running
-monitor.activeTab;                        // false while the tab is backgrounded
-```
+`transportStability` is the normalized MOS-like value produced by `utils/transportStability.ts`: effective latency is RTT/2 + 2×jitter +10 ms; a piecewise latency impairment and 2.5×loss-percent reduce R; a cubic maps clamped R to MOS; normalized against this model's best/worst MOS. It requires all three measurements. It is not a direct measurement of user satisfaction or a selected-pair-switch counter. [client-monitor-js/src/utils/transportStability.ts](https://github.com/ObserveRTC/client-monitor-js/blob/0f08bd5d110a4e9d53cf0486962e638c5b393c49/src/utils/transportStability.ts).
 
-## Peer connection level
+### Undefined, reset, suppression and nullification
 
-```javascript
-pc.sendingAudioBitrate;  pc.sendingVideoBitrate;
-pc.receivingAudioBitrate; pc.receivingVideoBitrate;
+There is no single universal nullification pass. The current code uses several distinct mechanisms:
 
-// Means over the streams that actually carried packets this tick — `undefined`
-// rather than 0 when none did.
-pc.avgInboundFractionLost;      // mean interval inbound loss fraction (0..1)
-pc.avgOutboundFractionLost;     // mean loss the far end reported for what we send
-pc.avgInboundJitterInMs;        // published deliberately without a detector
+- Missing raw inputs: InboundRtpMonitor explicitly replaces known fields, including undefined; several other monitors use Object.assign and can retain omitted properties. Derived assignments are conditional, so some previous derived values can remain. Do not promise universal freshness without checking the owner.
+- Backwards counters: `positiveDelta` returns undefined; MediaPlayoutMonitor explicitly converts some such deltas to zero. Remote RTCP repeated/stale timestamps clear interval readings. Inbound repeated timestamps replace raw fields but return before recomputing derived values; outbound returns earlier.
+- Shared windows: `SlicedWindow` uses null for unavailable totals, rejects repeated timestamps, resets across excessive gaps and requires full slices. N samples span N−1 intervals. Detection/recovery are different slices; inspect their configured offsets rather than assuming a trailing duration in milliseconds.
+- Paused/ended/background/muted tracks: individual detectors stand down according to their own guards. There is no blanket rule that every detector handles every gate identically. Missing-input branches can preserve an open issue while publishing `inputsUnavailable`, whereas some detectors resolve it.
+- Zero score: full-scale deductions clamp the affected component to zero. Connectivity issues are deliberately not charged again on the PC; dry-track issues can zero media components. There is no global “any network fault nullifies every score” rule.
+- Aggregate absent dimensions: undefined/null dimensions are omitted from client RMSE; no measurable dimensions causes calculator early return, leaving the root's previous/default `score`, which starts at 5. This differs from documentation saying the root necessarily becomes undefined.
+- Wire absence: undefined properties disappear under JSON serialization; Avro nullable fields and generated TS optional fields are separate representations. On-change ICE omissions must be retained by the receiver, but current observer code does not retain them (confirmed below).
 
-// Sums kept for backwards compatibility
-pc.outboundFractionLost;  pc.inboundFractionalLost;
+Sources: [client-monitor-js/src/utils/SlicedWindow.ts](https://github.com/ObserveRTC/client-monitor-js/blob/0f08bd5d110a4e9d53cf0486962e638c5b393c49/src/utils/SlicedWindow.ts), [client-monitor-js/src/monitors/InboundRtpMonitor.ts](https://github.com/ObserveRTC/client-monitor-js/blob/0f08bd5d110a4e9d53cf0486962e638c5b393c49/src/monitors/InboundRtpMonitor.ts), [client-monitor-js/src/monitors/OutboundRtpMonitor.ts](https://github.com/ObserveRTC/client-monitor-js/blob/0f08bd5d110a4e9d53cf0486962e638c5b393c49/src/monitors/OutboundRtpMonitor.ts), [client-monitor-js/src/monitors/RemoteInboundRtpMonitor.ts](https://github.com/ObserveRTC/client-monitor-js/blob/0f08bd5d110a4e9d53cf0486962e638c5b393c49/src/monitors/RemoteInboundRtpMonitor.ts), [client-monitor-js/src/monitors/MediaPlayoutMonitor.ts](https://github.com/ObserveRTC/client-monitor-js/blob/0f08bd5d110a4e9d53cf0486962e638c5b393c49/src/monitors/MediaPlayoutMonitor.ts), [client-monitor-js/src/scores/DefaultScoreCalculator.ts](https://github.com/ObserveRTC/client-monitor-js/blob/0f08bd5d110a4e9d53cf0486962e638c5b393c49/src/scores/DefaultScoreCalculator.ts).
 
-// Round trip — two different measurements, never blended
-pc.avgRttInSec;                 // rtcpRttInSec ?? iceRttInSec
-pc.ewmaRttInSec;                // EWMA of whichever of those is reporting (α = 0.1)
-
-// Pacer and jitter-buffer facts the capacity detectors read
-pc.avgPacketSendDelayInMs;
-pc.avgInboundVideoJitterBufferDelayInMs;
-pc.availableOutgoingBitrate;    // undefined where no selected pair reported one
-pc.qualityLimitationReason;     // most limiting reason across streams that sent something
-
-// Deltas
-pc.deltaInboundPacketsLost;  pc.deltaInboundPacketsReceived;
-pc.deltaOutboundPacketsSent;
-pc.deltaAudioBytesSent;  pc.deltaVideoBytesSent;  pc.deltaDataChannelBytesSent;
-
-// Stats time, not wall clock: this collection's newest timestamp minus the previous one's.
-pc.deltaTime;
-pc.statsClockTime;              // accumulated stats time — the clock every window is aged on
-
-// Topology and state
-pc.usingTURN;  pc.usingTCP;  pc.iceState;
-pc.connectingStartedAt;  pc.connectedAt;
-pc.congested;  pc.uplinkCongested;  pc.downlinkCongested;
-pc.hasInboundMedia;  pc.hasInboundVideo;  pc.hasOutboundMedia;
-pc.selectedIcePath;  pc.selectedIcePaths;
-pc.issues;                      // the IssueRegistry for this peer connection
-pc.slicedWindow;                // the shared window every pc-level detector reads
-pc.calculatedStabilityScore;    // { value, reasons, weight }
-```
-
-{{< callout context="note" title="Withdrawn in 4.9" icon="info-circle" >}}
-`highestSeenSendingBitrate`, `highestSeenReceivingBitrate`, `highestSeenAvailableIncomingBitrate`
-and `highestSeenAvailableOutgoingBitrate` are gone. The congestion detectors hold their own
-`DecayingMaxEstimator`, which **forgets** — a rolling maximum that never decays holds a finding open
-against a peak the path no longer reaches.
-{{< /callout >}}
-
-## Track level
-
-```javascript
-// Inbound
-inboundTrack.bitrate;  inboundTrack.jitter;  inboundTrack.fractionLost;
-inboundTrack.calculatedScore;      // { value, reasons, weight }
-inboundTrack.issues;               // this track's IssueRegistry
-inboundTrack.slicedWindow;
-inboundTrack.frameFlowState;       // 'continuous' | 'choppy' | 'frozen'
-inboundTrack.decodeBudgetUtilization;
-inboundTrack.quantizationDegradation;
-inboundTrack.displayMagnification; // sqrt(presented area / decoded area), unbounded
-inboundTrack.linkedVideoPlayoutDiffInMs;
-inboundTrack.contentType;  inboundTrack.motionType;   // read-only getters over the declared context
-inboundTrack.presentedResolution;  inboundTrack.videoTag;
-inboundTrack.paused;  inboundTrack.remoteOutboundTrackPaused;
-
-// Outbound
-outboundTrack.bitrate;
-outboundTrack.sendingPacketRate;
-outboundTrack.remoteReceivedPacketRate;
-outboundTrack.jitter;  outboundTrack.fractionLost;    // as the far end reported them
-outboundTrack.highestLayer;                            // was getHighestLayer()
-outboundTrack.settings;  outboundTrack.videoCaptureSettingsChanged;
-outboundTrack.calculatedScore;  outboundTrack.issues;
-```
-
-The context fields are **read-only getters** as of 4.9 — write them with
-`ClientMonitor.setInboundTrackContext()` / `setOutboundTrackContext()`, or `trackMonitor.setContext()`.
-
-## Inbound RTP
-
-```javascript
-// Rates
-inboundRtp.bitrate;  inboundRtp.packetRate;  inboundRtp.fractionLost;
-inboundRtp.bitPerPixel;                 // bitrate / (width × height × fps)
-
-// Video timing
-inboundRtp.avgFramesPerSec;
-inboundRtp.ewmaFps;
-inboundRtp.interFrameDelayVariation;    // frame-timing stability (lower is better)
-inboundRtp.fpsVolatility;               // deprecated: prefer interFrameDelayVariation
-
-// Audio — the "how did it sound" set
-inboundRtp.inventedSpeechRatio;         // share NetEQ invented this interval — silence excluded
-inboundRtp.concealmentEventRate;
-inboundRtp.timeStretchRate;             // share of samples stretched or compressed
-inboundRtp.avgJitterBufferDelayInMs;    // latency the buffer actually added, per sample
-inboundRtp.jitterBufferTargetDelayInMs; // what NetEQ is aiming for
-inboundRtp.discardRate;                 // packets that arrived too late to use
-inboundRtp.estimatedPlayoutTimestamp;   // the sender's NTP time of the last playable sample
-
-// Video decode cost and recovery pressure
-inboundRtp.decodeTimePerFrameInMs;
-inboundRtp.droppedFrameRatio;           // this interval's share (was `dropRatio`)
-inboundRtp.renderRatio;                 // frames rendered vs decoded
-inboundRtp.keyFrameRate;  inboundRtp.pliRate;  inboundRtp.firRate;  inboundRtp.nackRate;
-inboundRtp.retransmissionRatio;
-inboundRtp.avgQpPerFrame;
-
-// Deltas
-inboundRtp.deltaPacketsLost;  inboundRtp.deltaPacketsReceived;  inboundRtp.deltaBytesReceived;
-inboundRtp.deltaFramesReceived;  inboundRtp.deltaFramesDecoded;  inboundRtp.deltaFramesRendered;
-inboundRtp.deltaKeyFramesDecoded;  inboundRtp.deltaPliCount;
-inboundRtp.deltaJitterBufferDelay;  inboundRtp.deltaCorruptionProbability;
-inboundRtp.deltaTime;
-```
-
-{{< callout context="caution" title="Renamed and removed in 4.9" icon="alert-triangle" >}}
-`concealmentRate` → **`inventedSpeechRatio`**, and it now excludes silent concealment.
-`dropRatio` → **`droppedFrameRatio`**, and it is this interval's share rather than the call's.
-`isFreezed` is gone — `InboundVideoFlowStateDetector` owns the verdict and publishes it as
-`InboundTrackMonitor.frameFlowState`.
-{{< /callout >}}
-
-> Every delta is **counter-reset safe**: a counter that goes backwards (SSRC reuse, an ICE restart,
-> a stats-object replacement) yields `0` rather than a negative value, so no rate derived from it
-> can go negative. `packetsLost` legitimately *decreases* when a late packet arrives, so the guard
-> is not merely defensive there.
-
-## Outbound RTP
-
-```javascript
-outboundRtp.bitrate;
-outboundRtp.payloadBitrate;             // excludes headers and retransmissions
-outboundRtp.packetRate;
-outboundRtp.bitPerPixel;
-
-outboundRtp.encodeTimePerFrameInMs;     // the most direct send-side CPU signal
-outboundRtp.avgQpPerFrame;
-outboundRtp.avgPacketSendDelayInMs;     // per-packet pacer delay
-outboundRtp.retransmissionRatio;  outboundRtp.retransmittedPacketRatio;
-outboundRtp.keyFrameRate;  outboundRtp.nackRate;  outboundRtp.pliRate;  outboundRtp.firRate;
-
-// What the encoder spent THIS interval doing, 0..1 — unlike the raw
-// qualityLimitationDurations accumulators, this can be compared to a threshold.
-outboundRtp.qualityLimitationDurationShares;
-// => { none: 0.25, cpu: 0.75, bandwidth: 0, other: 0 }
-
-outboundRtp.deltaPacketsSent;  outboundRtp.deltaBytesSent;  outboundRtp.deltaFramesEncoded;
-```
-
-## Remote RTP
-
-```javascript
-// Remote inbound — what the far end reports about the stream we send
-remoteInboundRtp.packetRate;
-remoteInboundRtp.deltaPacketsLost;
-remoteInboundRtp.deltaFractionLost;
-remoteInboundRtp.avgRoundTripTimeInSec;   // totalRoundTripTime / roundTripTimeMeasurements
-                                          // — `roundTripTime` alone is one noisy measurement
-
-// Remote outbound — what the far end reports about the stream we receive
-remoteOutboundRtp.bitrate;
-remoteOutboundRtp.deltaPacketsSent;
-```
-
-## ICE transport, candidate pairs and data channels
-
-```javascript
-iceTransport.sendingBitrate;  iceTransport.receivingBitrate;
-iceTransport.deltaBytesSent;  iceTransport.deltaBytesReceived;
-iceTransport.deltaPacketsSent;  iceTransport.deltaPacketsReceived;
-iceTransport.deltaSelectedCandidatePairChanges;   // from the browser's own counter, where reported
-iceTransport.everConnected;                       // latched the first time it read connected
-iceTransport.detectors;                           // the three Blocked* detectors live here
-
-candidatePair.availableIncomingBitrate;
-candidatePair.availableOutgoingBitrate;
-candidatePair.deltaResponsesReceived;             // the STUN consent counter
-candidatePair.tuple;                              // local:port:remote:port:protocol
-
-dataChannel.deltaBytesSent;  dataChannel.deltaBytesReceived;
-```
-
-## Media source and playout
-
-```javascript
-mediaSource.deltaFrames;      // frames the capture source produced this interval
-mediaSource.sourceFps;        // …as a rate — compare against what the encoder managed
-mediaSource.rmsAudioLevel;    // RMS over the interval, from totalAudioEnergy — unlike
-                              // `audioLevel` it does not read zero between words
-mediaSource.getOutboundRtps();
-
-mediaPlayout.deltaSynthesizedSamplesDuration;
-mediaPlayout.deltaSamplesDuration;
-mediaPlayout.synthesizedSamplesRatio;      // synthesized share of the interval, 0..1
-mediaPlayout.playoutDelayPerSampleInMs;    // `totalPlayoutDelay` grows forever; this can be
-                                           // compared to a threshold
-```
-
-## Extension stats
-
-Anything your application measures can be folded into the monitor tree and read back off it.
-
-```typescript
-monitor.addExtensionStats({
-    type: 'render-stats',
-    id: 'tile-42',                  // giving an id is what makes it readable back
-    payload: { droppedFrames: 3, canvasFps: 24 },
-});
-
-monitor.getExtensionStatsPayload<{ droppedFrames: number }>('tile-42')?.droppedFrames;  // 3
-monitor.getExtensionStatsMonitor('tile-42')?.timestamp;
-monitor.mappedExtensionStatsMonitors;
-```
-
-**It is a current-value store, not a history.** Each id holds only the most recent payload, and a
-monitor is dropped one collection after the id stops being reported. To report every collection
-without wiring a timer, register a provider — providers are awaited as part of each collection, so
-their values land in the same tick as the `getStats()` they sit beside:
-
-```typescript
-monitor.extensionStatsProviders.add(async () => ({
-    type: 'render-stats',
-    id: 'tile-42',
-    payload: { canvasFps: renderer.fps },
-}));
-```
-
-## Reading them
-
-```javascript
-monitor.on('stats-collected', () => {
-    console.log('sending:', monitor.sendingAudioBitrate + monitor.sendingVideoBitrate);
-
-    for (const pc of monitor.peerConnections) {
-        console.log(pc.peerConnectionId, 'RTT', (pc.avgRttInSec ?? 0) * 1000, 'ms');
-
-        for (const track of pc.mappedInboundTracks.values()) {
-            if (track.kind !== 'video') continue;
-            const rtp = track.getInboundRtp();
-            console.log('fps', rtp?.ewmaFps, 'bpp', rtp?.bitPerPixel, 'flow', track.frameFlowState);
-        }
-    }
-});
-```
+[Browse the monitor catalog →](/docs/reference/monitor-catalog/)

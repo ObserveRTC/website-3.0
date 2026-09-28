@@ -1,0 +1,41 @@
+{
+  "date": "2026-09-28",
+  "source": "observer-js b4a1ccb85468c94084a89ed2c007708c14ead551",
+  "website": {
+    "npmCi": "passed",
+    "build": "passed",
+    "nativeChecks": "passed",
+    "httpStatus": 200,
+    "node": "26.0.0",
+    "npm": "11.12.1",
+    "fullUnitSuitesRun": false,
+    "handoffRestart": "blocked by current sandbox: listen EPERM 0.0.0.0:4443; earlier startup verified"
+  },
+  "results": [
+    {
+      "probe": "middleware-drop",
+      "originalAccepted": true,
+      "replacementAccepted": false
+    },
+    {
+      "probe": "middleware-throw",
+      "originalAccepted": true,
+      "replacementAccepted": false
+    },
+    {
+      "probe": "middleware-replace",
+      "originalAccepted": true,
+      "replacementAccepted": false
+    },
+    {
+      "probe": "on-change-ice-metadata",
+      "retainsIceRole": false,
+      "retainsTlsVersion": false
+    },
+    {
+      "probe": "zero-score-history",
+      "score": 0,
+      "numberOfScoreMeasurements": 0
+    }
+  ]
+}

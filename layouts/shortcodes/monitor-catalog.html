@@ -1,0 +1,8 @@
+<div class="monitor-catalog" data-monitor-catalog>
+  <div class="catalog-controls"><div><label for="monitor-search">Find a field or monitor</label><input id="monitor-search" type="search" placeholder="Try jitter, score, packetsLost…" autocomplete="off"></div><div><label for="monitor-type">Monitor type</label><select id="monitor-type"><option value="">All monitors</option>{{ range site.Data.monitors }}<option value="{{ .name }}">{{ .name }}</option>{{ end }}</select></div></div>
+  <p class="catalog-count" role="status" aria-live="polite"></p>
+  {{ range site.Data.monitors }}
+  <details class="catalog-monitor" data-monitor="{{ .name }}"><summary><span>{{ .name }}</span><span class="field-count">{{ len .members }} members</span></summary><p><a href="{{ .url }}">Open class implementation ↗</a></p><div class="catalog-table"><table><thead><tr><th>Member</th><th>Declaration / accessor</th><th>Source</th></tr></thead><tbody>{{ range .members }}<tr data-field="{{ .name }}"><td><code>{{ .name }}</code></td><td><code>{{ .declaration }}</code></td><td><a href="{{ .url }}">Source ↗</a></td></tr>{{ end }}</tbody></table></div></details>
+  {{ end }}
+  <p class="catalog-empty" hidden>No matching members. Try a shorter field name or select all monitors.</p>
+</div>

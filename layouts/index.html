@@ -1,71 +1,21 @@
 {{ define "main" }}
-<section class="section container-fluid mt-n3 pb-3">
-  <div class="row justify-content-center">
-    <div class="col-lg-12 text-center">
-      <div class="mb-4">
-        <img src="/logo/logo-large.jpg" alt="ObserveRTC Logo" class="img-fluid hero-logo">
-      </div>
-    </div>
-    <div class="col-lg-8 col-xl-7 text-center">
-      <h2 class="h3 mb-4">Full Stack Monitoring Solution for WebRTC</h2>
-      <p class="lead mb-5">ObserveRTC provides comprehensive monitoring capabilities for WebRTC applications, from client-side monitoring to server-side analysis.</p>
-      <div class="d-flex justify-content-center gap-3 flex-wrap mb-4">
-        <a class="btn btn-primary btn-lg rounded-pill px-4" href="/docs/overview/introduction/" role="button">Get Started</a>
-        <a class="btn btn-outline-primary btn-lg rounded-pill px-4" href="https://github.com/observertc" target="_blank" role="button">GitHub</a>
-      </div>
-      {{ .Content }}
-    </div>
+<section class="signal-story signal-story-home" aria-labelledby="signal-story-title">
+  <div class="text-center mb-4">
+    <img src="/logo/logo-large.jpg" alt="ObserveRTC" class="img-fluid hero-logo">
+  </div>
+  <div class="signal-story-heading">
+    <h1 id="signal-story-title">Full Stack Monitoring Solution for WebRTC</h1>
+  </div>
+  <ol class="signal-story-flow">
+    <li><span class="signal-step">01 / COLLECT</span><h3>Browser statistics</h3><p>Start with measurements from your existing peer connection.</p><code>getStats()</code></li>
+    <li><span class="signal-step">02 / INTERPRET</span><h3>Client Monitor</h3><p>Read live metrics, detect endpoint issues and calculate quality scores.</p><a href="/docs/client-monitor-js/">Explore Client Monitor →</a></li>
+    <li><span class="signal-step">03 / TRANSPORT</span><h3>ClientSample</h3><p>Send a typed sample over your transport, with optional JSON or Protobuf encoding.</p><a href="/docs/schema/">Explore the schema →</a></li>
+    <li><span class="signal-step">04 / CORRELATE</span><h3>Observer</h3><p>Reconstruct participants, tracks and calls. Analyze issues across endpoints.</p><a href="/docs/observer-js/">Explore Observer →</a></li>
+  </ol>
+  <div class="signal-story-demo"><div><h3>See the signals in a live connection</h3><p>Try the live example to explore Client Monitor while a WebRTC session runs.</p></div><a class="btn btn-outline-primary rounded-pill px-4" href="https://webrtc-observer.org/">Open live example ↗</a></div>
+  <div class="d-flex justify-content-center gap-3 flex-wrap mt-4">
+    <a class="btn btn-primary rounded-pill px-4" href="/docs/overview/introduction/">Get Started</a>
+    <a class="btn btn-outline-primary rounded-pill px-4" href="https://github.com/observertc">GitHub</a>
   </div>
 </section>
-{{ end }}
-
-{{ define "sidebar-prefooter" }}
-  {{ if site.Params.doks.backgroundDots -}}
-  <div class="d-flex justify-content-start">
-    <div class="bg-dots"></div>
-  </div>
-  {{ end -}}
-  <section class="section section-md">
-    <div class="container">
-      <div class="row justify-content-center text-center g-4">
-        <div class="col-lg-4">
-          <div class="card h-100 border-0 shadow-sm">
-            <div class="card-body p-4">
-              <h3 class="h5 card-title">Monitor</h3>
-              <p class="card-text">Collect real-time measurements and metrics from WebRTC applications and stacks. Track performance, quality, and connectivity data across your entire infrastructure.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="card h-100 border-0 shadow-sm">
-            <div class="card-body p-4">
-              <h3 class="h5 card-title">Analyze</h3>
-              <p class="card-text">Process and examine the collected data to identify patterns, bottlenecks, and performance issues. Generate insights from your WebRTC application behavior and user experience.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="card h-100 border-0 shadow-sm">
-            <div class="card-body p-4">
-              <h3 class="h5 card-title">Evaluate</h3>
-              <p class="card-text">Assess the overall health and performance of your WebRTC applications and stacks. Make data-driven decisions to optimize and improve your real-time communication systems.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-{{ end }}
-
-{{ define "sidebar-footer" }}
-{{ if site.Params.doks.sectionFooter -}}
-<section class="section section-md container-fluid bg-light">
-  <div class="row justify-content-center text-center">
-    <div class="col-lg-7">
-      <h2 class="mt-2">Start monitoring your WebRTC applications today</h2>
-      <a class="btn btn-primary rounded-pill px-4 my-2" href="/docs/overview/introduction/" role="button">Get Started</a>
-    </div>
-  </div>
-</section>
-{{ end -}}
 {{ end }}

@@ -1,0 +1,15 @@
+{{- $headings := len (findRE "<h[23][ >]" .Content) -}}
+{{- $tables := len (findRE "<table[ >]" .Content) -}}
+{{- $showToc := and (ne .Params.toc false) (ge .WordCount 600) (ge $headings 4) (eq $tables 0) -}}
+<div class="docs-layout{{ if $showToc }} docs-layout-with-toc{{ end }}">
+  <aside class="docs-sidebar d-none d-lg-block" aria-label="Documentation navigation">{{ partial "sidebar/section-menu.html" . }}</aside>
+  <main class="docs-content" id="main-content">
+    <div class="docs-page-heading"><p class="eyebrow">OBSERVERTC / {{ .CurrentSection.Title }}</p><h1>{{ .Title }}</h1>{{ with .Params.lead }}<p class="docs-lead">{{ . }}</p>{{ end }}</div>
+    {{ if $showToc }}<nav class="toc-mobile d-xxl-none" aria-label="On this page">{{ partial "sidebar/docs-toc-mobile.html" . }}</nav>{{ end }}
+    {{ $body := .Content | replaceRE "(<table(?:[ >]))" `<div class="table-responsive">${1}` | replaceRE "</table>" "</table></div>" | safeHTML }}
+    <div class="docs-prose">{{ if site.Params.doks.headlineHash }}{{ partial "main/headline-hash" $body }}{{ else }}{{ $body }}{{ end }}</div>
+    <div class="docs-source-note">Reference baseline: Client Monitor 4.9.1 · Observer 1.0.0 · Schema 3.7.0. <a href="/docs/reference/versions/">Source revisions</a></div>
+    <nav class="docs-bottom-links" aria-label="Related navigation"><a href="{{ .CurrentSection.RelPermalink }}">← {{ .CurrentSection.Title }}</a><a href="/docs/reference/">Implementation reference →</a></nav>
+  </main>
+  {{ if $showToc }}<nav class="docs-toc d-none d-xxl-block" aria-label="On this page">{{ partial "sidebar/docs-toc-desktop.html" . }}</nav>{{ end }}
+</div>

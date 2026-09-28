@@ -1,27 +1,31 @@
-# [[docs]]
-#   name = "Prologue"
-#   weight = 10
-#   identifier = "prologue"
-#   url = "/docs/prologue/"
+[[main]]
+name = "Docs"
+url = "/docs/overview/introduction/"
+weight = 10
+[[main]]
+name = "Live example ↗"
+url = "https://webrtc-observer.org/"
+weight = 20
+[[main]]
+name = "Contact"
+url = "/contact/"
+weight = 30
+[[social]]
+name = "GitHub"
+pre = '<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"></path></svg>'
+url = "https://github.com/observertc"
+weight = 10
 
-# [[docs]]
-#   name = "Help"
-#   weight = 60
-#   identifier = "help"
-#   url = "/docs/help/"
-
-# [[docs]]
-#   name = "Lorem"
-#   weight = 70
-#   identifier = "lorem"
-#   url = "/docs/lorem/"
-
-# ObserveRTC Documentation Navigation
 [[docs]]
-name = "Overview"
+name = "Start here"
 weight = 10
 identifier = "overview"
 url = "/docs/overview/"
+
+[[sidebar_docs]]
+name = "Start here"
+weight = 10
+pageRef = "/docs/overview"
 
 [[docs]]
 name = "Client Monitor"
@@ -29,11 +33,21 @@ weight = 20
 identifier = "client-monitor-js"
 url = "/docs/client-monitor-js/"
 
+[[sidebar_docs]]
+name = "Client Monitor"
+weight = 20
+pageRef = "/docs/client-monitor-js"
+
 [[docs]]
 name = "Observer"
 weight = 30
 identifier = "observer-js"
 url = "/docs/observer-js/"
+
+[[sidebar_docs]]
+name = "Observer"
+weight = 30
+pageRef = "/docs/observer-js"
 
 [[docs]]
 name = "Protobuf Codec"
@@ -41,94 +55,49 @@ weight = 40
 identifier = "samples-protobuf-codec"
 url = "/docs/samples-protobuf-codec/"
 
+[[sidebar_docs]]
+name = "Protobuf Codec"
+weight = 40
+pageRef = "/docs/samples-protobuf-codec"
+
 [[docs]]
 name = "JSON Codec"
 weight = 50
 identifier = "samples-json-codec"
 url = "/docs/samples-json-codec/"
 
+[[sidebar_docs]]
+name = "JSON Codec"
+weight = 50
+pageRef = "/docs/samples-json-codec"
+
+[[docs]]
+name = "Implementation reference"
+weight = 60
+identifier = "reference"
+url = "/docs/reference/"
+
+[[sidebar_docs]]
+name = "Implementation reference"
+weight = 60
+pageRef = "/docs/reference"
+
 [[docs]]
 name = "Schema"
-weight = 60
+weight = 70
 identifier = "schema"
 url = "/docs/schema/"
 
-[[guide]]
-name = "Lorem"
-weight = 10
-identifier = "lorem"
-url = "/guide/lorem/"
+[[sidebar_docs]]
+name = "Schema"
+weight = 70
+pageRef = "/docs/schema"
 
-[[tutorial]]
-name = "Lorem"
+[[footer]]
+name = "Privacy"
+url = "/privacy/"
 weight = 10
-identifier = "lorem"
-url = "/tutorial/lorem/"
-
-[[main]]
-name = "Docs"
-url = "/docs/overview/introduction/"
-weight = 10
-
-[[main]]
+[[footer]]
 name = "Contact"
 url = "/contact/"
 weight = 20
-
-# [[social]]
-#   name = "X"
-#   pre = '<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-x" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M4 4l11.733 16h4.267l-11.733 -16z"></path><path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"></path></svg>'
-#   url = "https://twitter.com/getdoks"
-#   weight = 10
-#
-# [[social]]
-#   name = "Discord"
-#   pre = '<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-discord" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M8 12a1 1 0 1 0 2 0a1 1 0 0 0 -2 0"></path><path d="M14 12a1 1 0 1 0 2 0a1 1 0 0 0 -2 0"></path><path d="M8.5 17c0 1 -1.356 3 -1.832 3c-1.429 0 -2.698 -1.667 -3.333 -3c-.635 -1.667 -.476 -5.833 1.428 -11.5c1.388 -1.015 2.782 -1.34 4.237 -1.5l.975 1.923a11.913 11.913 0 0 1 4.053 0l.972 -1.923c1.5 .16 3.043 .485 4.5 1.5c2 5.667 2.167 9.833 1.5 11.5c-.667 1.333 -2 3 -3.5 3c-.5 0 -2 -2 -2 -3"></path><path d="M7 16.5c3.5 1 6.5 1 10 0"></path></svg>'
-#   url = "https://getdoks.org/chat"
-#   weight = 20
-
-[[social]]
-name = "GitHub"
-pre = '<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"></path></svg>'
-url = "https://github.com/observertc"
-weight = 10
-
-[[sidebar_docs]]
-name = "Overview"
-pageRef = "/docs/overview"
-weight = 10
-
-[[sidebar_docs]]
-name = "Client Monitor"
-pageRef = "/docs/client-monitor-js"
-weight = 20
-
-[[sidebar_docs]]
-name = "Observer"
-pageRef = "/docs/observer-js"
-weight = 30
-
-[[sidebar_docs]]
-name = "Protobuf Codec"
-pageRef = "/docs/samples-protobuf-codec"
-weight = 40
-
-[[sidebar_docs]]
-name = "JSON Codec"
-pageRef = "/docs/samples-json-codec"
-weight = 50
-
-[[sidebar_docs]]
-name = "Schema"
-pageRef = "/docs/schema"
-weight = 60
-
-[[footer]]
-name = "Privacy Policy"
-url = "/privacy/"
-weight = 10
-
-# [[footer]]
-#   name = "Terms of Service"
-#   url = "/terms/"
-#   weight = 20
