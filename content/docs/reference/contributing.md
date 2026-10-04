@@ -20,7 +20,5 @@ toc: true
 | New server detector | class + AvailableCallScope/ObserverScopeDetectorsConfigs + appropriate addDetector factory switch + index exports; explicit application registration |
 | New structural validation | Validator + AvailableValidatorConfigs + Observer.addValidator switch; evidence-backed positive/negative/inconclusive behavior |
 | New SFU integration | application signaling/attachments → RemoteTrackResolverFactory; optional server object observer; no guessed publisher linkage |
-| Catalog changes | replace regex/schema-membership provenance with explicit/AST-backed metadata; derive docs from pinned package/source; generation check prevents drift |
-| Site content/layout | design source + build-page generator + client modules; regenerate HTML/catalog and bundle, then check responsive layout and source facts |
 
 Useful tests to extend: client `tests/monitors/DerivedFields.spec.ts`, `UnreportedRoundRecovery.spec.ts`, `EndedTrackStandDown.spec.ts`, `RemoteRtcpReportStaleness.spec.ts`, detector-specific specs and `DetectorTaxonomy.spec.ts`, scoring specs; observer `acceptMiddleware.spec.ts`, `issueLifecycle.spec.ts`, `payloadWireGenerations.spec.ts`, `injection.spec.ts`, `RemoteTrackResolver.spec.ts`, `mediasoupRouter.spec.ts`, `callSummary.spec.ts`; schema JSON/protobuf codec roundtrip/delta/nested-payload/error tests. The full library suites were not run during this analysis.

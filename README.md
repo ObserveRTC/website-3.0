@@ -1,6 +1,6 @@
 # ObserveRTC documentation website
 
-Hugo/Doks website for Client Monitor, Observer and the sample schemas. This project is separate from the live mediasoup demo (`webrtc-observer.org`).
+Hugo/Doks website for Client Monitor, Observer and the sample schemas. This project is separate from the live example (`webrtc-observer.org`).
 
 ## Run locally
 
@@ -34,7 +34,7 @@ npm run check
 - `content/docs/`: guides and references. Explicit slugs keep URLs stable when titles change.
 - `data/monitors.json`: generated public field/accessor catalog, including constructor properties.
 - `assets/js/monitor-catalog.js`: accessible search/filter controls; native details remain usable without JavaScript.
-- `static/reference/`: pinned implementation references and offline source atlas. They are not loaded by the home page.
+- `static/reference/`: public library implementation references. They are not loaded by the home page.
 
 ## Source baseline
 

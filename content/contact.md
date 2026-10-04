@@ -1,34 +1,10 @@
 ---
 title: "Contact"
-description: "Get in touch with the ObserveRTC team"
-lead: "Questions about ObserveRTC? We're here to help."
-date: 2023-09-07T16:33:54+02:00
-lastmod: 2023-09-07T16:33:54+02:00
+description: "Contact the ObserveRTC team."
+lead: "Questions, feedback or help with ObserveRTC."
 draft: false
 ---
 
-## Get in Touch
+Email us at [info@observertc.org](mailto:info@observertc.org).
 
-We'd love to hear from you! Whether you have questions, need support, or want to contribute to the project, here are the best ways to reach us:
-
-### GitHub
-
-Visit our [GitHub repository](https://github.com/observertc) to:
-
-- Report issues and bugs
-- Request new features
-- Submit pull requests
-- Browse the source code
-
-### Community Support
-
-- **Discussions**: Join the conversation on GitHub Discussions
-- **Issues**: Report bugs or request features on GitHub Issues
-
-### Contributing
-
-ObserveRTC is an open-source project and we welcome contributions from the community. Check out our GitHub repository to learn how you can contribute.
-
-## Documentation
-
-If you're looking for technical documentation, please visit our [Documentation](/docs/) section.
+For bugs, feature requests or contributions, visit the relevant project in the [ObserveRTC GitHub organization](https://github.com/ObserveRTC).
