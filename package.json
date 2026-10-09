@@ -11,7 +11,7 @@
     "format": "prettier **/** -w -c",
     "build": "hugo --minify --gc --cleanDestinationDir",
     "preview": "vite preview --outDir public",
-    "check": "python3 scripts/check-site.py && node scripts/check-services.mjs"
+    "check": "python3 scripts/check-site.py && node scripts/check-services.mjs && node scripts/check-tabs.mjs"
   },
   "dependencies": {
     "@tabler/icons": "^3.12.0",

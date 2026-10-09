@@ -169,6 +169,12 @@ established preferences; a newer explicit user instruction takes precedence.
 - Browser JavaScript does not provide a trustworthy client IP. If separately
   authorized, the backend can derive it from the request using trusted proxy
   configuration; do not add IP collection to the frontend payload.
+- Keep `connect-src` in the hosting CSP (`netlify.toml`, or the deployed server
+  equivalent) aligned with `https://ingest.observertc.org`. A same-origin-only
+  policy blocks both analytics and subscriptions before CORS is evaluated.
+- Override Doks tabs in `assets/js/tabs.js`; match tab attribute values directly,
+  since saved labels can contain spaces or punctuation. Ignore absent saved tabs
+  and handle unavailable storage without breaking page initialization.
 - JSON POSTs to the ingestion subdomain are cross-origin and need CORS preflight.
   Do not claim real DNS/TLS/CORS/storage or ad-blocker compatibility was verified
   solely because local mocks pass. Consult `docs/ingestion-migration.md` and README
