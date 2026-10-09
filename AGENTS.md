@@ -191,6 +191,8 @@ established preferences; a newer explicit user instruction takes precedence.
 - Theme preference/switch: `assets/js/color-mode.js`.
 - Favicon override: `layouts/partials/seo/favicons.html`.
 - Updates: `layouts/updates/list.html`, `layouts/updates/single.html`.
+- Use Node.js 22 for Netlify builds and Agent Runners. Keep `.nvmrc`,
+  `netlify.toml`, the package engine, and the lockfile root engine aligned.
 - Run `npm run dev` for the Hugo preview, normally at `http://localhost:1313/`.
   If rendered content remains stale after a change, check/restart the existing
   preview process rather than starting another server on the same port.

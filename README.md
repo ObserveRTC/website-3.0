@@ -4,7 +4,7 @@ Hugo/Doks website for Client Monitor, Observer and the sample schemas. This proj
 
 ## Run locally
 
-Requires Node.js 20.11+ and **Hugo Extended** (verified with 0.143.1). Python 3 is used only for the link check.
+Requires Node.js 22+ (Node.js 22 is selected in `.nvmrc` and Netlify configuration) and **Hugo Extended** (verified with 0.143.1). Python 3 is used only for the link check.
 
 ```sh
 npm ci
