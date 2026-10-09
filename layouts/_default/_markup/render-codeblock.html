@@ -1,0 +1,4 @@
+{{- $result := transform.HighlightCodeBlock . -}}
+<div class="expressive-code">
+  <div class="frame not-content">{{ $result.Wrapped }}</div>
+</div>

@@ -95,6 +95,9 @@ established preferences; a newer explicit user instruction takes precedence.
 - Keep the desktop docs sidebar wide enough for article titles on one line
   (currently 320px), with compact subsection spacing and readable section/article
   fonts. Preserve mobile navigation rather than forcing the desktop layout.
+- Code blocks use a plain box and an accessible copy button. Do not add
+  decorative window dots, filename/title bars, or captions inside code boxes.
+  Keep the render hook override and homepage code box consistent.
 - Code samples should retain intentional line breaks. Avoid wrapping a package
   import solely because a code panel is too narrow; use responsive sizing or
   horizontal scrolling when necessary.

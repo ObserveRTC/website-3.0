@@ -339,3 +339,21 @@ html { scrollbar-gutter: stable; }
   height: auto;
   max-height: none;
 }
+
+// One simple code box, with a visible copy action and no window decoration.
+.highlight { position: relative; }
+.highlight > pre { border-radius: 6px; padding: 2.75rem 1rem 1rem; }
+.expressive-code .highlight > pre { margin: 0; }
+.highlight > .copy, .expressive-code .highlight > .copy {
+  position: absolute; top: .5rem; right: .5rem; z-index: 1; padding: 0;
+}
+.highlight > .copy > .btn-copy, .expressive-code .highlight > .copy > .btn-copy {
+  all: unset; box-sizing: border-box; display: block; cursor: pointer;
+  padding: .25rem .6rem; border: 1px solid var(--rtc-line); border-radius: 4px;
+  background: var(--rtc-surface); color: var(--rtc-muted); font: 500 .75rem/1.5 sans-serif;
+  opacity: 1;
+}
+.highlight > .copy > .btn-copy::before, .highlight > .copy > .btn-copy::after { display: none; }
+.highlight > .copy > .btn-copy:hover { color: var(--rtc-accent); }
+.highlight > .copy > .btn-copy:focus-visible { outline: 2px solid var(--rtc-accent); outline-offset: 2px; }
+.rtc-code-window.highlight pre { padding-top: 2.75rem; }

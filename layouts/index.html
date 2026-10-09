@@ -7,8 +7,7 @@
     <div class="rtc-hero-actions"><a class="btn btn-primary" href="{{ "/docs/overview/introduction/" | relURL }}">Get started →</a><a class="btn btn-outline-primary" href="https://webrtc-observer.org/" target="_blank" rel="noopener noreferrer">Try the live example ↗</a></div>
     <p class="rtc-hero-footnote">TypeScript libraries · Your transport · Your infrastructure</p>
   </div>
-  <div class="rtc-code-window" aria-label="ObserveRTC integration overview">
-    <div class="rtc-code-bar"><span class="rtc-window-dots" aria-hidden="true">● ● ●</span><span>your-application.ts</span></div>
+  <div class="rtc-code-window highlight" aria-label="ObserveRTC integration overview">
     <pre><code><span class="code-comment">// Start with your peer connection.</span>
 <span class="code-keyword">import</span> { ClientMonitor } <span class="code-keyword">from</span> <span class="code-string">'@observertc/client-monitor-js'</span>;
 
@@ -19,7 +18,6 @@ monitor.addSource(peerConnection);
 
 <span class="code-comment">// Explore metrics, issues, and samples.</span>
 <span class="code-comment">// Connect them to your own backend.</span></code></pre>
-    <div class="rtc-code-caption"><span class="rtc-status-dot" aria-hidden="true"></span>Browser stats → Client Monitor → Your backend</div>
   </div>
 </section>
 <section class="signal-story" aria-labelledby="signal-story-title">
