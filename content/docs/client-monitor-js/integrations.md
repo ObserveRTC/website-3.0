@@ -8,6 +8,7 @@ draft: false
 weight: 10
 toc: true
 ---
+Client Monitor attaches to your existing media objects. Start with a peer connection if your application uses the browser API directly, or attach a mediasoup device if mediasoup manages your transports.
 
 ## RTCPeerConnection
 
@@ -21,7 +22,7 @@ Register the connection you already use for media. Removing a source stops monit
 
 ## mediasoup-client
 
-Attach a device before it creates transports. Attach existing transports explicitly:
+A mediasoup device creates the send and receive transports used by your application. Attaching the device early lets the monitor follow new transports. If a transport already exists, register that transport explicitly:
 
 ```javascript
 monitor.addSource(device, 'mediasoup-device');
@@ -31,10 +32,10 @@ monitor.addSource(transport, 'mediasoup-transport');
 
 ## Application context
 
-Tell the monitor about application intent through `setInboundTrackContext` and `setOutboundTrackContext`. Pausing, screen sharing and expected media flow can change the meaning of a silent interval. Context may be pending until the track appears.
+The browser cannot tell whether a quiet stream is intentionally paused or unexpectedly broken. Tell the monitor about application intent through `setInboundTrackContext` and `setOutboundTrackContext`. Pausing, screen sharing and expected media flow can change the meaning of a silent interval. Context may be pending until the track appears.
 
-Keep identifiers distinct: a browser stats ID, SSRC, MediaStreamTrack ID and SFU producer ID identify different things. Use track attachments and a server resolver for publisher/subscriber correlation.
+Keep identifiers distinct: a browser stats ID, SSRC, `MediaStreamTrack` ID and SFU producer ID identify different things. Use track attachments and a server resolver for publisher/subscriber correlation.
 
-[Context and extension stats](/docs/client-monitor-js/events-and-issues/) · [Server SFU integration](/docs/observer-js/sfu/)
+[Application context](/docs/client-monitor-js/application-context/) · [Server SFU integration](/docs/observer-js/sfu/)
 
 Sources: [ClientMonitor.addSource](https://github.com/ObserveRTC/client-monitor-js/blob/0f08bd5d110a4e9d53cf0486962e638c5b393c49/src/ClientMonitor.ts), [Sources](https://github.com/ObserveRTC/client-monitor-js/blob/0f08bd5d110a4e9d53cf0486962e638c5b393c49/src/sources/Sources.ts).

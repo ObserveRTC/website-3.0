@@ -1,27 +1,19 @@
 ---
 slug: "events-and-issues"
-title: "Context, events & issues"
+title: "Context, events and issues"
 description: "Declare intent, add application measurements and track issue lifecycles."
 lead: "Declare intent, add application measurements and track issue lifecycles."
 lastmod: 2026-09-28T12:00:00+03:00
 draft: false
-weight: 60
+_build:
+  list: never
+weight: 999
 toc: true
 ---
+## Choose the information you need
 
-Inbound context includes `contentType`, local `paused`, `remoteOutboundTrackPaused`, `linkedVideoTrackId`, `motionType`, `presentedResolution`, and `videoTag`. Outbound context includes `contentType` and `paused`; capture settings provide additional evidence. Context merges; passing a key with undefined clears it. Declared screen-share identity affects detectors; paired video identity is required for audio/video playout difference; rendered element size enables display magnification. None of these facts should be inferred merely from “video” or guessed from a different participant. [client-monitor-js/src/monitors/InboundTrackMonitor.ts](https://github.com/ObserveRTC/client-monitor-js/blob/0f08bd5d110a4e9d53cf0486962e638c5b393c49/src/monitors/InboundTrackMonitor.ts), [client-monitor-js/src/monitors/OutboundTrackMonitor.ts](https://github.com/ObserveRTC/client-monitor-js/blob/0f08bd5d110a4e9d53cf0486962e638c5b393c49/src/monitors/OutboundTrackMonitor.ts), [client-monitor-js/src/ClientMonitor.ts · setInboundTrackContext](https://github.com/ObserveRTC/client-monitor-js/blob/0f08bd5d110a4e9d53cf0486962e638c5b393c49/src/ClientMonitor.ts#L1154).
+These topics now have separate guides:
 
-`appData` is local arbitrary working state. `attachments` is the explicit serializable envelope. Track `createSample()` sends id, kind, timestamp, attachments, score and reasons; it does not automatically send the context object, HTML element, flags or all derived metrics. Put required backend application context into an appropriate serializable contract explicitly.
-
-`addExtensionStats({type,payload,id?})` updates an id-keyed live ExtensionStatsMonitor independently of sampling. When automatic sampling is enabled or `bufferingEventsForSamples` is true, it also buffers `{type,payload}` and emits `extension-stats`. The optional monitor `id` is **not serialized** in that entry. Providers run during collect. The visited-based retention/expiry mechanism is local freshness, not persistent server storage. `getExtensionStatsPayload<T>` asserts T; it does not runtime-validate it. Observer emits `client-extension-stats`; it does not recreate the same client ExtensionStatsMonitor registry. [client-monitor-js/src/ClientMonitor.ts · addExtensionStats](https://github.com/ObserveRTC/client-monitor-js/blob/0f08bd5d110a4e9d53cf0486962e638c5b393c49/src/ClientMonitor.ts#L983), [client-monitor-js/src/monitors/ExtensionStatsMonitor.ts](https://github.com/ObserveRTC/client-monitor-js/blob/0f08bd5d110a4e9d53cf0486962e638c5b393c49/src/monitors/ExtensionStatsMonitor.ts), [observer-js/src/ObservedClient.ts · addExtensionStats](https://github.com/ObserveRTC/observer-js/blob/b4a1ccb85468c94084a89ed2c007708c14ead551/src/ObservedClient.ts#L570).
-
-Events and issues are separate channels:
-
-- Monitor events are local typed callbacks (`ClientMonitorEvents`) and may carry live monitor objects.
-- `addEvent()` adds a serializable ClientEvent and emits `client-event` only when automatic sampling is enabled or `bufferingEventsForSamples` is true. The flag defaults to false, but automatic sampling defaults to enabled, so ordinary default operation still buffers events. With both disabled, `addEvent()` returns before buffering or emitting. Metadata and issue sample buffering use the same gate; local issue emission is independent. A detector's `createEvent` and a monitor event are not automatically the same switch.
-- `addIssue()` is one-shot. Keyed `raiseIssue`/registry `raise` opens state, update changes live payload, resolve closes it. Local events are `issue`, `issue-updated`, `issue-resolved`.
-- Stateful raises buffer `{type,payload,timestamp,key}` when allowed. Resolution buffers type `${type}-resolved`, the same key, resolution timestamp, and payload including raisedAt/comment. `sendResolvedIssuesToServer` defaults true; false omits keyed lifecycle shipping.
-- `includeIssueInSample=false` preserves local detection but suppresses its issue records on the wire. Issue updates emit locally but `_updateIssue()` does not buffer a fresh issue entry each tick.
-- Registry propagation preserves subject-specific keys; multiple tracks can hold the same issue type independently.
-
-Sources: [client-monitor-js/src/ClientMonitorEvents.ts](https://github.com/ObserveRTC/client-monitor-js/blob/0f08bd5d110a4e9d53cf0486962e638c5b393c49/src/ClientMonitorEvents.ts), [client-monitor-js/src/ClientMonitorIssues.ts](https://github.com/ObserveRTC/client-monitor-js/blob/0f08bd5d110a4e9d53cf0486962e638c5b393c49/src/ClientMonitorIssues.ts), [client-monitor-js/src/utils/IssueRegistry.ts](https://github.com/ObserveRTC/client-monitor-js/blob/0f08bd5d110a4e9d53cf0486962e638c5b393c49/src/utils/IssueRegistry.ts), [client-monitor-js/src/ClientMonitor.ts · _raiseIssue](https://github.com/ObserveRTC/client-monitor-js/blob/0f08bd5d110a4e9d53cf0486962e638c5b393c49/src/ClientMonitor.ts#L1260), [client-monitor-js/src/ClientMonitor.ts · _updateIssue](https://github.com/ObserveRTC/client-monitor-js/blob/0f08bd5d110a4e9d53cf0486962e638c5b393c49/src/ClientMonitor.ts#L1278), [client-monitor-js/src/ClientMonitor.ts · _resolveIssue](https://github.com/ObserveRTC/client-monitor-js/blob/0f08bd5d110a4e9d53cf0486962e638c5b393c49/src/ClientMonitor.ts#L1286).
+- [Application context](/docs/client-monitor-js/application-context/) explains expected media behavior, attachments, and application measurements.
+- [Monitor events](/docs/client-monitor-js/monitor-events/) explains callbacks and application events.
+- [Monitor issues](/docs/client-monitor-js/monitor-issues/) explains problem detection and recovery.

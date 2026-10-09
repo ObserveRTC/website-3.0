@@ -1,21 +1,45 @@
 {{ define "main" }}
-<section class="signal-story signal-story-home" aria-labelledby="signal-story-title">
-  <div class="text-center mb-4">
-    <img src="/logo/logo-large.jpg" alt="ObserveRTC" class="img-fluid hero-logo">
+<section class="rtc-hero" aria-labelledby="hero-title">
+  <div class="rtc-hero-copy">
+    <p class="eyebrow">OPEN-SOURCE WEBRTC OBSERVABILITY</p>
+    <h1 id="hero-title">Understand Every<br><span>WebRTC Connection.</span></h1>
+    <p class="rtc-hero-lead">From browser statistics to the full call picture. Collect live metrics, detect issues, and see how your real-time application performs.</p>
+    <div class="rtc-hero-actions"><a class="btn btn-primary" href="{{ "/docs/overview/introduction/" | relURL }}">Get started →</a><a class="btn btn-outline-primary" href="https://webrtc-observer.org/" target="_blank" rel="noopener noreferrer">Try the live example ↗</a></div>
+    <p class="rtc-hero-footnote">TypeScript libraries · Your transport · Your infrastructure</p>
   </div>
-  <div class="signal-story-heading">
-    <h1 id="signal-story-title">Full Stack Monitoring Solution for WebRTC</h1>
+  <div class="rtc-code-window" aria-label="ObserveRTC integration overview">
+    <div class="rtc-code-bar"><span class="rtc-window-dots" aria-hidden="true">● ● ●</span><span>your-application.ts</span></div>
+    <pre><code><span class="code-comment">// Start with your peer connection.</span>
+<span class="code-keyword">import</span> { ClientMonitor } <span class="code-keyword">from</span> <span class="code-string">'@observertc/client-monitor-js'</span>;
+
+<span class="code-keyword">const</span> monitor = <span class="code-keyword">new</span> ClientMonitor();
+
+<span class="code-comment">// Add your peer connection to monitor.</span>
+monitor.addSource(peerConnection);
+
+<span class="code-comment">// Explore metrics, issues, and samples.</span>
+<span class="code-comment">// Connect them to your own backend.</span></code></pre>
+    <div class="rtc-code-caption"><span class="rtc-status-dot" aria-hidden="true"></span>Browser stats → Client Monitor → Your backend</div>
   </div>
+</section>
+<section class="signal-story" aria-labelledby="signal-story-title">
+  <div class="rtc-section-heading"><p class="eyebrow">FROM ENDPOINT TO CALL</p><h2 id="signal-story-title">From signals to insight.</h2><p>A modular toolkit for understanding WebRTC, from a single peer connection to participants, tracks, and calls.</p></div>
   <ol class="signal-story-flow">
     <li><span class="signal-step">01 / COLLECT</span><h3>Browser statistics</h3><p>Start with measurements from your existing peer connection.</p><code>getStats()</code></li>
     <li><span class="signal-step">02 / INTERPRET</span><h3>Client Monitor</h3><p>Read live metrics, detect endpoint issues and calculate quality scores.</p><a href="/docs/client-monitor-js/">Explore Client Monitor →</a></li>
     <li><span class="signal-step">03 / TRANSPORT</span><h3>ClientSample</h3><p>Send a typed sample over your transport, with optional JSON or Protobuf encoding.</p><a href="/docs/schema/">Explore the schema →</a></li>
     <li><span class="signal-step">04 / CORRELATE</span><h3>Observer</h3><p>Reconstruct participants, tracks and calls. Analyze issues across endpoints.</p><a href="/docs/observer-js/">Explore Observer →</a></li>
   </ol>
-  <div class="signal-story-demo"><div><h3>See the signals in a live connection</h3><p>Try the live example to explore Client Monitor while a WebRTC session runs.</p></div><a class="btn btn-outline-primary rounded-pill px-4" href="https://webrtc-observer.org/">Open live example ↗</a></div>
-  <div class="d-flex justify-content-center gap-3 flex-wrap mt-4">
-    <a class="btn btn-primary rounded-pill px-4" href="/docs/overview/introduction/">Get Started</a>
-    <a class="btn btn-outline-primary rounded-pill px-4" href="https://github.com/observertc">GitHub</a>
-  </div>
+  <div class="signal-story-demo"><div><h3>See the signals in a live connection</h3><p>Try the live example to explore Client Monitor while a WebRTC session runs.</p></div><a class="btn btn-outline-primary rounded-pill px-4" href="https://webrtc-observer.org/" target="_blank" rel="noopener noreferrer">Open live example ↗</a></div>
 </section>
+<section class="rtc-section rtc-updates" aria-labelledby="updates-heading">
+  <div class="rtc-section-heading rtc-heading-row"><div><p class="eyebrow">PROJECT NOTES</p><h2 id="updates-heading">From the blog</h2></div><a href="{{ "/blog/" | relURL }}">All posts →</a></div>
+  {{ $posts := where (where site.RegularPages "Section" "blog") "Params.example" "ne" true }}
+  {{ if $posts }}
+  <div class="rtc-post-grid">{{ range first 3 $posts.ByDate.Reverse }}{{ partial "blog-card.html" . }}{{ end }}</div>
+  {{ else }}
+  <div class="rtc-blog-empty"><h3>More to share, soon.</h3><p>Guides, release notes, and lessons from building WebRTC observability. Subscribe below to hear when they arrive.</p></div>
+  {{ end }}
+</section>
+{{ partial "newsletter.html" . }}
 {{ end }}

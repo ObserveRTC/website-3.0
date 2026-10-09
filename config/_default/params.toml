@@ -6,13 +6,19 @@ images = ["cover.png"]
 # mainSections
 mainSections = ["docs"]
 
+# Public REST endpoints. Leave empty to disable; credentials stay on your server.
+[services]
+  analyticsEndpoint = "https://ingest.observertc.org/analytics"
+  subscribeEndpoint = "https://ingest.observertc.org/subscribe"
+  analyticsInDevelopment = false
+
 [social]
   twitter = "observertc"
 
 # Doks (@thulite/doks-core)
 [doks]
   # Color mode
-  colorMode = "light" # Changed from "auto" to "light"
+  colorMode = "auto" # Enable theme switch; custom script defaults to light
   colorModeToggler = true # true (default) or false (this setting is only relevant when colorMode = auto)
 
   # Navbar

@@ -22,11 +22,11 @@ Most derived rates, detector state and declared context stay on live monitors. T
 |---|---|---|---|
 | `callId` | `["null","string"]` | `null` | the unique identifier of the call or session |
 | `clientId` | `["null","string"]` | `null` | Unique id of the client providing samples. |
-| `attachments` | `["null","string"]` | `null` | Additional information attached to this sample (e.g.: roomId, userId, displayName, etc...) |
+| `attachments` | `["null","string"]` | `null` | Additional information attached to this sample (`e.g`.: `roomId`, `userId`, `displayName`, etc...) |
 | `timestamp` | `"long"` | `required` | The timestamp the sample is created in GMT |
-| `score` | `["null","double"]` | `null` | Calculated score for client (details should be added to scoreReasons) |
+| `score` | `["null","double"]` | `null` | Calculated score for client (details should be added to `scoreReasons`) |
 | `scoreReasons` | `["null",{"type":"map","values":"double"}]` | `null` | Reasons for the score calculation, mapping each reason to how much it contributed to the score |
-| `peerConnections` | `["null",{"type":"array","items":"@include-chunk PeerConnectionSample"}]` | `null` | Samples taken PeerConnections |
+| `peerConnections` | `["null",{"type":"array","items":"@include-chunk PeerConnectionSample"}]` | `null` | Samples taken `PeerConnections` |
 | `clientEvents` | `["null",{"type":"array","items":{"name":"ClientEvent","type":"record"}}]` | `null` | A list of client events. |
 | `clientIssues` | `["null",{"type":"array","items":{"name":"ClientIssue","type":"record"}}]` | `null` | A list of client issues. |
 | `clientMetaItems` | `["null",{"type":"array","items":{"name":"ClientMetaData","type":"record"}}]` | `null` | A list of additional client events. |
@@ -37,7 +37,7 @@ Most derived rates, detector state and declared context stay on live monitors. T
 
 | Field | Avro type | Default | Description |
 |---|---|---|---|
-| `type` | `"string"` | `required` | The name of the event used as an identifier (e.g., MEDIA_TRACK_MUTED, USER_REJOINED, etc.). |
+| `type` | `"string"` | `required` | The name of the event used as an identifier (`e.g`., `MEDIA_TRACK_MUTED`, `USER_REJOINED`, etc.). |
 | `payload` | `["null",{"type":"map","values":{"name":"AnyValue","type":"record"}}]` | `null` | The attributes of the event, if applicable. |
 | `timestamp` | `["null","long"]` | `null` | The timestamp in epoch format when the event was generated. |
 
@@ -67,7 +67,7 @@ Most derived rates, detector state and declared context stay on live monitors. T
 
 | Field | Avro type | Default | Description |
 |---|---|---|---|
-| `type` | `"string"` | `required` | The name of the event used as an identifier (e.g., MEDIA_TRACK_MUTED, USER_REJOINED, etc.). |
+| `type` | `"string"` | `required` | The name of the event used as an identifier (`e.g`., `MEDIA_TRACK_MUTED`, `USER_REJOINED`, etc.). |
 | `payload` | `["null",{"type":"map","values":"AnyValue"}]` | `null` | The attributes of the meta data entry, if applicable. |
 | `peerConnectionId` | `["null","string"]` | `null` | The unique identifier of the peer connection for which the event was generated. |
 | `trackId` | `["null","string"]` | `null` | The identifier of the media track related to the event, if applicable. |
@@ -89,7 +89,7 @@ Most derived rates, detector state and declared context stay on live monitors. T
 |---|---|---|---|
 | `peerConnectionId` | `"string"` | `required` | Unique identifier of the stats object. |
 | `attachments` | `["null","string"]` | `null` | Additional information attached to this sample |
-| `score` | `["null","double"]` | `null` | Calculated score for peer connection (details should be added to scoreReasons) |
+| `score` | `["null","double"]` | `null` | Calculated score for peer connection (details should be added to `scoreReasons`) |
 | `scoreReasons` | `["null",{"type":"map","values":"double"}]` | `null` | Reasons for the score calculation, mapping each reason to how much it contributed to the score |
 | `inboundTracks` | `["null",{"type":"array","items":{"type":"record","name":"InboundTrackSample"}}]` | `null` | Inbound Track Stats items |
 | `outboundTracks` | `["null",{"type":"array","items":{"type":"record","name":"OutboundTrackSample"}}]` | `null` | Outbound Track Stats items |
@@ -100,7 +100,7 @@ Most derived rates, detector state and declared context stay on live monitors. T
 | `remoteOutboundRtps` | `["null",{"type":"array","items":{"name":"RemoteOutboundRtpStats","type":"record"}}]` | `null` | Remote Outbound RTP Stats |
 | `mediaSources` | `["null",{"type":"array","items":{"name":"MediaSourceStats","type":"record"}}]` | `null` | Audio Source Stats |
 | `mediaPlayouts` | `["null",{"type":"array","items":{"name":"MediaPlayoutStats","type":"record"}}]` | `null` | Media Playout Stats |
-| `peerConnectionTransports` | `["null",{"type":"array","items":{"name":"PeerConnectionTransportStats","type":"record"}}]` | `null` | PeerConnection Transport Stats |
+| `peerConnectionTransports` | `["null",{"type":"array","items":{"name":"PeerConnectionTransportStats","type":"record"}}]` | `null` | `PeerConnection` Transport Stats |
 | `dataChannels` | `["null",{"type":"array","items":{"name":"DataChannelStats","type":"record"}}]` | `null` | Data Channels Stats |
 | `iceTransports` | `["null",{"type":"array","items":{"name":"IceTransportStats","type":"record"}}]` | `null` | ICE Transport Stats |
 | `iceCandidates` | `["null",{"type":"array","items":{"name":"IceCandidateStats","type":"record"}}]` | `null` | ICE Candidate Stats |
@@ -114,8 +114,8 @@ Most derived rates, detector state and declared context stay on live monitors. T
 |---|---|---|---|
 | `timestamp` | `"long"` | `required` | The timestamp when the stats were generated. |
 | `id` | `"string"` | `required` | The unique identifier for the stats object. |
-| `kind` | `"string"` | `required` | Kind of the media (e.g., 'audio' or 'video'). |
-| `score` | `["null","double"]` | `null` | Calculated score for track (details should be added to scoreReasons) |
+| `kind` | `"string"` | `required` | Kind of the media (`e.g`., 'audio' or 'video'). |
+| `score` | `["null","double"]` | `null` | Calculated score for track (details should be added to `scoreReasons`) |
 | `scoreReasons` | `["null",{"type":"map","values":"double"}]` | `null` | Reasons for the score calculation, mapping each reason to how much it contributed to the score |
 | `attachments` | `["null","string"]` | `null` | Additional information attached to this stats |
 
@@ -126,8 +126,8 @@ Most derived rates, detector state and declared context stay on live monitors. T
 |---|---|---|---|
 | `timestamp` | `"long"` | `required` | The timestamp when the stats were generated. |
 | `id` | `"string"` | `required` | The unique identifier for the stats object. |
-| `kind` | `"string"` | `required` | Kind of the media (e.g., 'audio' or 'video'). |
-| `score` | `["null","double"]` | `null` | Calculated score for track (details should be added to scoreReasons) |
+| `kind` | `"string"` | `required` | Kind of the media (`e.g`., 'audio' or 'video'). |
+| `score` | `["null","double"]` | `null` | Calculated score for track (details should be added to `scoreReasons`) |
 | `scoreReasons` | `["null",{"type":"map","values":"double"}]` | `null` | Reasons for the score calculation, mapping each reason to how much it contributed to the score |
 | `attachments` | `["null","string"]` | `null` | Additional information attached to this stats |
 
@@ -154,7 +154,7 @@ Most derived rates, detector state and declared context stay on live monitors. T
 | `timestamp` | `"long"` | `required` | The time the stats were collected, in high-resolution time. |
 | `id` | `"string"` | `required` | Unique identifier of the stats object. |
 | `ssrc` | `"long"` | `required` | Synchronization source identifier of the RTP stream. |
-| `kind` | `"string"` | `required` | Kind of the media (e.g., 'audio' or 'video'). |
+| `kind` | `"string"` | `required` | Kind of the media (`e.g`., 'audio' or 'video'). |
 | `transportId` | `["null","string"]` | `null` | ID of the transport associated with the RTP stream. |
 | `codecId` | `["null","string"]` | `null` | ID of the codec used for the RTP stream. |
 | `packetsReceived` | `["null","int"]` | `null` | Number of packets received on the RTP stream. |
@@ -227,7 +227,7 @@ Most derived rates, detector state and declared context stay on live monitors. T
 
 | Field | Avro type | Default | Description |
 |---|---|---|---|
-| `timestamp` | `"long"` | `required` | The timestamp for this stats object in DOMHighResTimeStamp format. |
+| `timestamp` | `"long"` | `required` | The timestamp for this stats object in `DOMHighResTimeStamp` format. |
 | `id` | `"string"` | `required` | The unique identifier for this stats object. |
 | `ssrc` | `"long"` | `required` | The SSRC identifier of the RTP stream. |
 | `kind` | `"string"` | `required` | The type of media ('audio' or 'video'). |
@@ -253,7 +253,7 @@ Most derived rates, detector state and declared context stay on live monitors. T
 
 | Field | Avro type | Default | Description |
 |---|---|---|---|
-| `timestamp` | `"long"` | `required` | The timestamp for this stats object in DOMHighResTimeStamp format. |
+| `timestamp` | `"long"` | `required` | The timestamp for this stats object in `DOMHighResTimeStamp` format. |
 | `id` | `"string"` | `required` | The unique identifier for this stats object. |
 | `ssrc` | `"long"` | `required` | The SSRC identifier of the RTP stream. |
 | `kind` | `"string"` | `required` | The type of media ('audio' or 'video'). |
@@ -284,7 +284,7 @@ Most derived rates, detector state and declared context stay on live monitors. T
 | `psnrMeasurements` | `["null","long"]` | `null` | Total number of PSNR measurements collected. |
 | `totalEncodeTime` | `["null","double"]` | `null` | The total time spent encoding frames on this stream in seconds. |
 | `totalPacketSendDelay` | `["null","double"]` | `null` | The total delay for packets sent on this stream in seconds. |
-| `qualityLimitationReason` | `["null","string"]` | `null` | The reason for any quality limitation on this stream (e.g., 'cpu', 'bandwidth', 'other'). |
+| `qualityLimitationReason` | `["null","string"]` | `null` | The reason for any quality limitation on this stream (`e.g`., 'cpu', 'bandwidth', 'other'). |
 | `qualityLimitationDurations` | `["null",{"type":"record","name":"QualityLimitationDurations"}]` | `null` | The duration of quality limitation reasons categorized by type. |
 | `qualityLimitationResolutionChanges` | `["null","int"]` | `null` | The number of resolution changes due to quality limitations. |
 | `nackCount` | `["null","int"]` | `null` | The total number of NACK packets sent on this stream. |
@@ -321,7 +321,7 @@ Most derived rates, detector state and declared context stay on live monitors. T
 
 | Field | Avro type | Default | Description |
 |---|---|---|---|
-| `timestamp` | `"long"` | `required` | The timestamp for this stats object in DOMHighResTimeStamp format. |
+| `timestamp` | `"long"` | `required` | The timestamp for this stats object in `DOMHighResTimeStamp` format. |
 | `id` | `"string"` | `required` | The unique identifier for this stats object. |
 | `ssrc` | `"long"` | `required` | The SSRC identifier of the RTP stream. |
 | `kind` | `"string"` | `required` | The type of media ('audio' or 'video'). |
@@ -330,7 +330,7 @@ Most derived rates, detector state and declared context stay on live monitors. T
 | `packetsSent` | `["null","int"]` | `null` | The total number of packets sent on this stream. |
 | `bytesSent` | `["null","long"]` | `null` | The total number of bytes sent on this stream. |
 | `localId` | `["null","string"]` | `null` | The ID of the local object corresponding to this stream. |
-| `remoteTimestamp` | `["null","double"]` | `null` | The remote timestamp for this stats object in DOMHighResTimeStamp format. |
+| `remoteTimestamp` | `["null","double"]` | `null` | The remote timestamp for this stats object in `DOMHighResTimeStamp` format. |
 | `reportsSent` | `["null","int"]` | `null` | The total number of reports sent on this stream. |
 | `roundTripTime` | `["null","double"]` | `null` | The current estimated round-trip time for this stream in seconds. |
 | `totalRoundTripTime` | `["null","double"]` | `null` | The total round-trip time for this stream in seconds. |
@@ -393,7 +393,7 @@ Most derived rates, detector state and declared context stay on live monitors. T
 | `label` | `["null","string"]` | `null` | The label of the data channel. |
 | `protocol` | `["null","string"]` | `null` | The protocol of the data channel. |
 | `dataChannelIdentifier` | `["null","int"]` | `null` | The identifier for the data channel. |
-| `state` | `["null","string"]` | `null` | The state of the data channel (e.g., 'open', 'closed'). |
+| `state` | `["null","string"]` | `null` | The state of the data channel (`e.g`., 'open', 'closed'). |
 | `messagesSent` | `["null","int"]` | `null` | The number of messages sent on the data channel. |
 | `bytesSent` | `["null","long"]` | `null` | The number of bytes sent on the data channel. |
 | `messagesReceived` | `["null","int"]` | `null` | The number of messages received on the data channel. |
@@ -411,16 +411,16 @@ Most derived rates, detector state and declared context stay on live monitors. T
 | `packetsReceived` | `["null","long"]` | `null` | The number of packets received. |
 | `bytesSent` | `["null","long"]` | `null` | The number of bytes sent. |
 | `bytesReceived` | `["null","long"]` | `null` | The number of bytes received. |
-| `iceRole` | `["null","string"]` | `null` | The ICE role (e.g., 'controlling', 'controlled'). |
+| `iceRole` | `["null","string"]` | `null` | The ICE role (`e.g`., 'controlling', 'controlled'). |
 | `iceLocalUsernameFragment` | `["null","string"]` | `null` | The local username fragment for ICE. |
-| `dtlsState` | `["null","string"]` | `null` | The DTLS transport state (e.g., 'new', 'connecting', 'connected'). |
-| `iceState` | `["null","string"]` | `null` | The ICE transport state (e.g., 'new', 'checking', 'connected'). |
+| `dtlsState` | `["null","string"]` | `null` | The DTLS transport state (`e.g`., 'new', 'connecting', 'connected'). |
+| `iceState` | `["null","string"]` | `null` | The ICE transport state (`e.g`., 'new', 'checking', 'connected'). |
 | `selectedCandidatePairId` | `["null","string"]` | `null` | The ID of the selected ICE candidate pair. |
 | `localCertificateId` | `["null","string"]` | `null` | The ID of the local certificate. |
 | `remoteCertificateId` | `["null","string"]` | `null` | The ID of the remote certificate. |
 | `tlsVersion` | `["null","string"]` | `null` | The TLS version used for encryption. |
 | `dtlsCipher` | `["null","string"]` | `null` | The DTLS cipher suite used. |
-| `dtlsRole` | `["null","string"]` | `null` | The role in the DTLS handshake (e.g., 'client', 'server'). |
+| `dtlsRole` | `["null","string"]` | `null` | The role in the DTLS handshake (`e.g`., 'client', 'server'). |
 | `srtpCipher` | `["null","string"]` | `null` | The SRTP cipher used for encryption. |
 | `selectedCandidatePairChanges` | `["null","long"]` | `null` | The number of changes to the selected ICE candidate pair. |
 | `ccfbMessagesSent` | `["null","long"]` | `null` | Number of congestion control feedback (CCFB) messages sent on this transport. |
@@ -437,16 +437,16 @@ Most derived rates, detector state and declared context stay on live monitors. T
 | `transportId` | `["null","string"]` | `null` | The transport ID associated with the ICE candidate. |
 | `address` | `["null","string"]` | `null` | The IP address of the ICE candidate. |
 | `port` | `["null","int"]` | `null` | The port number of the ICE candidate. |
-| `protocol` | `["null","string"]` | `null` | The transport protocol used by the candidate (e.g., 'udp', 'tcp'). |
-| `candidateType` | `["null","string"]` | `null` | The type of the ICE candidate (e.g., 'host', 'srflx', 'relay'). |
+| `protocol` | `["null","string"]` | `null` | The transport protocol used by the candidate (`e.g`., 'udp', 'tcp'). |
+| `candidateType` | `["null","string"]` | `null` | The type of the ICE candidate (`e.g`., 'host', 'srflx', 'relay'). |
 | `priority` | `["null","long"]` | `null` | The priority of the ICE candidate. |
 | `url` | `["null","string"]` | `null` | The URL of the ICE candidate. |
-| `relayProtocol` | `["null","string"]` | `null` | The protocol used for the relay (e.g., 'tcp', 'udp'). |
+| `relayProtocol` | `["null","string"]` | `null` | The protocol used for the relay (`e.g`., 'tcp', 'udp'). |
 | `foundation` | `["null","string"]` | `null` | A string representing the foundation for the ICE candidate. |
 | `relatedAddress` | `["null","string"]` | `null` | The related address for the ICE candidate (if any). |
 | `relatedPort` | `["null","int"]` | `null` | The related port for the ICE candidate (if any). |
 | `usernameFragment` | `["null","string"]` | `null` | The username fragment for the ICE candidate. |
-| `tcpType` | `["null","string"]` | `null` | The TCP type of the ICE candidate (e.g., 'active', 'passive'). |
+| `tcpType` | `["null","string"]` | `null` | The TCP type of the ICE candidate (`e.g`., 'active', 'passive'). |
 | `attachments` | `["null","string"]` | `null` | Additional information attached to this stats |
 
 ## IceCandidatePairStats
@@ -459,7 +459,7 @@ Most derived rates, detector state and declared context stay on live monitors. T
 | `transportId` | `["null","string"]` | `null` | The transport id of the connection this candidate pair belongs to. |
 | `localCandidateId` | `["null","string"]` | `null` | The ID of the local ICE candidate in this pair. |
 | `remoteCandidateId` | `["null","string"]` | `null` | The ID of the remote ICE candidate in this pair. |
-| `state` | `["null",{"type":"enum","name":"RTCStatsIceCandidatePairState","symbols":["new","frozen","inProgress","waiting","failed","succeeded","cancelled"]}]` | `null` | The checklist state of this candidate pair. Values follow the W3C RTCStatsIceCandidatePairState enum (frozen, waiting, in-progress, failed, succeeded). Two further values are accepted for backward compatibility and are not part of the current spec: `new` (never standardised) and `cancelled` (removed from the spec after 2016). |
+| `state` | `["null",{"type":"enum","name":"RTCStatsIceCandidatePairState","symbols":["new","frozen","inProgress","waiting","failed","succeeded","cancelled"]}]` | `null` | The checklist state of this candidate pair. Values follow the W3C `RTCStatsIceCandidatePairState` enum (frozen, waiting, in-progress, failed, succeeded). Two further values are accepted for backward compatibility and are not part of the current spec: `new` (never standardised) and `cancelled` (removed from the spec after 2016). |
 | `nominated` | `["null","boolean"]` | `null` | Whether this candidate pair has been nominated. |
 | `packetsSent` | `["null","int"]` | `null` | The number of packets sent using this candidate pair. |
 | `packetsReceived` | `["null","int"]` | `null` | The number of packets received using this candidate pair. |
@@ -488,7 +488,7 @@ Most derived rates, detector state and declared context stay on live monitors. T
 | `timestamp` | `"long"` | `required` | The timestamp of the stat. |
 | `id` | `"string"` | `required` | A unique identifier for the stat. |
 | `fingerprint` | `["null","string"]` | `null` | The fingerprint of the certificate. |
-| `fingerprintAlgorithm` | `["null","string"]` | `null` | The algorithm used for the fingerprint (e.g., 'SHA-256'). |
+| `fingerprintAlgorithm` | `["null","string"]` | `null` | The algorithm used for the fingerprint (`e.g`., 'SHA-256'). |
 | `base64Certificate` | `["null","string"]` | `null` | The certificate encoded in base64 format. |
 | `issuerCertificateId` | `["null","string"]` | `null` | The certificate ID of the issuer. |
 | `attachments` | `["null","string"]` | `null` | Additional information attached to this stats |

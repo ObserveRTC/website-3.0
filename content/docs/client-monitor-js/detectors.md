@@ -20,13 +20,8 @@ Stable 4.9.1 contains **46 detector classes**. Categories describe the condition
 {{< /card-grid >}}
 ## Configuration and lifecycle
 
-Version 4.9.1 has **46 detector classes**. Class files, not historical table counts, define availability. Categories describe the condition being judged, not necessarily the registry/owner. `IceTraversal`, `IceRestart`, and `IceRestartRecommendation` are Telemetry even though their subject is connectivity. `IcePathEstablishment` is event-only Connectivity. `AudioPlayoutSynthesis` currently raises an issue despite stale event-only descriptions in stable taxonomy prose.
+Detectors run on their owning client, peer connection or track as observations arrive. Their category describes the condition being judged, rather than their owner.
 
-Each config key is lowerCamelCase class name; undefined selects the default object, null prevents registration, an object replaces that detector's default object. **Nested detector defaults are not deep-merged by ClientMonitor's `detectorDefault` helper.** Passing `{}` to a detector requiring thresholds can leave required values undefined; do not advertise `{}` as generic “use defaults.” Top-level type permits partial root config, not arbitrary partial nested configs. `BlockedInboundMediaDetector` is disabled by default because its evidence premise is not generally usable with browser RTCP mux. Deprecated `CongestionDetector` remains enabled by default.
+Use [Configuration](/docs/client-monitor-js/configuration/) for defaults and overrides. A detector configuration object replaces its defaults; nested values are not deep-merged. Set a detector to `null` to disable registration.
 
-Default shared windows: detection 3/recovery 3 values for client, PC, inbound and outbound tracks; inbound flow detection 4/flow recovery 3. Max allowed gap defaults to four times a positive collecting period (fallback period 5000 ms). Default flags: integrate media devices/watch visibility/join event/left event true; buffering events and pre-subscriber samples false; resolved issue shipping, score reason shipping and on-change ICE metadata true. See [client-monitor-js/src/ClientMonitor.ts · constructor](https://github.com/ObserveRTC/client-monitor-js/blob/0f08bd5d110a4e9d53cf0486962e638c5b393c49/src/ClientMonitor.ts#L146), [client-monitor-js/src/ClientMonitorConfig.ts](https://github.com/ObserveRTC/client-monitor-js/blob/0f08bd5d110a4e9d53cf0486962e638c5b393c49/src/ClientMonitorConfig.ts), [client-monitor-js/src/detectors/Detectors.ts](https://github.com/ObserveRTC/client-monitor-js/blob/0f08bd5d110a4e9d53cf0486962e638c5b393c49/src/detectors/Detectors.ts).
-
-The following summaries identify the main trigger and recovery. **Exact comparison operators, missing-input paths, state variables, payload types and event names are preserved per class in the [detector reference](/reference/detector-implementation-reference.md).** A time threshold alone is insufficient to reproduce a detector.
-
-
-Exact source, state, emitted payloads and resolution paths are in the [implementation reference](/reference/detector-implementation-reference.md).
+The category guides describe triggers and recovery. For exact comparison operators, missing-input behavior, emitted payloads and resolution paths, use the [implementation reference](/reference/detector-implementation-reference.md).

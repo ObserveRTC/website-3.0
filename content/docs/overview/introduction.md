@@ -14,7 +14,7 @@ ObserveRTC is a set of libraries for WebRTC monitoring. Start in the browser wit
 ## Install Client Monitor
 
 ```bash
-npm install @observertc/client-monitor-js@4.9.1
+npm install @observertc/client-monitor-js
 ```
 
 Use your application's existing `RTCPeerConnection`:
@@ -53,7 +53,7 @@ monitor.on('sample-created', ({ sample }) => {
 On the server:
 
 ```bash
-npm install @observertc/observer-js@1.0.0
+npm install @observertc/observer-js
 ```
 
 ```javascript

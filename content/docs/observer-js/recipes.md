@@ -1,13 +1,15 @@
 ---
 slug: "recipes"
-title: "Backend integration pattern"
+title: "Backend integration"
 description: "Keep decoding, validation, live analysis and persistence explicit."
 lead: "Keep decoding, validation, live analysis and persistence explicit."
 lastmod: 2026-09-28T12:00:00+03:00
 draft: false
-weight: 90
+weight: 10
 toc: true
 ---
+
+Integrate Observer behind the ingestion endpoint you already control. The endpoint handles trust and decoding; Observer handles live call state; your sink or application handles durable records. Follow the steps below for each incoming sample.
 
 1. Authenticate the incoming connection and determine the allowed call/client identities.
 2. Decode with the matching codec when using encoded samples. Preserve stream order and decoder state.

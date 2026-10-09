@@ -10,8 +10,8 @@ toc: true
 ---
 
 The schema version lives in `sources/version.txt` and is stamped into every generated artifact. The
-published packages — the sample-schemas types, [`@observertc/samples-protobuf-codec`](/docs/samples-protobuf-codec/)
-and [`@observertc/samples-json-codec`](/docs/samples-json-codec/) — are versioned **in lockstep**
+published packages — the sample-schemas types, [`@observertc/samples-protobuf-codec`](/docs/codecs/protobuf/)
+and [`@observertc/samples-json-codec`](/docs/codecs/json/) — are versioned **in lockstep**
 with it by the generator.
 
 **Current version: `3.7.0`**

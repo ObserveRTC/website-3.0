@@ -13,5 +13,6 @@ toc: true
 {{< link-card title="Client Monitor" description="Live metrics, detectors, events and quality scores." href="/docs/client-monitor-js/" >}}
 {{< link-card title="Schema & transport" description="Know what crosses the wire in ClientSample." href="/docs/schema/" >}}
 {{< link-card title="Observer" description="Reconstruct clients, tracks and calls on the server." href="/docs/observer-js/" >}}
+{{< link-card title="Codecs" description="Choose JSON or protobuf delta transport for samples." href="/docs/codecs/" >}}
 {{< link-card title="Implementation reference" description="Browse source-backed fields, versions and known differences." href="/docs/reference/" >}}
 {{< /card-grid >}}

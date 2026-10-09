@@ -2,6 +2,7 @@
 title: "Contact"
 description: "Contact the ObserveRTC team."
 lead: "Questions, feedback or help with ObserveRTC."
+layout: contact
 draft: false
 ---
 

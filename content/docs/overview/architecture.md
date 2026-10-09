@@ -94,8 +94,8 @@ ClientSample -> delta encoder -> your transport
 | Representation | Integration choice |
 |---|---|
 | Plain JSON sample | Send complete samples through your existing telemetry endpoint. |
-| [JSON codec](/docs/samples-json-codec/) | Encode changes between samples in a JSON representation. |
-| [Protobuf codec](/docs/samples-protobuf-codec/) | Encode changes between samples in a binary representation. |
+| [JSON codec](/docs/codecs/json/) | Encode changes between samples in a JSON representation. |
+| [Protobuf codec](/docs/codecs/protobuf/) | Encode changes between samples in a binary representation. |
 
 Both delta codecs keep state. Use one encoder per client and one decoder per client stream; preserve message order and reliable delivery. Decode before passing a sample to Observer.
 
