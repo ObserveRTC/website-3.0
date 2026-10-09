@@ -8,8 +8,9 @@ const clipboard = new Clipboard('.btn-copy', {
 });
 clipboard.on('success', event => {
   event.clearSelection();
+  event.trigger.classList.add('is-copied');
   event.trigger.textContent = 'Copied';
-  setTimeout(() => { event.trigger.textContent = 'Copy'; }, 2000);
+  setTimeout(() => { event.trigger.classList.remove('is-copied'); event.trigger.textContent = 'Copy'; }, 2000);
 });
 clipboard.on('error', event => {
   event.trigger.textContent = 'Select and copy';

@@ -357,3 +357,49 @@ html { scrollbar-gutter: stable; }
 .highlight > .copy > .btn-copy:hover { color: var(--rtc-accent); }
 .highlight > .copy > .btn-copy:focus-visible { outline: 2px solid var(--rtc-accent); outline-offset: 2px; }
 .rtc-code-window.highlight pre { padding-top: 2.75rem; }
+
+// Code shares the site's restrained surfaces and orange accent.
+.expressive-code .frame { border-radius: 10px; box-shadow: none; }
+.expressive-code .highlight > pre {
+  border: 1px solid var(--rtc-line);
+  border-left: 3px solid color-mix(in srgb, var(--rtc-accent) 65%, var(--rtc-line));
+  border-radius: 10px;
+  background: var(--rtc-surface);
+  padding: 2.8rem 1.25rem 1.25rem;
+  line-height: 1.7;
+}
+.expressive-code pre > code { padding: 0; color: var(--bs-body-color); }
+.highlight > .copy > .btn-copy, .expressive-code .highlight > .copy > .btn-copy {
+  padding: .3rem .7rem;
+  border-radius: 6px;
+  background: var(--bs-body-bg);
+  color: var(--rtc-muted);
+  font-family: inherit;
+  transition: color .15s ease, border-color .15s ease;
+}
+.highlight > .copy > .btn-copy:hover,
+.expressive-code .highlight > .copy > .btn-copy:hover {
+  color: var(--rtc-accent);
+  border-color: var(--rtc-accent);
+}
+@media (max-width: 575px) {
+  .expressive-code .highlight > pre { padding: 2.8rem 1rem 1rem; }
+}
+
+// Suppress the theme's focus/active check overlay as well as its default icon.
+.expressive-code .highlight > .copy > .btn-copy::before,
+.expressive-code .highlight > .copy > .btn-copy::after,
+.expressive-code .highlight > .copy > .btn-copy:focus::after,
+.expressive-code .highlight > .copy > .btn-copy:active::after {
+  display: none;
+  content: none;
+}
+.highlight > .copy > .btn-copy.is-copied,
+.expressive-code .highlight > .copy > .btn-copy.is-copied {
+  color: #237745;
+  border-color: #237745;
+}
+[data-bs-theme="dark"] .highlight > .copy > .btn-copy.is-copied {
+  color: #77d99c;
+  border-color: #77d99c;
+}
