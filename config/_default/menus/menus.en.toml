@@ -1,5 +1,6 @@
 [[main]]
 name = "Docs"
+identifier = "docs"
 url = "/docs/overview/introduction/"
 weight = 10
 [[main]]
@@ -29,70 +30,103 @@ url = "https://github.com/observertc"
 weight = 10
 
 [[docs]]
-name = "Start here"
+name = "Overview"
 weight = 10
 identifier = "overview"
 url = "/docs/overview/"
 
 [[sidebar_docs]]
-name = "Start here"
+name = "Overview"
 weight = 10
 pageRef = "/docs/overview"
 
 [[docs]]
-name = "Client Monitor"
+name = "Getting started"
 weight = 20
+identifier = "getting-started"
+url = "/docs/getting-started/"
+
+[[sidebar_docs]]
+name = "Getting started"
+weight = 20
+pageRef = "/docs/getting-started"
+
+[[docs]]
+name = "Concepts"
+weight = 30
+identifier = "concepts"
+url = "/docs/concepts/"
+
+[[sidebar_docs]]
+name = "Concepts"
+weight = 30
+pageRef = "/docs/concepts"
+
+[[docs]]
+name = "Client Monitor"
+weight = 40
 identifier = "client-monitor-js"
 url = "/docs/client-monitor-js/"
 
 [[sidebar_docs]]
 name = "Client Monitor"
-weight = 20
+weight = 40
 pageRef = "/docs/client-monitor-js"
 
 [[docs]]
 name = "Observer"
-weight = 30
+weight = 50
 identifier = "observer-js"
 url = "/docs/observer-js/"
 
 [[sidebar_docs]]
 name = "Observer"
-weight = 30
+weight = 50
 pageRef = "/docs/observer-js"
 
 [[docs]]
+name = "Schemas"
+weight = 60
+identifier = "schema"
+url = "/docs/schema/"
+
+[[sidebar_docs]]
+name = "Schemas"
+weight = 60
+pageRef = "/docs/schema"
+
+[[docs]]
 name = "Codecs"
-weight = 40
+weight = 70
 identifier = "codecs"
 url = "/docs/codecs/"
 
 [[sidebar_docs]]
 name = "Codecs"
-weight = 40
+weight = 70
 pageRef = "/docs/codecs"
 
 [[docs]]
-name = "Implementation reference"
-weight = 60
+name = "Guides"
+weight = 80
+identifier = "guides"
+url = "/docs/guides/"
+
+[[sidebar_docs]]
+name = "Guides"
+weight = 80
+pageRef = "/docs/guides"
+
+[[docs]]
+name = "Reference"
+weight = 90
 identifier = "reference"
 url = "/docs/reference/"
 
 [[sidebar_docs]]
-name = "Implementation reference"
-weight = 60
+name = "Reference"
+weight = 90
 pageRef = "/docs/reference"
-
-[[docs]]
-name = "Schema"
-weight = 70
-identifier = "schema"
-url = "/docs/schema/"
-
-[[sidebar_docs]]
-name = "Schema"
-weight = 70
-pageRef = "/docs/schema"
 
 [[footer]]
 name = "Contact"

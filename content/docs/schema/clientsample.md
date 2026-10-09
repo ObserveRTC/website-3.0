@@ -5,6 +5,7 @@ description: "Every nested record, field type and default from schema 3.7.0."
 lead: "Every nested record, field type and default from schema 3.7.0."
 lastmod: 2026-09-28T12:00:00+03:00
 draft: false
+outputs: ["HTML", "Markdown"]
 weight: 10
 toc: true
 ---

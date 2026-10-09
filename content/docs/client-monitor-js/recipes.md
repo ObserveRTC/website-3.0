@@ -5,6 +5,7 @@ description: "Choose a small implementation path for your use case."
 lead: "Choose a small implementation path for your use case."
 lastmod: 2026-09-28T12:00:00+03:00
 draft: false
+outputs: ["HTML", "Markdown"]
 weight: 90
 toc: true
 ---

@@ -1,10 +1,11 @@
 ---
 slug: "api-reference"
-title: "Monitor API & graph"
+title: "Monitor API and relationships"
 description: "Navigate ownership, cross-links and the public API."
 lead: "Navigate ownership, cross-links and the public API."
 lastmod: 2026-09-28T12:00:00+03:00
 draft: false
+outputs: ["HTML", "Markdown"]
 weight: 30
 toc: true
 ---

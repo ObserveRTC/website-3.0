@@ -1,0 +1,17 @@
+{{ define "main" }}
+<section class="rtc-section rtc-updates-list" aria-labelledby="updates-heading">
+  <div class="rtc-section-heading">
+    <p class="eyebrow">WHAT’S NEW</p>
+    <h1 id="updates-heading">Updates</h1>
+    <p>Release notes, improvements, and notes from the ObserveRTC maintainers.</p>
+  </div>
+  {{ if .RegularPages }}
+    {{ $paginator := .Paginate .RegularPages.ByDate.Reverse 20 }}
+    <div class="rtc-post-grid">{{ range $paginator.Pages }}{{ partial "blog-card.html" . }}{{ end }}</div>
+    {{ template "_internal/pagination.html" . }}
+  {{ else }}
+    <div class="rtc-blog-empty"><h2>Release notes are on the way.</h2><p>Future releases will appear here, with details about what changed and commentary from the maintainers.</p></div>
+  {{ end }}
+</section>
+{{ partial "newsletter.html" . }}
+{{ end }}

@@ -1,10 +1,11 @@
 ---
 slug: "detectors-perceived-quality"
-title: "Perceived Quality detectors"
+title: "Perceived quality detectors"
 description: "Visible and audible degradation, including synchronization."
 lead: "Visible and audible degradation, including synchronization."
 lastmod: 2026-09-28T12:00:00+03:00
 draft: false
+outputs: ["HTML", "Markdown"]
 weight: 84
 toc: true
 ---

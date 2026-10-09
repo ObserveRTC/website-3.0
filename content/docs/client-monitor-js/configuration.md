@@ -5,6 +5,7 @@ description: "Use verified defaults and complete detector overrides."
 lead: "Use verified defaults and complete detector overrides."
 lastmod: 2026-09-28T12:00:00+03:00
 draft: false
+outputs: ["HTML", "Markdown"]
 weight: 20
 toc: true
 ---

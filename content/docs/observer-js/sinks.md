@@ -1,10 +1,11 @@
 ---
 slug: "sinks"
-title: "Sinks, injection & logging"
+title: "Sample persistence and enrichment"
 description: "Persist the accepted sample and enrich it with application data."
 lead: "Persist the accepted sample and enrich it with application data."
 lastmod: 2026-09-28T12:00:00+03:00
 draft: false
+outputs: ["HTML", "Markdown"]
 weight: 80
 toc: true
 ---

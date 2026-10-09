@@ -1,0 +1,17 @@
+<div role="listitem">
+  <details class="detector-details">
+    <summary><span class="detector-name">{{ .Get "displayName" }}</span><span class="detector-description">{{ .Get "description" }}</span></summary>
+    <div class="detector-details-body">
+      <h4>Class</h4>
+      <p><a href="{{ .Get "source" }}"><code>{{ .Get "name" }}</code></a></p>
+      <h4>What it collects</h4>
+      <p>{{ .Get "collects" | markdownify }}</p>
+      <h4>{{ .Get "triggerLabel" | default "What triggers it" }}</h4>
+      <p>{{ .Get "trigger" | markdownify }}</p>
+      <h4>{{ .Get "recoveryLabel" | default "What resolves it" }}</h4>
+      <p>{{ .Get "recovery" | markdownify }}</p>
+      <h4>Example</h4>
+      <p>{{ .Get "example" | markdownify }}</p>
+    </div>
+  </details>
+</div>

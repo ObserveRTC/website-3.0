@@ -1,0 +1,15 @@
+{{- /* Use the existing ObserveRTC icon artwork. Fingerprints refresh cached tabs. */ -}}
+{{- $ico := resources.Get "logo/favicon/favicon.ico" | fingerprint -}}
+{{- $small := resources.Get "logo/favicon/favicon-16x16.png" | fingerprint -}}
+{{- $icon := resources.Get "logo/favicon/favicon-32x32.png" | fingerprint -}}
+{{- $touch := resources.Get "logo/favicon/apple-touch-icon.png" | fingerprint -}}
+{{- $medium := resources.Get "logo/favicon/android-chrome-192x192.png" | fingerprint -}}
+{{- $large := resources.Get "logo/favicon/android-chrome-512x512.png" | fingerprint -}}
+<link rel="icon" href="{{ $ico.RelPermalink }}" type="image/x-icon">
+<link rel="icon" href="{{ $small.RelPermalink }}" type="image/png" sizes="16x16">
+<link rel="icon" href="{{ $icon.RelPermalink }}" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="{{ $touch.RelPermalink }}" sizes="180x180">
+{{- $icons := slice (dict "src" $medium.RelPermalink "sizes" "192x192" "type" "image/png") (dict "src" $large.RelPermalink "sizes" "512x512" "type" "image/png") -}}
+{{- $manifest := dict "name" site.Title "short_name" site.Title "icons" $icons "theme_color" "#ffffff" "background_color" "#ffffff" "display" "standalone" "start_url" site.Home.RelPermalink -}}
+{{- $resource := $manifest | jsonify | resources.FromString "manifest.webmanifest" -}}
+<link rel="manifest" href="{{ $resource.RelPermalink }}">

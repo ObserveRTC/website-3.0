@@ -5,6 +5,7 @@ description: "Connection establishment, handshake failures and path changes."
 lead: "Connection establishment, handshake failures and path changes."
 lastmod: 2026-09-28T12:00:00+03:00
 draft: false
+outputs: ["HTML", "Markdown"]
 weight: 81
 toc: true
 ---

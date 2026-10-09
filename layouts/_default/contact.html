@@ -1,0 +1,9 @@
+{{ define "main" }}
+<section class="rtc-section" aria-labelledby="contact-heading">
+  <div class="rtc-section-heading">
+    <h1 id="contact-heading">{{ .Title }}</h1>
+    {{ with .Params.lead }}<p>{{ . }}</p>{{ end }}
+  </div>
+  <div class="docs-prose">{{ .Content }}</div>
+</section>
+{{ end }}

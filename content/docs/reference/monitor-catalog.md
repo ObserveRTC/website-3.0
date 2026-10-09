@@ -5,6 +5,7 @@ description: "Browse public properties and accessors in Client Monitor 4.9.1."
 lead: "Browse public properties and accessors in Client Monitor 4.9.1."
 lastmod: 2026-09-28T12:00:00+03:00
 draft: false
+outputs: ["HTML", "Markdown"]
 weight: 10
 toc: true
 ---

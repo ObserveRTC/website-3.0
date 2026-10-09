@@ -1,10 +1,11 @@
 ---
 slug: "entities"
-title: "Entities & state"
+title: "Calls, clients, and tracks"
 description: "Live state follows the call, client and peer-connection hierarchy."
 lead: "Live state follows the call, client and peer-connection hierarchy."
 lastmod: 2026-09-28T12:00:00+03:00
 draft: false
+outputs: ["HTML", "Markdown"]
 weight: 40
 toc: true
 ---

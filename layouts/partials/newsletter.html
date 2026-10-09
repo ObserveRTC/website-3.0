@@ -1,0 +1,27 @@
+<section class="newsletter-panel" aria-labelledby="newsletter-heading">
+  <div>
+    <p class="eyebrow">KEEP IN THE LOOP</p>
+    <h2 id="newsletter-heading">Your monthly ObserveRTC update.</h2>
+    <p>One email each month with a roundup of what’s new across ObserveRTC:</p>
+    <ul class="newsletter-topics">
+      <li><strong>Releases and improvements</strong> — what changed in Client Monitor, Observer, schemas, and codecs, with links to the release notes.</li>
+      <li><strong>Guides and articles</strong> — new documentation and practical reading on WebRTC monitoring and troubleshooting.</li>
+      <li><strong>Project news</strong> — demos, tools, and updates from the ObserveRTC ecosystem.</li>
+    </ul>
+    <p>A monthly summary with links to explore the details.</p>
+  </div>
+  {{ if site.Params.services.subscribeEndpoint }}
+  <form class="newsletter-form" data-subscribe-form aria-describedby="newsletter-note" action="{{ site.Params.services.subscribeEndpoint }}" method="post">
+    <label for="newsletter-email">Email address</label>
+    <div class="newsletter-input-row">
+      <input id="newsletter-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" maxlength="254" required>
+      <button class="btn btn-primary" type="submit">Subscribe →</button>
+    </div>
+    <p id="newsletter-note" class="newsletter-note">By subscribing, you agree to receive one ObserveRTC update email each month.</p>
+    <p class="newsletter-status" data-subscribe-status role="status" aria-live="polite"></p>
+    <noscript><p>Enable JavaScript to subscribe using this form.</p></noscript>
+  </form>
+  {{ else }}
+  <div class="newsletter-form"><p class="newsletter-note">Email subscriptions will open soon.</p><button class="btn btn-primary" disabled>Subscribe →</button></div>
+  {{ end }}
+</section>

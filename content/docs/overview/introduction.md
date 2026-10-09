@@ -5,11 +5,17 @@ description: "Add monitoring to an existing WebRTC connection."
 lead: "Add monitoring to an existing WebRTC connection."
 lastmod: 2026-09-28T12:00:00+03:00
 draft: false
+outputs: ["HTML", "Markdown"]
+hideFromSidebar: true
 weight: 10
 toc: true
 ---
 
 ObserveRTC is a set of libraries for WebRTC monitoring. Start in the browser with Client Monitor. Add sample transport and Observer when you need analysis across participants.
+
+## Before you begin
+
+Use an existing browser application with a live `RTCPeerConnection`. Start media through your application as usual. You should have Node.js and npm available to install the package.
 
 ## Install Client Monitor
 
@@ -38,6 +44,12 @@ monitor.on('issue', issue => console.log(issue.type, issue.payload));
 ```
 
 Collection and sampling both default to five seconds. Rates need successive measurements; missing values and initial sentinel values are not healthy measurements.
+
+## Confirm the result
+
+After successive collections, the console should show the receiving video bitrate for an active received video stream and a quality score. If no video is being received, inspect the media direction before expecting a receiving bitrate. Do not substitute zero for an unavailable measurement.
+
+Continue with [Inspect monitoring results](/docs/getting-started/results/) to interpret the output.
 
 ## Send samples when you need a backend
 

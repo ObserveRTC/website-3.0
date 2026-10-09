@@ -5,6 +5,7 @@ description: "Verified discrepancies to account for when building integrations."
 lead: "Verified discrepancies to account for when building integrations."
 lastmod: 2026-09-28T12:00:00+03:00
 draft: false
+outputs: ["HTML", "Markdown"]
 weight: 30
 toc: true
 ---

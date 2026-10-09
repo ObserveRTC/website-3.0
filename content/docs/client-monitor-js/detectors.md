@@ -5,11 +5,12 @@ description: "Start with the symptom, then inspect the evidence and recovery rul
 lead: "Start with the symptom, then inspect the evidence and recovery rule."
 lastmod: 2026-09-28T12:00:00+03:00
 draft: false
+outputs: ["HTML", "Markdown"]
 weight: 80
 toc: true
 ---
 
-Stable 4.9.1 contains **46 detector classes**. Categories describe the condition; monitor ownership describes where the detector runs. An event does not necessarily open an issue, and an issue does not necessarily lower a score.
+This catalog documents **46 detector classes from the verified 4.9.1 baseline**. It is not yet an exhaustive catalog of 4.10.1; current configuration includes newer audio and loopback options. Categories describe the condition; monitor ownership describes where the detector runs. An event does not necessarily open an issue, and an issue does not necessarily lower a score.
 
 {{< card-grid >}}
 {{< link-card title="Connectivity" description="Connection establishment, handshake failures and path changes." href="/docs/client-monitor-js/detectors-connectivity/" >}}

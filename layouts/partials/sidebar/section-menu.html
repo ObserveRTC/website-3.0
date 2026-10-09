@@ -1,8 +1,33 @@
-{{- $sidebar := printf "sidebar_%s" .Section }}
-{{- with index site.Menus $sidebar }}
-    {{ partial "sidebar/render-section-menu.html" (dict "currentPage" $ "nodes" .) }}
-{{- else }}
-  {{ with (.Site.GetPage "section" .Section).Sections }}
-    {{ partial "sidebar/render-section-menu.html" (dict "currentPage" $ "nodes" .) }}
-  {{ end }}
-{{- end }}
+{{ if eq .Section "docs" }}
+{{ $current := . }}
+<nav class="section-nav docs-links" aria-label="Docs sections">
+  <ul class="list-unstyled">
+    {{ range site.Menus.sidebar_docs }}
+      {{ with .Page }}
+        {{ $section := . }}
+        {{ $activeSection := or ($current.Eq $section) (in $current.Ancestors $section) }}
+        <li>
+          <details open>
+            <summary>{{ .Title }}</summary>
+            <ul class="list-unstyled list-nested">
+              <li{{ if $current.Eq $section }} class="active"{{ end }}><a href="{{ .RelPermalink }}"{{ if $current.Eq $section }} aria-current="page"{{ end }}>{{ .Params.landingTitle | default .Title }}</a></li>
+              {{ if eq .RelPermalink "/docs/getting-started/" }}
+              <li{{ if eq $current.RelPermalink "/docs/overview/introduction/" }} class="active"{{ end }}><a href="{{ "/docs/overview/introduction/" | relURL }}"{{ if eq $current.RelPermalink "/docs/overview/introduction/" }} aria-current="page"{{ end }}>Monitor your first connection</a></li>
+              {{ end }}
+              {{ range .RegularPages.ByWeight }}
+                {{ if ne .Params.hideFromSidebar true }}
+                <li{{ if $current.Eq . }} class="active"{{ end }}><a href="{{ .RelPermalink }}"{{ if $current.Eq . }} aria-current="page"{{ end }}>{{ .LinkTitle }}</a></li>
+                {{ end }}
+              {{ end }}
+            </ul>
+          </details>
+        </li>
+      {{ end }}
+    {{ end }}
+  </ul>
+</nav>
+{{ else }}
+{{ with (.Site.GetPage "section" .Section).Sections }}
+{{ partial "sidebar/render-section-menu.html" (dict "currentPage" $ "nodes" .) }}
+{{ end }}
+{{ end }}

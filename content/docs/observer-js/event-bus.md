@@ -1,10 +1,11 @@
 ---
 slug: "event-bus"
-title: "Event bus"
+title: "Events and issue propagation"
 description: "Subscribe centrally and retain the entity ancestry."
 lead: "Subscribe centrally and retain the entity ancestry."
 lastmod: 2026-09-28T12:00:00+03:00
 draft: false
+outputs: ["HTML", "Markdown"]
 weight: 50
 toc: true
 ---

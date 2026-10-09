@@ -1,10 +1,11 @@
 ---
 slug: "detectors-transport-quality"
-title: "Transport Quality detectors"
+title: "Transport quality detectors"
 description: "Delay, loss, congestion and stalled media transport."
 lead: "Delay, loss, congestion and stalled media transport."
 lastmod: 2026-09-28T12:00:00+03:00
 draft: false
+outputs: ["HTML", "Markdown"]
 weight: 82
 toc: true
 ---

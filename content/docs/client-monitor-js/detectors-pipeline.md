@@ -1,10 +1,11 @@
 ---
 slug: "detectors-pipeline"
-title: "Pipeline Disruption detectors"
+title: "Pipeline disruption detectors"
 description: "Capture, encoding, delivery, decoding and playout failures."
 lead: "Capture, encoding, delivery, decoding and playout failures."
 lastmod: 2026-09-28T12:00:00+03:00
 draft: false
+outputs: ["HTML", "Markdown"]
 weight: 83
 toc: true
 ---

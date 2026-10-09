@@ -5,6 +5,7 @@ description: "State changes and collection-health events."
 lead: "State changes and collection-health events."
 lastmod: 2026-09-28T12:00:00+03:00
 draft: false
+outputs: ["HTML", "Markdown"]
 weight: 85
 toc: true
 ---

@@ -1,18 +1,21 @@
 ---
 title: "Documentation"
-description: "Build WebRTC monitoring, from browser measurements to call analysis."
-lead: "Build WebRTC monitoring, from browser measurements to call analysis."
-lastmod: 2026-09-28T12:00:00+03:00
+description: "From Signals to Insights."
+lead: "From Signals to Insights."
 draft: false
+outputs: ["HTML", "RSS", "SITEMAP", "Markdown"]
 weight: 10
 toc: true
 ---
 
 {{< card-grid >}}
-{{< link-card title="Start here" description="Understand the data flow and add your first monitor." href="/docs/overview/introduction/" >}}
-{{< link-card title="Client Monitor" description="Live metrics, detectors, events and quality scores." href="/docs/client-monitor-js/" >}}
-{{< link-card title="Schema & transport" description="Know what crosses the wire in ClientSample." href="/docs/schema/" >}}
-{{< link-card title="Observer" description="Reconstruct clients, tracks and calls on the server." href="/docs/observer-js/" >}}
-{{< link-card title="Codecs" description="Choose JSON or protobuf delta transport for samples." href="/docs/codecs/" >}}
-{{< link-card title="Implementation reference" description="Browse source-backed fields, versions and known differences." href="/docs/reference/" >}}
+{{< link-card title="Overview" description="Understand the ecosystem and architecture." href="/docs/overview/" >}}
+{{< link-card title="Getting started" description="Monitor a connection and interpret the result." href="/docs/getting-started/" >}}
+{{< link-card title="Concepts" description="Learn telemetry, detection, and quality semantics." href="/docs/concepts/" >}}
+{{< link-card title="Client Monitor" description="Browser integration and detailed endpoint behavior." href="/docs/client-monitor-js/" >}}
+{{< link-card title="Observer" description="Server integration, state, and analysis." href="/docs/observer-js/" >}}
+{{< link-card title="Schemas" description="Read and evolve the ClientSample contract." href="/docs/schema/" >}}
+{{< link-card title="Codecs" description="Choose ordered JSON or binary sample encoding." href="/docs/codecs/" >}}
+{{< link-card title="Guides" description="Investigate symptoms and configure monitoring." href="/docs/guides/" >}}
+{{< link-card title="Reference" description="Find contracts, compatibility, and source evidence." href="/docs/reference/" >}}
 {{< /card-grid >}}

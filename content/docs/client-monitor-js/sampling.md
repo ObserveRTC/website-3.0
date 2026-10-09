@@ -5,6 +5,7 @@ description: "Follow the update lifecycle and understand the sample boundary."
 lead: "Follow the update lifecycle and understand the sample boundary."
 lastmod: 2026-09-28T12:00:00+03:00
 draft: false
+outputs: ["HTML", "Markdown"]
 weight: 50
 toc: true
 ---

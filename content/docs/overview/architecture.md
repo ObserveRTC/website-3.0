@@ -5,6 +5,7 @@ description: "Browser diagnostics, sample transport and server-side call analysi
 lead: "What runs in the browser, what reaches the server, and where your application takes over."
 lastmod: 2026-09-28T12:00:00+03:00
 draft: false
+outputs: ["HTML", "Markdown"]
 weight: 20
 toc: true
 ---

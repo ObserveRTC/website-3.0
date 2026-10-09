@@ -1,0 +1,30 @@
+# ObserveRTC
+
+> From Signals to Insights. Browser endpoint telemetry and server-side WebRTC call analysis.
+
+Client Monitor collects and evaluates endpoint measurements. Observer consumes decoded samples.
+Your application owns media/signaling, authenticated transport, validation, and durable storage.
+Use version coverage before treating historical generated catalogs as current API contracts.
+Markdown pages below are generated from the same sources as the human documentation.
+Hugo shortcode attributes in Markdown represent the same detector evidence rendered in HTML.
+
+{{ range site.Menus.sidebar_docs }}
+{{ with .Page }}
+## {{ .Title }}
+{{ with .OutputFormats.Get "Markdown" }}
+- [Section overview]({{ .Permalink }})
+{{ end }}
+{{ range .RegularPages.ByWeight }}
+{{ if ne .Params.hideFromSidebar true }}
+{{ $title := .Title }}
+{{ with .OutputFormats.Get "Markdown" }}
+- [{{ $title }}]({{ .Permalink }})
+{{ end }}
+{{ end }}
+{{ end }}
+{{ end }}
+{{ end }}
+## First connection
+{{ with site.GetPage "/docs/overview/introduction" }}{{ with .OutputFormats.Get "Markdown" }}
+- [Monitor your first connection]({{ .Permalink }})
+{{ end }}{{ end }}

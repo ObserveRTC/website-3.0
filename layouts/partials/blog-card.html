@@ -1,0 +1,8 @@
+<article class="rtc-post-card">
+  {{ $url := .Params.externalUrl | default .RelPermalink }}
+  {{ with .Params.publication }}<p class="eyebrow">{{ . }}</p>{{ else }}{{ with .Params.project }}<p class="eyebrow">{{ . }}</p>{{ end }}{{ end }}
+  <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
+  <h3><a href="{{ $url }}">{{ .Title }}</a></h3>
+  <p>{{ .Params.summary | default .Description | plainify }}</p>
+  <a href="{{ $url }}" aria-label="Read {{ .Title }}{{ with .Params.publication }} on {{ . }}{{ end }}">{{ with .Params.publication }}Read on {{ . }} ↗{{ else }}Read article →{{ end }}</a>
+</article>

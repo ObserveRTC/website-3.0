@@ -5,6 +5,7 @@ description: "Read the 0\u20135 component scores and understand how they aggrega
 lead: "Read the 0\u20135 component scores and understand how they aggregate."
 lastmod: 2026-09-28T12:00:00+03:00
 draft: false
+outputs: ["HTML", "Markdown"]
 weight: 75
 toc: true
 ---

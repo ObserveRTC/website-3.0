@@ -5,6 +5,7 @@ description: "Attach sources and declare the context the browser cannot infer."
 lead: "Attach sources and declare the context the browser cannot infer."
 lastmod: 2026-09-28T12:00:00+03:00
 draft: false
+outputs: ["HTML", "Markdown"]
 weight: 10
 toc: true
 ---

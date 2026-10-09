@@ -5,6 +5,7 @@ description: "Schema definitions are authoritative; generated types must follow 
 lead: "Schema definitions are authoritative; generated types must follow them."
 lastmod: 2026-09-28T12:00:00+03:00
 draft: false
+outputs: ["HTML", "Markdown"]
 weight: 20
 toc: true
 ---

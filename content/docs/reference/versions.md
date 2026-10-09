@@ -1,10 +1,11 @@
 ---
 slug: "versions"
-title: "Versions & compatibility"
+title: "Versions and compatibility"
 description: "Installation guidance and verified source reference versions."
 lead: "Installation guidance and verified source reference versions."
 lastmod: 2026-09-28T12:00:00+03:00
 draft: false
+outputs: ["HTML", "Markdown"]
 weight: 20
 toc: true
 ---

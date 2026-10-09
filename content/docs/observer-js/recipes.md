@@ -5,6 +5,7 @@ description: "Keep decoding, validation, live analysis and persistence explicit.
 lead: "Keep decoding, validation, live analysis and persistence explicit."
 lastmod: 2026-09-28T12:00:00+03:00
 draft: false
+outputs: ["HTML", "Markdown"]
 weight: 10
 toc: true
 ---

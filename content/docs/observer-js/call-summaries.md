@@ -5,6 +5,7 @@ description: "Enable a bounded final record for each call."
 lead: "Enable a bounded final record for each call."
 lastmod: 2026-09-28T12:00:00+03:00
 draft: false
+outputs: ["HTML", "Markdown"]
 weight: 90
 toc: true
 ---

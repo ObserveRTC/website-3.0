@@ -2,3 +2,7 @@
 {{ partial "footer/esbuild" (dict "src" "js/monitor-catalog.js" "load" "defer" "transpile" false) }}
 {{ end }}
 {{ partial "footer/esbuild" (dict "src" "js/site-services.js" "load" "defer" "params" site.Params.services) }}
+
+{{ if eq .Section "docs" }}
+{{ partial "footer/esbuild" (dict "src" "js/docs-navigation.js" "load" "defer" "transpile" false) }}
+{{ end }}

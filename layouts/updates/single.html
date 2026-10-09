@@ -1,0 +1,17 @@
+{{ define "main" }}
+<article class="rtc-section rtc-update-article">
+  <header class="rtc-section-heading">
+    <p class="eyebrow">{{ .Params.project | default "ObserveRTC" }}{{ with .Params.version }} · {{ . }}{{ end }}</p>
+    <h1>{{ .Title }}</h1>
+    <p><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>{{ with .Params.author }} · {{ . }}{{ end }}</p>
+    {{ with .Params.summary }}<p>{{ . }}</p>{{ end }}
+    {{ with .Params.sourceUrl }}<a href="{{ . }}">{{ $.Params.sourceLabel | default "View source on GitHub ↗" }}</a>{{ end }}
+    {{ with .Params.releaseUrl }}<a href="{{ . }}">View release on GitHub ↗</a>{{ end }}
+  </header>
+  {{ if gt .WordCount 500 }}
+  <nav class="rtc-update-toc" aria-label="In this update"><p class="eyebrow">IN THIS UPDATE</p>{{ .TableOfContents }}</nav>
+  {{ end }}
+  <div class="rtc-update-prose">{{ .Content | replaceRE "<table>" "<div class=\"rtc-update-table\" tabindex=\"0\" role=\"region\" aria-label=\"Release comparison table\"><table>" | replaceRE "</table>" "</table></div>" | safeHTML }}</div>
+  <nav class="docs-bottom-links" aria-label="Updates navigation"><a href="{{ "/updates/" | relURL }}">← All updates</a></nav>
+</article>
+{{ end }}

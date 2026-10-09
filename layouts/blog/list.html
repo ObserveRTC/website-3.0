@@ -1,0 +1,14 @@
+{{ define "main" }}
+<section class="rtc-section" aria-labelledby="blog-heading">
+  <div class="rtc-section-heading"><p class="eyebrow">PROJECT NOTES</p><h1 id="blog-heading">The ObserveRTC blog</h1><p>Guides and lessons from building WebRTC observability. Find release notes in <a href="{{ "/updates/" | relURL }}">Updates</a>.</p></div>
+  {{ $posts := where .RegularPages "Params.example" "ne" true }}
+  {{ if $posts }}
+    {{ $paginator := .Paginate $posts.ByDate.Reverse }}
+    <div class="rtc-post-grid">{{ range $paginator.Pages }}{{ partial "blog-card.html" . }}{{ end }}</div>
+    {{ template "_internal/pagination.html" . }}
+  {{ else }}
+    <div class="rtc-blog-empty"><h2>More to share, soon.</h2><p>Our first project notes are on the way. In the meantime, <a href="{{ "/docs/overview/introduction/" | relURL }}">explore the documentation</a>.</p></div>
+  {{ end }}
+</section>
+{{ partial "newsletter.html" . }}
+{{ end }}

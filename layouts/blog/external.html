@@ -1,0 +1,12 @@
+{{ define "main" }}
+<article class="rtc-section">
+  <div class="rtc-section-heading">
+    <p class="eyebrow">{{ .Params.publication }}</p>
+    <h1>{{ .Title }}</h1>
+    <p>{{ .Params.author }} · <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time></p>
+    <p>{{ .Params.summary }}</p>
+    {{ with .Params.attribution }}<p>{{ . }}</p>{{ end }}
+    <a class="btn btn-primary" href="{{ .Params.externalUrl }}">Read on {{ .Params.publication }} ↗</a>
+  </div>
+</article>
+{{ end }}

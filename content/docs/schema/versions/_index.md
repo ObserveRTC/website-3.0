@@ -5,6 +5,7 @@ lead: "What changed in each schema release, field by field"
 date: 2023-09-07T16:33:54+02:00
 lastmod: 2026-09-13T10:00:00+02:00
 draft: false
+outputs: ["HTML", "RSS", "SITEMAP", "Markdown"]
 weight: 630
 toc: true
 ---

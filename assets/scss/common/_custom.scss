@@ -79,7 +79,7 @@ a {
   color: #ff6b35;
 }
 
-.navbar-nav .nav-link.active { color: var(--rtc-accent); font-weight: 700; }
+[data-bs-theme] .navbar-nav .nav-link.active { color: var(--rtc-accent); font-weight: 700; }
 
 // Search box focus
 .form-control:focus {
@@ -91,9 +91,13 @@ a {
 [data-bs-theme="dark"] { --rtc-accent: #ff956b; --rtc-line: #343c48; --rtc-muted: #adb8c6; --rtc-surface: #202731; }
 .eyebrow { font-size: .7rem; font-weight: 700; letter-spacing: .1em; color: var(--rtc-muted); }
 // A fixed reading column prevents sections jumping between Bootstrap columns.
-.docs-layout { display: grid; grid-template-columns: 320px minmax(0,1fr); gap: 2rem; align-items: start; }
+html { scrollbar-gutter: stable; }
+.docs-layout { display: grid; grid-template-columns: 320px minmax(0,1fr); gap: 2rem; align-items: start; min-height: calc(100vh - 6rem); }
 .docs-layout .docs-sidebar, .docs-layout .docs-toc { width: auto; max-width: none; padding: 1.5rem 0; position: sticky; top: 5rem; max-height: calc(100vh - 6rem); overflow-y: auto; }
-.docs-layout .docs-sidebar { margin: 0; border-right: 1px solid var(--rtc-line); padding-right: 1rem; }
+.docs-layout .docs-sidebar { margin: 0; border-right: 1px solid var(--rtc-line); padding-right: 1rem; top: 5.25rem; height: calc(100vh - 6rem); scrollbar-gutter: stable; }
+@media (min-width: 992px) {
+  .docs-layout .docs-sidebar { position: fixed; width: 320px; max-width: 320px; }
+}
 .docs-layout .docs-content { grid-column: 2; grid-row: 1; width: 100%; min-width: 0; max-width: none; margin: 0; padding: 2.2rem 0; }
 .docs-layout .docs-toc { grid-column: 3; grid-row: 1; font-size: .72rem; border-left: 1px solid var(--rtc-line); padding-left: 1rem; }
 .docs-page-heading { border-bottom: 1px solid var(--rtc-line); margin-bottom: 1.6rem; padding-bottom: 1.5rem; }
@@ -282,7 +286,7 @@ a {
 
 /* Compact documentation navigation, including the mobile section drawer. */
 .section-nav.docs-links { padding-top: .75rem; }
-.section-nav.docs-links a { font-size: .875rem; line-height: 1.5; margin: .12rem 0; padding-top: .12rem; padding-bottom: .12rem; }
+.section-nav.docs-links a { font-size: .875rem; font-weight: 400; line-height: 1.5; margin: .12rem 0; padding-top: .12rem; padding-bottom: .12rem; }
 .section-nav.docs-links summary { font-size: .95rem; line-height: 1.5; }
 .section-nav.docs-links details { margin: .4rem 0; }
 .section-nav.docs-links ul.list-nested details { margin-top: .25rem; }
@@ -326,4 +330,12 @@ a {
   .navbar-brand { filter: invert(1); mix-blend-mode: screen; }
   .detector-catalog summary:hover { background: var(--rtc-surface); }
   .detector-catalog summary::after { filter: brightness(0) invert(1); }
+}
+
+// The sidebar owns scrolling; Doks must not create a second scrolling nav.
+.docs-layout .docs-sidebar .section-nav.docs-links,
+#offcanvasNavSection .section-nav.docs-links {
+  overflow: visible;
+  height: auto;
+  max-height: none;
 }

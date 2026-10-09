@@ -10,8 +10,8 @@
     {{ if $showInlineToc }}<nav class="docs-inline-toc" aria-label="On this page">{{ partial "sidebar/docs-toc-mobile.html" . }}</nav>{{ end }}
     {{ $body := .Content | replaceRE "(<table(?:[ >]))" `<div class="table-responsive">${1}` | replaceRE "</table>" "</table></div>" | safeHTML }}
     <div class="docs-prose">{{ if site.Params.doks.headlineHash }}{{ partial "main/headline-hash" $body }}{{ else }}{{ $body }}{{ end }}</div>
-    <div class="docs-source-note">Reference baseline: Client Monitor 4.9.1 · Observer 1.0.0 · Schema 3.7.0. <a href="/docs/reference/versions/">Source revisions</a></div>
-    <nav class="docs-bottom-links" aria-label="Related navigation"><a href="{{ .CurrentSection.RelPermalink }}">← {{ .CurrentSection.Title }}</a><a href="/docs/reference/">Implementation reference →</a></nav>
+    <div class="docs-source-note">Version coverage varies by reference. <a href="/docs/reference/versions/">Source revisions</a>{{ with .OutputFormats.Get "Markdown" }} · <a href="{{ .RelPermalink }}">Markdown source</a>{{ end }}</div>
+    <nav class="docs-bottom-links" aria-label="Related navigation"><a href="{{ .CurrentSection.RelPermalink }}">← {{ .CurrentSection.Title }}</a><a href="/docs/reference/">Reference →</a></nav>
   </main>
   {{ if $showToc }}<nav class="docs-toc d-none d-xxl-block" aria-label="On this page">{{ partial "sidebar/docs-toc-desktop.html" . }}</nav>{{ end }}
 </div>

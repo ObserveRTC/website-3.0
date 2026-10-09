@@ -5,6 +5,7 @@ description: "Resolve track relationships from signaling, then add router observ
 lead: "Resolve track relationships from signaling, then add router observation if needed."
 lastmod: 2026-09-28T12:00:00+03:00
 draft: false
+outputs: ["HTML", "Markdown"]
 weight: 60
 toc: true
 ---
@@ -24,4 +25,4 @@ An SFU receives a publisher’s media and forwards it to subscribers. Browser st
 
 ## Mediasoup router observation
 
-`ObservedMediasoupRouter` attaches to a real router and accumulates a separate `MediasoupRouterSample`; it observes server transports, producers/consumers and their lifecycle, and correlates a router's transport with client PCs. This is not the archived sfu-monitor-js API and not a `ClientSample` array. The application decides when to persist the growing router sample. [observer-js/src/ObservedMediasoupRouter.ts](https://github.com/ObserveRTC/observer-js/blob/b4a1ccb85468c94084a89ed2c007708c14ead551/src/ObservedMediasoupRouter.ts), [observer-js/src/schema/MediasoupRouter.ts](https://github.com/ObserveRTC/observer-js/blob/b4a1ccb85468c94084a89ed2c007708c14ead551/src/schema/MediasoupRouter.ts), [observer-js/examples/sfu-observer.ts](https://github.com/ObserveRTC/observer-js/blob/b4a1ccb85468c94084a89ed2c007708c14ead551/examples/sfu-observer.ts).
+`ObservedMediasoupRouter` attaches to a real router and accumulates a separate `MediasoupRouterSample`; it observes server transports, producers/consumers and their lifecycle, and correlates a router's transport with client PCs. Its server-side records use `MediasoupRouterSample`, rather than the browser `ClientSample` structure. The application decides when to persist the growing router sample. [observer-js/src/ObservedMediasoupRouter.ts](https://github.com/ObserveRTC/observer-js/blob/b4a1ccb85468c94084a89ed2c007708c14ead551/src/ObservedMediasoupRouter.ts), [observer-js/src/schema/MediasoupRouter.ts](https://github.com/ObserveRTC/observer-js/blob/b4a1ccb85468c94084a89ed2c007708c14ead551/src/schema/MediasoupRouter.ts), [observer-js/examples/sfu-observer.ts](https://github.com/ObserveRTC/observer-js/blob/b4a1ccb85468c94084a89ed2c007708c14ead551/examples/sfu-observer.ts).

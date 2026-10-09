@@ -5,6 +5,7 @@ description: "Correlate evidence across clients or calls with explicit registrat
 lead: "Correlate evidence across clients or calls with explicit registration."
 lastmod: 2026-09-28T12:00:00+03:00
 draft: false
+outputs: ["HTML", "Markdown"]
 weight: 70
 toc: true
 ---
