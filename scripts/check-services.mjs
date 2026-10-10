@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 
 const code = fs.readFileSync('assets/js/site-services.js', 'utf8').replace("import * as params from '@params';", '');
-function fixture({ params = {}, privacy = {}, ok = true, networkError = false, analyticsError = false, synchronousAnalyticsError = false, timeoutError = false } = {}) {
+function fixture({ params = {}, privacy = {}, ok = true, networkError = false, analyticsError = false, synchronousAnalyticsError = false, timeoutError = false, storage = new Map(), storageBlocked = false } = {}) {
   const calls = [];
   const button = { disabled: false, textContent: 'Subscribe →' };
   const status = { textContent: '' };
@@ -18,7 +18,7 @@ function fixture({ params = {}, privacy = {}, ok = true, networkError = false, a
   };
   vm.runInNewContext(code, {
     params: { env: 'production', analyticsendpoint: 'https://ingest.observertc.org/analytics', subscribeendpoint: 'https://ingest.observertc.org/subscribe', ...params },
-    navigator: privacy, window: { location: { pathname: '/docs/', search: '?secret=hidden' } },
+    navigator: { userAgent: 'Mozilla/5.0 Firefox/143.0', language: 'en-US', ...privacy }, window: { crypto: { randomUUID: () => '12345678-1234-4123-8123-123456789abc' }, localStorage: { getItem: key => { if (storageBlocked) throw Error('blocked'); return storage.get(key); }, setItem: (key, value) => { if (storageBlocked) throw Error('blocked'); storage.set(key, value); } }, location: { pathname: '/docs/', search: '?secret=hidden' } },
     document: { querySelectorAll: () => [form] },
     fetch: (url, options) => {
       if (synchronousAnalyticsError && url.endsWith("/analytics")) throw new Error("blocked");
@@ -48,7 +48,7 @@ assert.equal(success.calls[0].referrerPolicy, 'no-referrer');
 assert.equal(success.calls[0].headers['Content-Type'], 'application/json');
 assert.equal(success.calls[0].body.event, 'page_view');
 assert.equal(success.calls[0].body.path, '/docs/');
-assert.deepEqual(Object.keys(success.calls[0].body).sort(), ['event', 'path', 'timestamp', 'version']);
+assert.deepEqual(Object.keys(success.calls[0].body).sort(), ['browser', 'browserMajorVersion', 'deviceType', 'event', 'language', 'path', 'timestamp', 'version', 'visitorId']);
 await success.submit();
 assert.equal(success.calls[1].url, 'https://ingest.observertc.org/subscribe');
 assert.deepEqual(Object.keys(success.calls[1].body).sort(), ['consent', 'email', 'source', 'timestamp', 'version']);
@@ -101,3 +101,17 @@ const config = fs.readFileSync('config/_default/params.toml', 'utf8');
 assert.match(config, /analyticsEndpoint = "https:\/\/ingest\.observertc\.org\/analytics"/);
 assert.match(config, /subscribeEndpoint = "https:\/\/ingest\.observertc\.org\/subscribe"/);
 console.log('Service checks passed: payloads, success, failure, privacy, development, subscription independence, timeout, and duplicate submission.');
+
+const visitorStorage = new Map();
+const firstVisit = fixture({ storage: visitorStorage });
+const repeatVisit = fixture({ storage: visitorStorage });
+assert.equal(firstVisit.calls[0].body.visitorId, repeatVisit.calls[0].body.visitorId);
+assert.equal(firstVisit.calls[0].body.browser, 'Firefox');
+assert.equal(firstVisit.calls[0].body.browserMajorVersion, 143);
+assert.equal(firstVisit.calls[0].body.language, 'en');
+assert.equal(fixture({ storageBlocked: true }).calls[0].body.visitorId, undefined);
+const privateStorage = new Map();
+fixture({ storage: privateStorage, privacy: { doNotTrack: '1' } });
+fixture({ storage: privateStorage, privacy: { globalPrivacyControl: true } });
+assert.equal(privateStorage.size, 0);
+console.log('Visitor context checks passed: reuse, coarse context, blocked storage, no identifiers under DNT/GPC.');

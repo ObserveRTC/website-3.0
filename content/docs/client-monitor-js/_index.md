@@ -12,6 +12,15 @@ toc: true
 
 Client Monitor helps you understand what happens at one WebRTC endpoint. It runs in the browser beside the connections your application already owns, reads `getStats()` reports, and turns them into live metrics, issue evidence, and samples for your backend.
 
+{{< component-flow from="Your connection" fromText="Keep your existing WebRTC application." via="Client Monitor" viaText="Collect measurements and evaluate endpoint conditions." to="Useful evidence" toText="Inspect metrics, handle issues, or send samples." caption="From a browser connection to evidence you can act on." >}}
+
+## Choose your next step
+
+{{< card-grid >}}
+{{< link-card title="Try it in your application" description="Follow the quick start and confirm a useful monitoring result." href="/docs/client-monitor-js/quick-start/" >}}
+{{< link-card title="See how it fits together" description="Understand collection, transport, and backend responsibilities." href="/docs/overview/architecture/" >}}
+{{< /card-grid >}}
+
 ## Why use it?
 
 Browser statistics are distributed across connections, tracks, streams, and network objects. Their fields vary between browsers, and many useful rates require comparing observations over time. Client Monitor connects these measurements so you can investigate questions such as whether a received video stopped arriving, decoding, or playing.

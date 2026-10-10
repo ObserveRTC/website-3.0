@@ -18,6 +18,11 @@ established preferences; a newer explicit user instruction takes precedence.
 
 - Keep ObserveRTC's font style, logo, and orange theme. The layout direction is
   inspired by GoReleaser, while retaining ObserveRTC's identity.
+- Homepage docs links lead to approachable component introductions or getting-started
+  guides, never directly to schema fields or generation. Schemas are a deeper
+  reference path. Introductions explain purpose, show a readable flow, and offer
+  a clear next step before implementation details. Code generation is not a
+  prerequisite for using Client Monitor or forwarding samples.
 - Homepage headline: **Understand Every WebRTC Connection.** Keep the line break
   before “WebRTC Connection.” and its orange emphasis.
 - Secondary motto: **From Signals to Insights.**
@@ -149,7 +154,9 @@ established preferences; a newer explicit user instruction takes precedence.
 - Configure public URLs centrally in `config/_default/params.toml`:
   - `POST https://ingest.observertc.org/analytics`
   - `POST https://ingest.observertc.org/subscribe`
-- Keep version-1 JSON contracts unchanged unless backend support is coordinated:
+- Keep the version-1 envelope and subscription contract. Analytics now includes
+  optional `browser`, `browserMajorVersion`, `deviceType`, `language`, and
+  `visitorId`; backend validation must accept these before deployment:
 
 ```json
 {"version":1,"event":"page_view","path":"/docs/overview/introduction/","timestamp":"2026-10-09T12:00:00.000Z"}
@@ -162,8 +169,10 @@ established preferences; a newer explicit user instruction takes precedence.
 - Use JSON `fetch`, omit credentials and referrers, and keep storage secrets off
   the frontend. Empty endpoint URLs disable the respective integration.
 - Analytics is disabled in development and suppressed by DNT/GPC. Send no query
-  strings, fragments, email, cookies, persistent IDs, or browser fingerprint.
-  This measures page views, not unique visitors or sessions.
+  strings, fragments, email, cookies, raw user agents, or device fingerprints.
+  Use a random UUID v4 in origin-local storage to estimate repeat browser visits;
+  it identifies a browser profile, not a person. Do not create or read this ID
+  when DNT/GPC suppress analytics. Blocked storage must retain anonymous views.
 - Analytics failures must never prevent rendering or subscription setup, including
   synchronous fetch errors. Do not add retries, WebSocket fallbacks, alternate
   hosts, or ad-blocker evasion. Delivery cannot be guaranteed.

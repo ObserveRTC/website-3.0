@@ -12,14 +12,17 @@ Configure both URLs centrally in `config/_default/params.toml`:
 - `POST https://ingest.observertc.org/analytics`
 - `POST https://ingest.observertc.org/subscribe`
 
-The existing paths and version-1 JSON payloads are preserved (see README). Do not
+The existing paths and version-1 envelope are preserved (see README). Analytics
+now has optional browser/device/language fields and a random `visitorId`; update
+backend validation to accept these before deploying. Subscription is unchanged. Do not
 switch to `/v1/events` or `/v1/subscriptions` without coordinating backend support.
 The existing routes already separate analytics from explicit signups.
 
 `assets/js/site-services.js` is bundled locally and uses standard JSON `fetch`
 requests. Analytics sends one page view per page load with `keepalive: true`, no
-retry and no fallback transport. No query strings, referrers, email, persistent IDs,
-cookies, or browser credentials are included. DNT and GPC suppress analytics;
+retry and no fallback transport. No query strings, referrers, email,
+cookies, or browser credentials are included. A random localStorage visitor ID
+and coarse browser context are included when available. DNT and GPC suppress analytics;
 development analytics is disabled by default. Existing behavior does not implement
 an explicit consent UI. If a deployment requires opt-in, disable the configured
 analytics URL until a consent gate is implemented; do not treat absence of DNT/GPC

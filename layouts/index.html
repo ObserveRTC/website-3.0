@@ -4,7 +4,7 @@
     <p class="eyebrow">OPEN-SOURCE WEBRTC OBSERVABILITY</p>
     <h1 id="hero-title">Understand Every<br><span>WebRTC Connection.</span></h1>
     <p class="rtc-hero-lead">From browser statistics to the full call picture. Collect live metrics, detect issues, and see how your real-time application performs.</p>
-    <div class="rtc-hero-actions"><a class="btn btn-primary" href="{{ "/docs/overview/introduction/" | relURL }}">Get started →</a><a class="btn btn-outline-primary" href="https://webrtc-observer.org/" target="_blank" rel="noopener noreferrer">Try the live example ↗</a></div>
+    <div class="rtc-hero-actions"><a class="btn btn-primary" href="{{ "/docs/getting-started/" | relURL }}">Get started →</a><a class="btn btn-outline-primary" href="https://webrtc-observer.org/" target="_blank" rel="noopener noreferrer">Try the live example ↗</a></div>
     <p class="rtc-hero-footnote">TypeScript libraries · Your transport · Your infrastructure</p>
   </div>
   <div class="rtc-code-window highlight" aria-label="ObserveRTC integration overview">
@@ -25,7 +25,7 @@ monitor.addSource(peerConnection);
   <ol class="signal-story-flow">
     <li><span class="signal-step">01 / COLLECT</span><h3>Browser statistics</h3><p>Start with measurements from your existing peer connection.</p><code>getStats()</code></li>
     <li><span class="signal-step">02 / INTERPRET</span><h3>Client Monitor</h3><p>Read live metrics, detect endpoint issues and calculate quality scores.</p><a href="/docs/client-monitor-js/">Explore Client Monitor →</a></li>
-    <li><span class="signal-step">03 / TRANSPORT</span><h3>ClientSample</h3><p>Send a typed sample over your transport, with optional JSON or Protobuf encoding.</p><a href="/docs/schema/">Explore the schema →</a></li>
+    <li><span class="signal-step">03 / TRANSPORT</span><h3>Send telemetry</h3><p>Bring browser observations to your backend and start building the call picture.</p><a href="/docs/getting-started/backend/">Connect your backend →</a></li>
     <li><span class="signal-step">04 / CORRELATE</span><h3>Observer</h3><p>Reconstruct participants, tracks and calls. Analyze issues across endpoints.</p><a href="/docs/observer-js/">Explore Observer →</a></li>
   </ol>
   <div class="signal-story-demo"><div><h3>See the signals in a live connection</h3><p>Try the live example to explore Client Monitor while a WebRTC session runs.</p></div><a class="btn btn-outline-primary rounded-pill px-4" href="https://webrtc-observer.org/" target="_blank" rel="noopener noreferrer">Open live example ↗</a></div>

@@ -10,6 +10,8 @@ weight: 20
 toc: true
 ---
 
+This page is for engineers changing schema definitions or regenerating their outputs. Installing Client Monitor and sending samples does not require this pipeline. If you arrived here while setting up monitoring, continue with [Send samples to your backend](/docs/getting-started/backend/).
+
 ## Authoritative definitions
 
 Authoritative sources are `sources/samples/ClientSample.avsc` and `PeerConnectionSample.chunk.avsc`. The first defines the root and discrete records, the second the PC envelope, tracks and browser-stat families. Every field/type/default is in the [schema field reference](/docs/schema/clientsample/). Root includes timestamp, optional `clientId`/`callId`, attachments, score/reasons, PCs, events, issues, metadata and extensions. Optional at schema level does not imply accepted by Observer: Observer rejects missing `clientId` or `callId`.

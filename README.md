@@ -75,9 +75,19 @@ credentials. Analytics receives one record per page load:
 {"version":1,"event":"page_view","path":"/docs/overview/introduction/","timestamp":"2026-10-08T12:00:00.000Z"}
 ```
 
-No query string, fragment, referrer, email, cookies, or persistent visitor ID is
-included. Do Not Track and Global Privacy Control suppress analytics. This measures
-page views, not unique people or sessions. Network errors never block the page.
+Analytics also includes `browser`, optional `browserMajorVersion`, `deviceType`
+(`desktop`, `mobile`, or `tablet`), optional primary `language`, and optional
+`visitorId` (a random UUID v4 stored in localStorage). Backend validation must
+accept these new optional fields before deploying this frontend. They are
+additive fields on the existing version-1 payload; subscription JSON is unchanged.
+
+The ID recognizes this browser profile on this origin, not a person. Clearing
+site storage, private browsing, or another device creates a different ID. If
+storage is unavailable, omit the ID and still send the page view. Browser context
+is best-effort and can be spoofed; it is not an authentication signal. No raw
+user-agent, query string, fragment, referrer, email, cookies, or device fingerprint
+is sent. DNT/GPC suppress both analytics and creation of the visitor ID. Network
+errors never block the page.
 
 Subscription payload:
 

@@ -11,6 +11,8 @@ toc: false
 
 Both ObserveRTC codecs encode differences between successive `ClientSample` records. Choose JSON for readable messages and a small runtime footprint, or protobuf for compact binary payloads.
 
+{{< component-flow from="A sample stream" fromText="Start with samples from one monitored client." via="Encode and transport" viaText="Use JSON or protobuf over a transport you control." to="Decoded samples" toText="Restore complete samples before analysis." caption="Optional encoding between collection and backend analysis." >}}
+
 {{< card-grid >}}
 {{< link-card title="Protobuf Codec" description="Compact binary deltas with encoding and decoding in one package." href="/docs/codecs/protobuf/" >}}
 {{< link-card title="JSON Codec" description="Readable JSON deltas with zero runtime dependencies." href="/docs/codecs/json/" >}}

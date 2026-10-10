@@ -403,3 +403,12 @@ html { scrollbar-gutter: stable; }
   color: #77d99c;
   border-color: #77d99c;
 }
+
+.component-flow { margin: 1.8rem 0 2rem; }
+.component-flow ol { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; list-style: none; padding: 0; margin: 0; }
+.component-flow li { border: 1px solid var(--rtc-line); border-radius: 10px; padding: 1.1rem; background: var(--rtc-surface); margin: 0; }
+.component-flow li > span { display: block; color: var(--rtc-accent); font-size: .75rem; font-weight: 600; margin-bottom: .7rem; }
+.component-flow strong { display: block; font-size: 1rem; line-height: 1.4; }
+.component-flow li p { color: var(--rtc-muted); font-size: .875rem; line-height: 1.6; margin: .6rem 0 0; }
+.component-flow figcaption { color: var(--rtc-muted); font-size: .8rem; margin-top: .75rem; }
+@media (max-width: 767px) { .component-flow ol { grid-template-columns: 1fr; } }

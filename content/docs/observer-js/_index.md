@@ -12,6 +12,15 @@ toc: true
 
 Observer helps your backend understand a WebRTC call across its monitored endpoints. It accepts decoded `ClientSample` records, maintains live calls and clients, follows their media objects, and exposes events and registered analysis.
 
+{{< component-flow from="Client samples" fromText="Receive observations through your own backend." via="Observer" viaText="Update live calls, clients, tracks, and issues." to="The call picture" toText="Compare endpoints and connect analysis to your tools." caption="From individual endpoints to a shared view of the call." >}}
+
+## Choose your next step
+
+{{< card-grid >}}
+{{< link-card title="Try it in your application" description="Follow the quick start and confirm a useful monitoring result." href="/docs/observer-js/quick-start/" >}}
+{{< link-card title="See how it fits together" description="Understand collection, transport, and backend responsibilities." href="/docs/overview/architecture/" >}}
+{{< /card-grid >}}
+
 ## Why use it?
 
 A browser sees its own endpoint. Support and operations often need to compare participants: did several receivers lose the same publisher, are problems isolated to one client, or do similar issues appear across calls? Observer provides the live state and extension points for those investigations.

@@ -1,6 +1,29 @@
 import * as params from '@params';
 
-// No cookies, persistent identifiers, query strings, or email in analytics.
+// Coarse browser context and a random, origin-local visitor ID; no fingerprint.
+function analyticsContext() {
+  const ua = navigator.userAgent || '';
+  const match = [/\b(Edg)\/(\d+)/, /\b(Firefox)\/(\d+)/, /\b(Chrome)\/(\d+)/, /\b(Version)\/(\d+)/]
+    .map(pattern => ua.match(pattern)).find(Boolean);
+  const names = { Edg: 'Edge', Firefox: 'Firefox', Chrome: 'Chrome', Version: 'Safari' };
+  const context = {
+    browser: match ? names[match[1]] : 'Other',
+    deviceType: /iPad|Tablet|Android(?!.*Mobile)/i.test(ua) ? 'tablet' : /Mobile|iPhone|Android/i.test(ua) ? 'mobile' : 'desktop',
+  };
+  if (match) context.browserMajorVersion = Number(match[2]);
+  const language = (navigator.language || '').split('-')[0].toLowerCase();
+  if (/^[a-z]{2,3}$/.test(language)) context.language = language;
+  try {
+    const key = 'observertc-analytics-visitor';
+    let id = window.localStorage.getItem(key);
+    if (!/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id || '')) {
+      id = window.crypto.randomUUID();
+      window.localStorage.setItem(key, id);
+    }
+    context.visitorId = id;
+  } catch { /* Without storage, retain anonymous page views. */ }
+  return context;
+}
 if (params.analyticsendpoint &&
     (params.env === 'production' || params.analyticsindevelopment) &&
     navigator.doNotTrack !== '1' && !navigator.globalPrivacyControl) {
@@ -14,6 +37,7 @@ if (params.analyticsendpoint &&
       body: JSON.stringify({
         version: 1,
         event: 'page_view',
+        ...analyticsContext(),
         path: window.location.pathname,
         timestamp: new Date().toISOString(),
       }),
