@@ -244,3 +244,9 @@ established preferences; a newer explicit user instruction takes precedence.
   API migration notes in Updates; docs describe current session totals, audio
   evidence, and detector behavior. Schema equality does not establish feature
   support for next-client audio metadata or dashboard presentation.
+
+- Deflate Codec belongs under Codecs alongside JSON and Protobuf. It uses its own
+  structural diff, dictionary coding, and asynchronous platform deflate, with
+  ordered lossless delivery and coordinated resets. Attribute its introduction
+  to Håvar Aambø Fosstveit; distinguish fixture compression measurements from
+  general guarantees and package versions from wire-format compatibility.

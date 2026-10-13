@@ -1,7 +1,7 @@
 ---
 title: "Codecs"
-description: "Choose JSON or protobuf for stateful sample transport."
-lead: "Choose JSON or protobuf for stateful sample transport."
+description: "Choose JSON, protobuf, or deflate for stateful sample transport."
+lead: "Choose JSON, protobuf, or deflate for stateful sample transport."
 draft: false
 outputs: ["HTML", "RSS", "SITEMAP", "Markdown"]
 landingTitle: "Choosing a codec"
@@ -9,13 +9,14 @@ weight: 45
 toc: false
 ---
 
-Both ObserveRTC codecs encode differences between successive `ClientSample` records. Choose JSON for readable messages and a small runtime footprint, or protobuf for compact binary payloads.
+ObserveRTC codecs encode changes between successive `ClientSample` records. Choose JSON for readable messages, protobuf for its binary representation, or Deflate for structural deltas with dictionary coding and platform compression.
 
-{{< component-flow from="A sample stream" fromText="Start with samples from one monitored client." via="Encode and transport" viaText="Use JSON or protobuf over a transport you control." to="Decoded samples" toText="Restore complete samples before analysis." caption="Optional encoding between collection and backend analysis." >}}
+{{< component-flow from="A sample stream" fromText="Start with samples from one monitored client." via="Encode and transport" viaText="Use your chosen codec over a transport you control." to="Decoded samples" toText="Restore complete samples before analysis." caption="Optional encoding between collection and backend analysis." >}}
 
 {{< card-grid >}}
 {{< link-card title="Protobuf Codec" description="Compact binary deltas with encoding and decoding in one package." href="/docs/codecs/protobuf/" >}}
 {{< link-card title="JSON Codec" description="Readable JSON deltas with zero runtime dependencies." href="/docs/codecs/json/" >}}
+{{< link-card title="Deflate Codec" description="Dictionary-coded structural deltas with per-message platform compression." href="/docs/codecs/deflate/" >}}
 {{< /card-grid >}}
 
 Use one encoder and decoder per client stream. Preserve order and complete delivery; reset at reconnect or snapshot boundaries. Decode samples before passing them to Observer.
