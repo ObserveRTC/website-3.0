@@ -14,6 +14,7 @@ Server detectors compare evidence across participants or calls. They help answer
 
 | Scope | Classes | Evidence / purpose |
 |---|---|---|
+| Call | `AudioEchoDetector` | sustained correlation between one participant’s outgoing audio and another participant’s voice |
 | Call | `CallConcurrentIssueDetector` | active issue prevalence and onset bursts within one call |
 | Call | `IssueFanOutDetector` | same publisher-associated failure appears across receivers |
 | Call | `PublisherFaultCorroborationDetector` | publisher-side issues corroborated by receiver degradation/issues |
@@ -45,3 +46,19 @@ Exact configs/defaults, state and triggers for all server detector classes are i
 - `call.addDetector(...)` registers on an existing call.
 
 Constructor configurations belong to each detector. Do not assume a default enabled set or a shared `DetectorsConfig` module.
+
+## Investigate suspected audio echo
+
+Register `audio-echo-detector` on a call or as a factory for future calls:
+
+```javascript
+observer.addCallDetector('audio-echo-detector');
+// For a call that already exists:
+// call.addDetector('audio-echo-detector');
+```
+
+The detector raises `AUDIO_ECHO_SUSPECTED` when outgoing audio follows the loudest other participant in enough active buckets and their dB levels correlate. `minFollowRatio` and `minCorrelation` gate the evidence. Its payload identifies the suspected echoing and source tracks/clients, capture-device label when available, and whether a `loopback-audio-input` issue is open. Ambiguous direction can be explicitly flagged.
+
+This is evidence of suspected echo, not a confirmed acoustic diagnosis. Sampling granularity limits detection of faint or intermittent echo. Receiver-derived publisher audio levels need a `RemoteTrackResolver`; without usable levels, those tracks are not evaluated. Inspect the payload and capture configuration before deciding on remediation.
+
+Source: [AudioEchoDetector implementation and limitations](https://github.com/ObserveRTC/observer-js/blob/1.2.0/src/detectors/AudioEchoDetector.ts).

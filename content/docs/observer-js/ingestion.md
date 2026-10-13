@@ -65,10 +65,10 @@ Server defaults: automatic observer update on call updates, 60 s idle client tim
 
 {{< /details >}}
 
-## Middleware limitation in 1.0.0
+## Validate before ingestion
 
 The inspected `accept()` implementation dispatches the original sample after invoking middleware. Not calling `next()`, throwing, or forwarding a replacement object does **not** reliably drop or replace that sample. In-place mutation of the original object is a different case.
 
-Filter and validate **before calling `observer.accept()`**. Do not use its middleware as an authorization boundary. This behavior was reproduced against the pinned source; it disagrees with repository documentation.
+Filter and validate **before calling `observer.accept()`**. Do not use its middleware as an authorization boundary. The tagged implementation continues with the original sample after middleware processing; use your authenticated handler as the validation and filtering boundary. [Implementation](https://github.com/ObserveRTC/observer-js/blob/1.2.0/src/Observer.ts).
 
 [Known differences and reproduction results](/docs/reference/known-differences/)

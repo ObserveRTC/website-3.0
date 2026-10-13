@@ -64,7 +64,7 @@ Missing dimensions are excluded. `[5,5,0]` therefore gives 2.11, not arithmetic 
 | Transport instability or decoder degradation | A continuous penalty that follows the measured degradation. |
 | Pixelation | A penalty whose weight also depends on how much the video is magnified on screen. |
 
-The calculator also evaluates capture, encoding, freezes, frame drops, and audio behavior. The [formula reference](/reference/monitor-fields-and-formulas.md) preserves the exact calculations for the documented baseline. Use component scores to locate the affected part of the pipeline rather than reading a client score as the diagnosis by itself.
+The calculator also evaluates capture, encoding, freezes, frame drops, and audio behavior. The [formula reference](/docs/reference/monitor-formulas/) preserves the exact calculations for the documented baseline. Use component scores to locate the affected part of the pipeline rather than reading a client score as the diagnosis by itself.
 
 ## Detailed reason behavior
 

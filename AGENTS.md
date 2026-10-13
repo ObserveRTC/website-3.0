@@ -228,3 +228,19 @@ established preferences; a newer explicit user instruction takes precedence.
   and contrast. Report actual verification and any limitations plainly.
 - Do not add tests that merely repeat a trivial visual edit. Add meaningful tests
   when behavior changes, especially independent analytics/signup failure handling.
+
+- Normal documentation links to the monitor formula inventory use
+  `/docs/reference/monitor-formulas/`, which renders the single generated Markdown
+  source in the site layout. Keep the raw file as an explicitly labeled download
+  or agent reference, not the main reading destination.
+
+- Stats Dashboard is a versioned docs component. Distinguish its package version
+  and pinned commit from an actual published release/tag. Compatibility matrices
+  separate JS→Observer, C++→Observer, and producer/Observer→Dashboard. Mark shared
+  contracts, documented targets, and end-to-end tested combinations distinctly;
+  never infer complete support from schema equality.
+
+- Observer current release guidance covers 1.2.0. Keep release changes and removed
+  API migration notes in Updates; docs describe current session totals, audio
+  evidence, and detector behavior. Schema equality does not establish feature
+  support for next-client audio metadata or dashboard presentation.

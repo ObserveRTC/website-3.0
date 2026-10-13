@@ -14,7 +14,7 @@ This inventory comes from the actual Avro definitions. A field's presence in thi
 
 Most derived rates, detector state and declared context stay on live monitors. Track samples project identity, kind, timestamp, attachments and score information. Extension entries contain `type` and `payload`; a local extension monitor ID is not transmitted.
 
-[Serialization methods](/reference/monitor-fields-and-formulas.md) · [Generation and compatibility](/docs/schema/general/)
+[Serialization methods](/docs/reference/monitor-formulas/) · [Generation and compatibility](/docs/schema/general/)
 
 ## ClientSample
 [Source](https://github.com/ObserveRTC/schemas/blob/eb7fe28062b81d6db9dfb7ca565b1fb9c88b5d17/sources/samples/ClientSample.avsc)

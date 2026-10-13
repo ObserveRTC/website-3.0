@@ -1,0 +1,3 @@
+{{- $source := readFile "static/reference/monitor-fields-and-formulas.md" -}}
+{{- $body := $source | replaceRE "^# Monitor fields and exact calculations\\n" "" -}}
+{{- .Page.RenderString (dict "display" "block") $body -}}

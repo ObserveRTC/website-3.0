@@ -132,3 +132,14 @@ pageRef = "/docs/reference"
 name = "Contact"
 url = "/contact/"
 weight = 20
+
+[[docs]]
+name = "Stats Dashboard"
+weight = 55
+identifier = "stats-dashboard"
+url = "/docs/stats-dashboard/"
+
+[[sidebar_docs]]
+name = "Stats Dashboard"
+weight = 55
+pageRef = "/docs/stats-dashboard"

@@ -83,6 +83,10 @@ Observer does not rerun browser-side collection or endpoint detectors. Correlate
 
 Call `observer.close()` during service shutdown. Make timeouts deliberate: closing a client too early can split a participant's history, while retaining abandoned clients too long affects counts and memory.
 
-The current installation guidance uses **1.1.0** through `npm install @observertc/observer-js`. Detailed older references remain labeled in [version coverage](/docs/reference/versions/); [known implementation differences](/docs/reference/known-differences/) applies to its pinned baseline.
+The current installation guidance uses **1.2.0** through `npm install @observertc/observer-js`. Detailed older references remain labeled in [version coverage](/docs/reference/versions/); [known implementation differences](/docs/reference/known-differences/) applies to its pinned baseline.
 
 [Observer implementation reference](https://github.com/ObserveRTC/observer-js/blob/b4a1ccb85468c94084a89ed2c007708c14ead551/src/Observer.ts).
+
+## Summarize a participant's session
+
+`ObservedClient` retains session-wide RTT and score histograms, issue-raise counts, traffic totals, path sample counts, address-change counts, and peak bitrates. These totals survive peer connection closure and are separate from per-sample deltas. See [Calls, clients, and tracks](/docs/observer-js/entities/) for interpretation and [Server detectors](/docs/observer-js/detectors/) for cross-participant audio echo evidence.

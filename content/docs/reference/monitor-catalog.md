@@ -12,6 +12,6 @@ toc: true
 
 Search a field or select a monitor. Each declaration links to its implementation. This catalog includes identity, context, relationships, scores and measurements; it does not label every schema field as a raw browser stat.
 
-[Metric formulas & provenance](/docs/client-monitor-js/metrics/) · [Graph & API](/docs/client-monitor-js/api-reference/) · [Exact calculations and sample projections](/reference/monitor-fields-and-formulas.md)
+[Metric formulas & provenance](/docs/client-monitor-js/metrics/) · [Graph & API](/docs/client-monitor-js/api-reference/) · [Exact calculations and sample projections](/docs/reference/monitor-formulas/)
 
 {{< monitor-catalog >}}

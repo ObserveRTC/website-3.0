@@ -33,7 +33,7 @@ Use this index to find the authoritative contract for the component you are inte
 
 ## Complete references
 
-- [Field calculations and serialization source](/reference/monitor-fields-and-formulas.md)
+- [Field calculations and serialization source](/docs/reference/monitor-formulas/)
 - [Detector source and defaults](/reference/detector-implementation-reference.md)
 - [Focused verification results](/reference/verification-results.json)
 
