@@ -21,6 +21,8 @@ Client Monitor helps you understand what happens at one WebRTC endpoint. It runs
 {{< link-card title="See how it fits together" description="Understand collection, transport, and backend responsibilities." href="/docs/overview/architecture/" >}}
 {{< /card-grid >}}
 
+For native applications built on libwebrtc or libmediasoupclient, explore [Client Monitor C++](/docs/client-monitor-js/native-cpp/). It is a native port with partial detector coverage, rather than a JavaScript runtime wrapper.
+
 ## Why use it?
 
 Browser statistics are distributed across connections, tracks, streams, and network objects. Their fields vary between browsers, and many useful rates require comparing observations over time. Client Monitor connects these measurements so you can investigate questions such as whether a received video stopped arriving, decoding, or playing.

@@ -18,6 +18,10 @@ Start with Client Monitor to inspect an endpoint. Add Observer when your backend
 | [Schemas](/docs/schema/) | Define the records and types carried by `ClientSample`. | A compatible producer/consumer contract. |
 | [Codecs](/docs/codecs/) | Encode and decode changes between successive samples. | Ordered delivery and a separate stateful stream per client. |
 
+## Native clients
+
+For applications using libwebrtc or libmediasoupclient, [Client Monitor C++](/docs/client-monitor-js/native-cpp/) provides a native C++17 port with bindings for those stacks. It produces ClientSample records for the same backend pipeline. Detector coverage is partial; consult its porting status instead of assuming parity with the JavaScript library.
+
 ## Supporting projects
 
 The [Stats Dashboard](https://github.com/ObserveRTC/stats-dashboard) and [STUNner demo](https://github.com/ObserveRTC/observertc-stunner-demo) provide examples and tools around the libraries. They are not required to embed Client Monitor or Observer. Read their repositories for deployment requirements.

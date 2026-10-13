@@ -102,3 +102,13 @@ These mocks do not prove real CORS, delivery or object storage persistence.
 7. Test standard and strict privacy settings in the browsers above, recording
    versions/filter-list versions and results. Verify signup with analytics blocked,
    GPC/DNT enabled, and network failures. Do not change endpoints to evade a block.
+
+### Analytics backend compatibility
+
+On October 12, 2026, the deployed endpoint rejected the enriched payload with
+HTTP 400 (`unexpected field: browser`) while the original payload returned 204.
+`services.analyticsContextEnabled = false` therefore sends only `version`,
+`event`, `path`, and `timestamp`, without accessing visitor storage.
+After the backend accepts optional `browser` (string), `browserMajorVersion`
+(integer), `deviceType` (`desktop`, `mobile`, `tablet`), `language` (string), and
+`visitorId` (UUID v4 string), enable that switch and deploy again.

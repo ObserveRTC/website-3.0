@@ -37,7 +37,7 @@ if (params.analyticsendpoint &&
       body: JSON.stringify({
         version: 1,
         event: 'page_view',
-        ...analyticsContext(),
+        ...(params.analyticscontextenabled ? analyticsContext() : {}),
         path: window.location.pathname,
         timestamp: new Date().toISOString(),
       }),

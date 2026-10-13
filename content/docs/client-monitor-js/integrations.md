@@ -31,6 +31,10 @@ monitor.addSource(device, 'mediasoup-device');
 monitor.addSource(transport, 'mediasoup-transport');
 ```
 
+## Native WebRTC applications
+
+Using libwebrtc or libmediasoupclient outside the browser? See [Native C++ integration](/docs/client-monitor-js/native-cpp/) for the C++ port, supported bindings, and current coverage. Its native listener API differs from the JavaScript examples on this page.
+
 ## Application context
 
 The browser cannot tell whether a quiet stream is intentionally paused or unexpectedly broken. Tell the monitor about application intent through `setInboundTrackContext` and `setOutboundTrackContext`. Pausing, screen sharing and expected media flow can change the meaning of a silent interval. Context may be pending until the track appears.

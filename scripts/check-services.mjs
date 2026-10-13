@@ -17,7 +17,7 @@ function fixture({ params = {}, privacy = {}, ok = true, networkError = false, a
     addEventListener: (_, handler) => { submit = handler; },
   };
   vm.runInNewContext(code, {
-    params: { env: 'production', analyticsendpoint: 'https://ingest.observertc.org/analytics', subscribeendpoint: 'https://ingest.observertc.org/subscribe', ...params },
+    params: { analyticscontextenabled: true, env: 'production', analyticsendpoint: 'https://ingest.observertc.org/analytics', subscribeendpoint: 'https://ingest.observertc.org/subscribe', ...params },
     navigator: { userAgent: 'Mozilla/5.0 Firefox/143.0', language: 'en-US', ...privacy }, window: { crypto: { randomUUID: () => '12345678-1234-4123-8123-123456789abc' }, localStorage: { getItem: key => { if (storageBlocked) throw Error('blocked'); return storage.get(key); }, setItem: (key, value) => { if (storageBlocked) throw Error('blocked'); storage.set(key, value); } }, location: { pathname: '/docs/', search: '?secret=hidden' } },
     document: { querySelectorAll: () => [form] },
     fetch: (url, options) => {
@@ -115,3 +115,10 @@ fixture({ storage: privateStorage, privacy: { doNotTrack: '1' } });
 fixture({ storage: privateStorage, privacy: { globalPrivacyControl: true } });
 assert.equal(privateStorage.size, 0);
 console.log('Visitor context checks passed: reuse, coarse context, blocked storage, no identifiers under DNT/GPC.');
+
+const legacy = fixture({ params: { analyticscontextenabled: false } });
+assert.deepEqual(Object.keys(legacy.calls[0].body).sort(), ['event', 'path', 'timestamp', 'version']);
+const legacyStorage = new Map();
+fixture({ params: { analyticscontextenabled: false }, storage: legacyStorage });
+assert.equal(legacyStorage.size, 0);
+assert.match(config, /analyticsContextEnabled = false/);

@@ -133,3 +133,13 @@ Commentary is Markdown written by maintainers; no visitor comment backend is nee
 For deployment steps, verified limitations, and the browser/privacy assessment,
 see [Ingestion migration](docs/ingestion-migration.md). Infrastructure and real
 browser/ad-blocker verification must be completed on the service deployment.
+
+### Analytics backend compatibility
+
+On October 12, 2026, the deployed endpoint rejected the enriched payload with
+HTTP 400 (`unexpected field: browser`) while the original payload returned 204.
+`services.analyticsContextEnabled = false` therefore sends only `version`,
+`event`, `path`, and `timestamp`, without accessing visitor storage.
+After the backend accepts optional `browser` (string), `browserMajorVersion`
+(integer), `deviceType` (`desktop`, `mobile`, `tablet`), `language` (string), and
+`visitorId` (UUID v4 string), enable that switch and deploy again.

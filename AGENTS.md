@@ -54,6 +54,12 @@ established preferences; a newer explicit user instruction takes precedence.
 
 ## Documentation and readability
 
+- `client-monitor-cpp` is a native C++17 port with libwebrtc/libmediasoupclient
+  bindings, not a wrapper running the JavaScript library. Verify its porting
+  status before claiming detector/API parity. v0.1.0 lists uncompiled optional
+  WebRTC bindings and an unported default score calculator (score stays 5.0
+  without a custom calculator); do not present it as measured healthy quality. Keep it discoverable from Client
+  Monitor integration and ecosystem docs.
 - `sfu-monitor-js` is deprecated. Do not list it as a current component or
   restore its obsolete license/reference links. SFU integration belongs to
   Observer; verify supported capabilities against Observer source.
@@ -154,6 +160,10 @@ established preferences; a newer explicit user instruction takes precedence.
 - Configure public URLs centrally in `config/_default/params.toml`:
   - `POST https://ingest.observertc.org/analytics`
   - `POST https://ingest.observertc.org/subscribe`
+- Keep `services.analyticsContextEnabled = false` until backend validation
+  accepts the optional visitor context. The live endpoint rejected `browser`
+  on October 12, 2026. Disabled context sends the original four fields and
+  does not access visitor storage; test both contract modes.
 - Keep the version-1 envelope and subscription contract. Analytics now includes
   optional `browser`, `browserMajorVersion`, `deviceType`, `language`, and
   `visitorId`; backend validation must accept these before deployment:
