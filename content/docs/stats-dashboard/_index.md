@@ -27,10 +27,10 @@ The dashboard is a separate Next.js application. Installing the monitoring libra
 
 ## Versions and compatibility
 
-The reviewed package declares **0.1.0**, at commit `323a1b28553758edafaa0abd0d4211c9e13de9ea`. As of October 13, 2026, GitHub lists no published releases for the repository. This is a package/source version, not a claim that a release tag exists.
+Stats Dashboard **0.1.0** targets sample schema **3.7.0**.
 
 Its schema source documents a target of Client Monitor JS 4.9.0 and later with sample schema 3.7.0, plus normalization of selected older payload/reason representations. This is not a guarantee that every historical schema or native client provides all displayed fields.
 
-See the [compatibility matrices](/docs/reference/versions/) before choosing a producer/Observer/dashboard combination. Native C++ samples share the 3.7.0 contract, but native detector and scoring coverage is partial and dashboard integration is not independently verified here.
+See the [compatibility table](/docs/reference/versions/) before choosing a producer/Observer/dashboard combination. Native C++ samples share the 3.7.0 contract, but native detector and scoring coverage is partial.
 
-Sources: [package version](https://github.com/ObserveRTC/stats-dashboard/blob/323a1b28553758edafaa0abd0d4211c9e13de9ea/package.json), [sample contract](https://github.com/ObserveRTC/stats-dashboard/blob/323a1b28553758edafaa0abd0d4211c9e13de9ea/src/schema/ClientSample.ts), and [fixture tests](https://github.com/ObserveRTC/stats-dashboard/blob/323a1b28553758edafaa0abd0d4211c9e13de9ea/scripts/realFixture.test.ts). These are source references; the dashboard was not run as part of the website checks.
+Sources: [package version](https://github.com/ObserveRTC/stats-dashboard/blob/323a1b28553758edafaa0abd0d4211c9e13de9ea/package.json), [sample contract](https://github.com/ObserveRTC/stats-dashboard/blob/323a1b28553758edafaa0abd0d4211c9e13de9ea/src/schema/ClientSample.ts), and [fixture tests](https://github.com/ObserveRTC/stats-dashboard/blob/323a1b28553758edafaa0abd0d4211c9e13de9ea/scripts/realFixture.test.ts).

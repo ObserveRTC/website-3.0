@@ -31,6 +31,6 @@ Read the [porting status](https://github.com/ObserveRTC/client-monitor-cpp/blob/
 
 The default score calculator and MOS scoring are not ported. Without a custom score calculator, the client score stays at 5.0; that value is not evidence of healthy media quality. Selected ICE path tracking and SDP monitoring are also not ported.
 
-The release includes an API guide and `examples/api_tour.cpp`, which the release notes describe as compiled and run in CI. This website update reviews those sources; it does not independently build or test the native library.
+The release includes an API guide and `examples/api_tour.cpp`, which the release notes describe as compiled and run in CI.
 
 Continue with [Observer](/docs/observer-js/) when you need a backend view across clients, or [Send samples to your backend](/docs/getting-started/backend/) for the collection/delivery/analysis boundaries.

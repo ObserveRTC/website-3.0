@@ -250,3 +250,10 @@ established preferences; a newer explicit user instruction takes precedence.
   ordered lossless delivery and coordinated resets. Attribute its introduction
   to Håvar Aambø Fosstveit; distinguish fixture compression measurements from
   general guarantees and package versions from wire-format compatibility.
+
+- Public compatibility guidance is one schema-first table: schema version,
+  Observer JS, Client Monitor JS, Client Monitor C++, Stats Dashboard. List
+  supported contracts without inventing historical ranges. Keep internal audit
+  dates, commit inventories, testing commentary, and package-versus-release
+  research in `docs/compatibility-source-notes.md`, not public reader prose.
+  Public docs retain concise practical limitations and optional source links.

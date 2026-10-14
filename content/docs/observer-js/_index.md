@@ -83,7 +83,7 @@ Observer does not rerun browser-side collection or endpoint detectors. Correlate
 
 Call `observer.close()` during service shutdown. Make timeouts deliberate: closing a client too early can split a participant's history, while retaining abandoned clients too long affects counts and memory.
 
-The current installation guidance uses **1.2.0** through `npm install @observertc/observer-js`. Detailed older references remain labeled in [version coverage](/docs/reference/versions/); [known implementation differences](/docs/reference/known-differences/) applies to its pinned baseline.
+Install Observer with `npm install @observertc/observer-js`. Use the [compatibility table](/docs/reference/versions/) to match its sample schema with your clients.
 
 [Observer implementation reference](https://github.com/ObserveRTC/observer-js/blob/b4a1ccb85468c94084a89ed2c007708c14ead551/src/Observer.ts).
 
