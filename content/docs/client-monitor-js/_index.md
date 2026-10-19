@@ -10,6 +10,8 @@ weight: 20
 toc: true
 ---
 
+Package: [@observertc/client-monitor-js on npm](https://www.npmjs.com/package/@observertc/client-monitor-js).
+
 Client Monitor helps you understand what happens at one WebRTC endpoint. It runs in the browser beside the connections your application already owns, reads `getStats()` reports, and turns them into live metrics, issue evidence, and samples for your backend.
 
 {{< component-flow from="Your connection" fromText="Keep your existing WebRTC application." via="Client Monitor" viaText="Collect measurements and evaluate endpoint conditions." to="Useful evidence" toText="Inspect metrics, handle issues, or send samples." caption="From a browser connection to evidence you can act on." >}}

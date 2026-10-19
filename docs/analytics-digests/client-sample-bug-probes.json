@@ -1,0 +1,54 @@
+{
+  "sourceRevision": "ecbb77277306c35b32ad0d275e193a9687bf764e",
+  "method": "Unmodified source transpiled in memory; synthetic monitor stubs; no browser or network calls.",
+  "results": [
+    {
+      "id": "all-loss-interval-reported-zero",
+      "expected": 1,
+      "actual": 0,
+      "reproduced": true
+    },
+    {
+      "id": "interruption-counters-omitted-from-sample",
+      "expected": 2,
+      "actual": null,
+      "reproduced": true
+    },
+    {
+      "id": "payload-bitrate-subtracts-headers-again",
+      "expected": 8000,
+      "actual": 7200,
+      "reproduced": true
+    },
+    {
+      "id": "duplicate-report-retains-elapsed-interval",
+      "expected": 0,
+      "actual": 1000,
+      "reproduced": true
+    },
+    {
+      "id": "missing-raw-frame-counter-reemitted",
+      "expected": null,
+      "actual": 10,
+      "reproduced": true
+    },
+    {
+      "id": "unavailable-encode-cost-keeps-old-reading",
+      "expected": null,
+      "actual": 100,
+      "reproduced": true
+    },
+    {
+      "id": "reported-fraction-loss-without-received-counter",
+      "reportedFractionLost": 0.2,
+      "derivedDeltaFractionLost": null,
+      "note": "Capability gap: preserve reported fraction as a separately typed observation; do not invent packet denominator."
+    },
+    {
+      "id": "metadata-top-level-associations-discarded",
+      "expected": "t",
+      "actual": null,
+      "reproduced": true
+    }
+  ]
+}

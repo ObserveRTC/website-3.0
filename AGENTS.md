@@ -257,3 +257,8 @@ established preferences; a newer explicit user instruction takes precedence.
   dates, commit inventories, testing commentary, and package-versus-release
   research in `docs/compatibility-source-notes.md`, not public reader prose.
   Public docs retain concise practical limitations and optional source links.
+
+- Every documented npm-published component has a visible npm package link near
+  the top of its introduction. Client Monitor and Observer links belong on their
+  component landing pages; each codec links its own package on its docs page.
+  Do not invent npm packages for source-built C++ libraries or the dashboard.

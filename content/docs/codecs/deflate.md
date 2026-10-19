@@ -10,6 +10,8 @@ weight: 30
 toc: false
 ---
 
+Package: [@observertc/samples-deflate-codec on npm](https://www.npmjs.com/package/@observertc/samples-deflate-codec).
+
 The Deflate Codec (`@observertc/samples-deflate-codec`) compresses successive `ClientSample` records for live delivery. Use it when repeated fields and sample size matter, and your runtime supports `CompressionStream`, `DecompressionStream`, and `structuredClone`. The documented Node.js minimum is 20; browser deployments need those platform APIs.
 
 ## How it works

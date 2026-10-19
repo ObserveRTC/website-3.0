@@ -1,0 +1,854 @@
+{
+  "reviewDate": "2026-10-16",
+  "method": "static source and test review; no production samples or browser execution",
+  "clientRevision": "ecbb77277306c35b32ad0d275e193a9687bf764e",
+  "observerRevision": "466ec13594ce151ef5d90dd4c6c35d498a7847ea",
+  "clientPackageVersion": "4.11.0",
+  "schemaVersion": "3.7.0",
+  "sourceHashes": {
+    "ClientMonitor.ts": "df6d1a6c2070c8b72e3fab9a17d0090bffc88fe52b3e361826fa9f5c1c52cc53",
+    "ClientMonitorIssues.ts": "f7971a46499af32e2c2cb12d9fb8a8c71b58d00af948f6690ada3e9794c10c1f",
+    "schema/ClientSample.ts": "58ac747eb5f6b7682be08d7b3b445c29c0c51e82c2afdc246405d453b4fda3e8",
+    "monitors/InboundRtpMonitor.ts": "42591888823b966103a13e40dac44b541af94a2985bd43e30ecb517443c6e6e2",
+    "monitors/OutboundRtpMonitor.ts": "d8702f7531f60824244e9638e5ad731c436dc2e0fd48c64ac7d8eaa5481b262c",
+    "monitors/InboundTrackMonitor.ts": "bdcb347ef58ba038ea7fec4bf3ad93c68317a8b0576c32a9c534522b20275984",
+    "monitors/OutboundTrackMonitor.ts": "7bf56815471e8e632307476781c54b0fd5bed71964eb7cdc6256ae070e314a0d",
+    "monitors/PeerConnectionMonitor.ts": "cb135908155859483fda71dec17c9c84e1601d2925ec35f58cbed3d493888f92",
+    "monitors/MediaPlayoutMonitor.ts": "3e3d3dbf441729e388546c4b0de9c3c2473b650d0fa637794c58b5b5ba37bcdc"
+  },
+  "checks": {
+    "audio_interruption_count_used_live": true,
+    "audio_interruption_count_omitted_from_sample": true,
+    "audio_interruption_duration_omitted_from_sample": true,
+    "issue_updates_not_buffered": true,
+    "track_context_omitted_from_track_samples": true,
+    "core_summary_issues_listens_call_issue": true
+  },
+  "sampleRecordFields": {
+    "ExtensionStat": [
+      "type",
+      "payload"
+    ],
+    "ClientMetaData": [
+      "type",
+      "payload",
+      "peerConnectionId",
+      "trackId",
+      "ssrc",
+      "timestamp"
+    ],
+    "ClientIssue": [
+      "type",
+      "key",
+      "payload",
+      "timestamp"
+    ],
+    "ClientEvent": [
+      "type",
+      "payload",
+      "timestamp"
+    ],
+    "CertificateStats": [
+      "timestamp",
+      "id",
+      "fingerprint",
+      "fingerprintAlgorithm",
+      "base64Certificate",
+      "issuerCertificateId",
+      "attachments"
+    ],
+    "IceCandidatePairStats": [
+      "id",
+      "timestamp",
+      "transportId",
+      "localCandidateId",
+      "remoteCandidateId",
+      "state",
+      "nominated",
+      "packetsSent",
+      "packetsReceived",
+      "bytesSent",
+      "bytesReceived",
+      "lastPacketSentTimestamp",
+      "lastPacketReceivedTimestamp",
+      "totalRoundTripTime",
+      "currentRoundTripTime",
+      "availableOutgoingBitrate",
+      "availableIncomingBitrate",
+      "requestsReceived",
+      "requestsSent",
+      "responsesReceived",
+      "responsesSent",
+      "consentRequestsSent",
+      "packetsDiscardedOnSend",
+      "bytesDiscardedOnSend",
+      "attachments"
+    ],
+    "IceCandidateStats": [
+      "timestamp",
+      "id",
+      "transportId",
+      "address",
+      "port",
+      "protocol",
+      "candidateType",
+      "priority",
+      "url",
+      "relayProtocol",
+      "foundation",
+      "relatedAddress",
+      "relatedPort",
+      "usernameFragment",
+      "tcpType",
+      "attachments"
+    ],
+    "IceTransportStats": [
+      "timestamp",
+      "id",
+      "packetsSent",
+      "packetsReceived",
+      "bytesSent",
+      "bytesReceived",
+      "iceRole",
+      "iceLocalUsernameFragment",
+      "dtlsState",
+      "iceState",
+      "selectedCandidatePairId",
+      "localCertificateId",
+      "remoteCertificateId",
+      "tlsVersion",
+      "dtlsCipher",
+      "dtlsRole",
+      "srtpCipher",
+      "selectedCandidatePairChanges",
+      "ccfbMessagesSent",
+      "ccfbMessagesReceived",
+      "attachments"
+    ],
+    "DataChannelStats": [
+      "timestamp",
+      "id",
+      "label",
+      "protocol",
+      "dataChannelIdentifier",
+      "state",
+      "messagesSent",
+      "bytesSent",
+      "messagesReceived",
+      "bytesReceived",
+      "attachments"
+    ],
+    "PeerConnectionTransportStats": [
+      "timestamp",
+      "id",
+      "dataChannelsOpened",
+      "dataChannelsClosed",
+      "attachments"
+    ],
+    "MediaPlayoutStats": [
+      "timestamp",
+      "id",
+      "kind",
+      "synthesizedSamplesDuration",
+      "synthesizedSamplesEvents",
+      "totalSamplesDuration",
+      "totalPlayoutDelay",
+      "totalSamplesCount",
+      "attachments"
+    ],
+    "MediaSourceStats": [
+      "timestamp",
+      "id",
+      "kind",
+      "trackIdentifier",
+      "audioLevel",
+      "totalAudioEnergy",
+      "totalSamplesDuration",
+      "echoReturnLoss",
+      "echoReturnLossEnhancement",
+      "width",
+      "height",
+      "frames",
+      "framesPerSecond",
+      "attachments"
+    ],
+    "RemoteOutboundRtpStats": [
+      "timestamp",
+      "id",
+      "ssrc",
+      "kind",
+      "transportId",
+      "codecId",
+      "packetsSent",
+      "bytesSent",
+      "localId",
+      "remoteTimestamp",
+      "reportsSent",
+      "roundTripTime",
+      "totalRoundTripTime",
+      "roundTripTimeMeasurements",
+      "attachments"
+    ],
+    "QualityLimitationDurations": [
+      "none",
+      "cpu",
+      "bandwidth",
+      "other"
+    ],
+    "PsnrSum": [
+      "y",
+      "u",
+      "v"
+    ],
+    "OutboundRtpStats": [
+      "timestamp",
+      "id",
+      "ssrc",
+      "kind",
+      "transportId",
+      "codecId",
+      "packetsSent",
+      "bytesSent",
+      "mid",
+      "mediaSourceId",
+      "remoteId",
+      "rid",
+      "encodingIndex",
+      "headerBytesSent",
+      "retransmittedPacketsSent",
+      "retransmittedBytesSent",
+      "rtxSsrc",
+      "targetBitrate",
+      "totalEncodedBytesTarget",
+      "frameWidth",
+      "frameHeight",
+      "framesPerSecond",
+      "framesSent",
+      "hugeFramesSent",
+      "framesEncoded",
+      "keyFramesEncoded",
+      "qpSum",
+      "psnrSum",
+      "psnrMeasurements",
+      "totalEncodeTime",
+      "totalPacketSendDelay",
+      "qualityLimitationReason",
+      "qualityLimitationDurations",
+      "qualityLimitationResolutionChanges",
+      "nackCount",
+      "firCount",
+      "pliCount",
+      "encoderImplementation",
+      "powerEfficientEncoder",
+      "active",
+      "scalabilityMode",
+      "packetsSentWithEct1",
+      "attachments"
+    ],
+    "RemoteInboundRtpStats": [
+      "timestamp",
+      "id",
+      "ssrc",
+      "kind",
+      "transportId",
+      "codecId",
+      "packetsReceived",
+      "packetsReceivedWithEct1",
+      "packetsReceivedWithCe",
+      "packetsReportedAsLost",
+      "packetsReportedAsLostButRecovered",
+      "packetsLost",
+      "jitter",
+      "localId",
+      "roundTripTime",
+      "totalRoundTripTime",
+      "fractionLost",
+      "roundTripTimeMeasurements",
+      "packetsWithBleachedEct1Marking",
+      "attachments"
+    ],
+    "InboundRtpStats": [
+      "timestamp",
+      "id",
+      "ssrc",
+      "kind",
+      "trackIdentifier",
+      "transportId",
+      "codecId",
+      "packetsReceived",
+      "packetsReceivedWithEct1",
+      "packetsReceivedWithCe",
+      "packetsReportedAsLost",
+      "packetsReportedAsLostButRecovered",
+      "packetsLost",
+      "jitter",
+      "mid",
+      "remoteId",
+      "framesDecoded",
+      "keyFramesDecoded",
+      "framesRendered",
+      "framesDropped",
+      "frameWidth",
+      "frameHeight",
+      "framesPerSecond",
+      "qpSum",
+      "totalDecodeTime",
+      "totalInterFrameDelay",
+      "totalSquaredInterFrameDelay",
+      "pauseCount",
+      "totalPausesDuration",
+      "freezeCount",
+      "totalFreezesDuration",
+      "lastPacketReceivedTimestamp",
+      "headerBytesReceived",
+      "packetsDiscarded",
+      "fecBytesReceived",
+      "fecPacketsReceived",
+      "fecPacketsDiscarded",
+      "bytesReceived",
+      "nackCount",
+      "firCount",
+      "pliCount",
+      "totalProcessingDelay",
+      "estimatedPlayoutTimestamp",
+      "jitterBufferDelay",
+      "jitterBufferTargetDelay",
+      "jitterBufferEmittedCount",
+      "jitterBufferMinimumDelay",
+      "totalSamplesReceived",
+      "concealedSamples",
+      "silentConcealedSamples",
+      "concealmentEvents",
+      "insertedSamplesForDeceleration",
+      "removedSamplesForAcceleration",
+      "audioLevel",
+      "totalAudioEnergy",
+      "totalSamplesDuration",
+      "framesReceived",
+      "decoderImplementation",
+      "playoutId",
+      "powerEfficientDecoder",
+      "framesAssembledFromMultiplePackets",
+      "totalAssemblyTime",
+      "retransmittedPacketsReceived",
+      "retransmittedBytesReceived",
+      "rtxSsrc",
+      "fecSsrc",
+      "totalCorruptionProbability",
+      "totalSquaredCorruptionProbability",
+      "corruptionMeasurements",
+      "attachments"
+    ],
+    "CodecStats": [
+      "timestamp",
+      "id",
+      "mimeType",
+      "payloadType",
+      "transportId",
+      "clockRate",
+      "channels",
+      "sdpFmtpLine",
+      "attachments"
+    ],
+    "OutboundTrackSample": [
+      "timestamp",
+      "id",
+      "kind",
+      "score",
+      "scoreReasons",
+      "attachments"
+    ],
+    "InboundTrackSample": [
+      "timestamp",
+      "id",
+      "kind",
+      "score",
+      "scoreReasons",
+      "attachments"
+    ],
+    "PeerConnectionSample": [
+      "peerConnectionId",
+      "attachments",
+      "score",
+      "scoreReasons",
+      "inboundTracks",
+      "outboundTracks",
+      "codecs",
+      "inboundRtps",
+      "remoteInboundRtps",
+      "outboundRtps",
+      "remoteOutboundRtps",
+      "mediaSources",
+      "mediaPlayouts",
+      "peerConnectionTransports",
+      "dataChannels",
+      "iceTransports",
+      "iceCandidates",
+      "iceCandidatePairs",
+      "certificates"
+    ],
+    "ClientSample": [
+      "timestamp",
+      "callId",
+      "clientId",
+      "attachments",
+      "score",
+      "scoreReasons",
+      "peerConnections",
+      "clientEvents",
+      "clientIssues",
+      "clientMetaItems",
+      "extensionStats"
+    ]
+  },
+  "detectors": [
+    {
+      "class": "AVDesyncPlayoutDetector",
+      "issueType": "av-desync",
+      "reporting": "stateful",
+      "directRtpReferences": [
+        "deltaTime",
+        "kind"
+      ],
+      "source": "src/detectors/AVDesyncPlayoutDetector.ts"
+    },
+    {
+      "class": "AudioInterruptionDetector",
+      "issueType": "audio-interruption",
+      "reporting": "stateful",
+      "directRtpReferences": [
+        "deltaInterruptionCount",
+        "deltaTime",
+        "deltaTotalInterruptionDurationInMs",
+        "deltaTotalSamplesReceived",
+        "interruptionCount",
+        "kind",
+        "totalInterruptionDuration"
+      ],
+      "source": "src/detectors/AudioInterruptionDetector.ts"
+    },
+    {
+      "class": "AudioPlayoutSynthesisDetector",
+      "issueType": "synthesized-audio",
+      "reporting": "stateful",
+      "directRtpReferences": [],
+      "source": "src/detectors/AudioPlayoutSynthesisDetector.ts"
+    },
+    {
+      "class": "BlockedInboundMediaDetector",
+      "issueType": "blocked-inbound-media-transport",
+      "reporting": "stateful",
+      "directRtpReferences": [
+        "deltaPacketsReceived",
+        "getRemoteOutboundRtp"
+      ],
+      "source": "src/detectors/BlockedInboundMediaDetector.ts"
+    },
+    {
+      "class": "BlockedOutboundMediaDetector",
+      "issueType": "blocked-outbound-media-transport",
+      "reporting": "stateful",
+      "directRtpReferences": [
+        "deltaPacketsSent",
+        "getRemoteInboundRtp"
+      ],
+      "source": "src/detectors/BlockedOutboundMediaDetector.ts"
+    },
+    {
+      "class": "BlockedStunRequestsDetector",
+      "issueType": "blocked-stun-requests",
+      "reporting": "stateful",
+      "directRtpReferences": [],
+      "source": "src/detectors/BlockedStunRequestsDetector.ts"
+    },
+    {
+      "class": "CaptureSourceLostDetector",
+      "issueType": "capture-source-lost",
+      "reporting": "one-shot",
+      "directRtpReferences": [],
+      "source": "src/detectors/CaptureSourceLostDetector.ts"
+    },
+    {
+      "class": "CaptureTrackMutedDetector",
+      "issueType": null,
+      "reporting": "event-or-observation",
+      "directRtpReferences": [],
+      "source": "src/detectors/CaptureTrackMutedDetector.ts"
+    },
+    {
+      "class": "CodecChangeDetector",
+      "issueType": null,
+      "reporting": "event-or-observation",
+      "directRtpReferences": [],
+      "source": "src/detectors/CodecChangeDetector.ts"
+    },
+    {
+      "class": "ConcealedSamplesDetector",
+      "issueType": "concealed-samples",
+      "reporting": "stateful",
+      "directRtpReferences": [
+        "concealmentEventRate",
+        "deltaTime",
+        "kind",
+        "nonSilentConcealedRatio"
+      ],
+      "source": "src/detectors/ConcealedSamplesDetector.ts"
+    },
+    {
+      "class": "CongestionDetector",
+      "issueType": "congestion",
+      "reporting": "event-or-observation",
+      "directRtpReferences": [
+        "qualityLimitationReason"
+      ],
+      "source": "src/detectors/CongestionDetector.ts"
+    },
+    {
+      "class": "CpuPerformanceDetector",
+      "issueType": "cpulimitation",
+      "reporting": "event-or-observation",
+      "directRtpReferences": [
+        "decoderImplementation",
+        "encoderImplementation",
+        "kind",
+        "powerEfficientDecoder",
+        "powerEfficientEncoder"
+      ],
+      "source": "src/detectors/CpuPerformanceDetector.ts"
+    },
+    {
+      "class": "DecoderBottleneckDetector",
+      "issueType": "decoder-bottleneck",
+      "reporting": "stateful",
+      "directRtpReferences": [
+        "frameHeight",
+        "frameWidth"
+      ],
+      "source": "src/detectors/DecoderBottleneckDetector.ts"
+    },
+    {
+      "class": "DecoderPerformanceDetector",
+      "issueType": "video-decoder-overloaded",
+      "reporting": "stateful",
+      "directRtpReferences": [
+        "avgFramesPerSec",
+        "decodeTimePerFrameInMs",
+        "decoderImplementation",
+        "deltaFractionLost",
+        "deltaFramesReceived",
+        "droppedFrameRatio",
+        "framesPerSecond",
+        "kind",
+        "powerEfficientDecoder",
+        "renderRatio"
+      ],
+      "source": "src/detectors/DecoderPerformanceDetector.ts"
+    },
+    {
+      "class": "DownlinkCongestionDetector",
+      "issueType": "downlink-congestion",
+      "reporting": "stateful",
+      "directRtpReferences": [],
+      "source": "src/detectors/DownlinkCongestionDetector.ts"
+    },
+    {
+      "class": "DryInboundTrackDetector",
+      "issueType": "dry-inbound-track",
+      "reporting": "stateful",
+      "directRtpReferences": [
+        "deltaBytesReceived",
+        "deltaTime"
+      ],
+      "source": "src/detectors/DryInboundTrackDetector.ts"
+    },
+    {
+      "class": "DryOutboundTrackDetector",
+      "issueType": "dry-outbound-track",
+      "reporting": "stateful",
+      "directRtpReferences": [
+        "active",
+        "deltaBytesSent",
+        "deltaTime",
+        "qualityLimitationReason"
+      ],
+      "source": "src/detectors/DryOutboundTrackDetector.ts"
+    },
+    {
+      "class": "DtlsHandshakeFailedDetector",
+      "issueType": "dtls-handshake-failed",
+      "reporting": "stateful",
+      "directRtpReferences": [],
+      "source": "src/detectors/DtlsHandshakeFailedDetector.ts"
+    },
+    {
+      "class": "DtlsHandshakeStalledDetector",
+      "issueType": "dtls-handshake-stalled",
+      "reporting": "stateful",
+      "directRtpReferences": [],
+      "source": "src/detectors/DtlsHandshakeStalledDetector.ts"
+    },
+    {
+      "class": "EncoderBottleneckDetector",
+      "issueType": "encoder-bottleneck",
+      "reporting": "stateful",
+      "directRtpReferences": [],
+      "source": "src/detectors/EncoderBottleneckDetector.ts"
+    },
+    {
+      "class": "FrameAssemblyStalledDetector",
+      "issueType": "frame-assembly-stalled",
+      "reporting": "stateful",
+      "directRtpReferences": [
+        "deltaFramesReceived",
+        "deltaPacketsReceived",
+        "deltaTime",
+        "kind",
+        "ssrc"
+      ],
+      "source": "src/detectors/FrameAssemblyStalledDetector.ts"
+    },
+    {
+      "class": "IceConnectionFailedDetector",
+      "issueType": "ice-connection-failed",
+      "reporting": "stateful",
+      "directRtpReferences": [],
+      "source": "src/detectors/IceConnectionFailedDetector.ts"
+    },
+    {
+      "class": "IceDisconnectedDetector",
+      "issueType": "ice-disconnected",
+      "reporting": "stateful",
+      "directRtpReferences": [],
+      "source": "src/detectors/IceDisconnectedDetector.ts"
+    },
+    {
+      "class": "IceEstablishmentFailedDetector",
+      "issueType": "ice-establishment-failed",
+      "reporting": "stateful",
+      "directRtpReferences": [],
+      "source": "src/detectors/IceEstablishmentFailedDetector.ts"
+    },
+    {
+      "class": "IcePathEstablishmentDetector",
+      "issueType": null,
+      "reporting": "event-or-observation",
+      "directRtpReferences": [],
+      "source": "src/detectors/IcePathEstablishmentDetector.ts"
+    },
+    {
+      "class": "IceReachabilityDetector",
+      "issueType": "no-available-ice-candidate",
+      "reporting": "stateful",
+      "directRtpReferences": [],
+      "source": "src/detectors/IceReachabilityDetector.ts"
+    },
+    {
+      "class": "IceRestartDetector",
+      "issueType": null,
+      "reporting": "event-or-observation",
+      "directRtpReferences": [],
+      "source": "src/detectors/IceRestartDetector.ts"
+    },
+    {
+      "class": "IceRestartRecommendationDetector",
+      "issueType": null,
+      "reporting": "event-or-observation",
+      "directRtpReferences": [],
+      "source": "src/detectors/IceRestartRecommendationDetector.ts"
+    },
+    {
+      "class": "IceTransportStalledDetector",
+      "issueType": "ice-transport-stalled",
+      "reporting": "stateful",
+      "directRtpReferences": [],
+      "source": "src/detectors/IceTransportStalledDetector.ts"
+    },
+    {
+      "class": "IceTraversalDetector",
+      "issueType": null,
+      "reporting": "event-or-observation",
+      "directRtpReferences": [],
+      "source": "src/detectors/IceTraversalDetector.ts"
+    },
+    {
+      "class": "InboundVideoFlowStateDetector",
+      "issueType": "video-flow-disrupted",
+      "reporting": "stateful",
+      "directRtpReferences": [
+        "kind"
+      ],
+      "source": "src/detectors/InboundVideoFlowStateDetector.ts"
+    },
+    {
+      "class": "JitterBufferStressDetector",
+      "issueType": "audio-jitter-buffer-stress",
+      "reporting": "stateful",
+      "directRtpReferences": [
+        "avgJitterBufferDelayInMs",
+        "jitterBufferTargetDelayInMs",
+        "kind",
+        "timeStretchRate"
+      ],
+      "source": "src/detectors/JitterBufferStressDetector.ts"
+    },
+    {
+      "class": "LoopbackAudioInputDetector",
+      "issueType": "loopback-audio-input",
+      "reporting": "stateful",
+      "directRtpReferences": [],
+      "source": "src/detectors/LoopbackAudioInputDetector.ts"
+    },
+    {
+      "class": "PixelatedVideoDetector",
+      "issueType": "pixelated-video",
+      "reporting": "stateful",
+      "directRtpReferences": [
+        "avgQpPerFrame",
+        "deltaTime",
+        "frameHeight",
+        "frameWidth",
+        "framesPerSecond",
+        "getCodec",
+        "kind",
+        "normalizedQp"
+      ],
+      "source": "src/detectors/PixelatedVideoDetector.ts"
+    },
+    {
+      "class": "PlayoutDiscrepancyDetector",
+      "issueType": "inbound-video-playout-discrepancy",
+      "reporting": "stateful",
+      "directRtpReferences": [],
+      "source": "src/detectors/PlayoutDiscrepancyDetector.ts"
+    },
+    {
+      "class": "RtpSenderStalledDetector",
+      "issueType": "rtp-sender-stalled",
+      "reporting": "stateful",
+      "directRtpReferences": [
+        "active",
+        "deltaFramesEncoded",
+        "deltaPacketsSent",
+        "deltaTime",
+        "getTrack",
+        "ssrc"
+      ],
+      "source": "src/detectors/RtpSenderStalledDetector.ts"
+    },
+    {
+      "class": "SilentAudioSourceDetector",
+      "issueType": "silent-audio-source",
+      "reporting": "stateful",
+      "directRtpReferences": [],
+      "source": "src/detectors/SilentAudioSourceDetector.ts"
+    },
+    {
+      "class": "SimulcastLayerDetector",
+      "issueType": null,
+      "reporting": "event-or-observation",
+      "directRtpReferences": [
+        "active",
+        "bitrate",
+        "deltaBytesSent",
+        "encodingIndex",
+        "frameHeight",
+        "frameWidth",
+        "framesPerSecond",
+        "rid",
+        "scalabilityMode",
+        "ssrc"
+      ],
+      "source": "src/detectors/SimulcastLayerDetector.ts"
+    },
+    {
+      "class": "StatsGapDetector",
+      "issueType": null,
+      "reporting": "event-or-observation",
+      "directRtpReferences": [],
+      "source": "src/detectors/StatsGapDetector.ts"
+    },
+    {
+      "class": "StuckDecoderDetector",
+      "issueType": "stuck-decoder",
+      "reporting": "stateful",
+      "directRtpReferences": [
+        "bitrate",
+        "decoderImplementation",
+        "deltaBytesReceived",
+        "deltaFramesDecoded",
+        "deltaFramesReceived",
+        "deltaPliCount",
+        "deltaTime",
+        "frameHeight",
+        "frameWidth",
+        "kind",
+        "ssrc"
+      ],
+      "source": "src/detectors/StuckDecoderDetector.ts"
+    },
+    {
+      "class": "TransportDelayDetector",
+      "issueType": "transport-delay-degraded",
+      "reporting": "stateful",
+      "directRtpReferences": [],
+      "source": "src/detectors/TransportDelayDetector.ts"
+    },
+    {
+      "class": "TransportDemuxStalledDetector",
+      "issueType": "transport-demux-stalled",
+      "reporting": "stateful",
+      "directRtpReferences": [
+        "deltaBytesReceived"
+      ],
+      "source": "src/detectors/TransportDemuxStalledDetector.ts"
+    },
+    {
+      "class": "TransportLossDetector",
+      "issueType": "transport-loss-sustained",
+      "reporting": "stateful",
+      "directRtpReferences": [],
+      "source": "src/detectors/TransportLossDetector.ts"
+    },
+    {
+      "class": "UnstableIcePathDetector",
+      "issueType": "unstable-ice-path",
+      "reporting": "stateful",
+      "directRtpReferences": [],
+      "source": "src/detectors/UnstableIcePathDetector.ts"
+    },
+    {
+      "class": "UplinkCongestionDetector",
+      "issueType": "uplink-congestion",
+      "reporting": "stateful",
+      "directRtpReferences": [],
+      "source": "src/detectors/UplinkCongestionDetector.ts"
+    },
+    {
+      "class": "VideoCaptureBottleneckDetector",
+      "issueType": "video-capture-bottleneck",
+      "reporting": "stateful",
+      "directRtpReferences": [],
+      "source": "src/detectors/VideoCaptureBottleneckDetector.ts"
+    },
+    {
+      "class": "VideoRecoveryFailedDetector",
+      "issueType": "video-recovery-failed",
+      "reporting": "stateful",
+      "directRtpReferences": [
+        "deltaFramesRendered",
+        "deltaKeyFramesDecoded",
+        "deltaPliCount",
+        "deltaTime",
+        "freezeCount"
+      ],
+      "source": "src/detectors/VideoRecoveryFailedDetector.ts"
+    },
+    {
+      "class": "VideoResolutionChangeDetector",
+      "issueType": null,
+      "reporting": "event-or-observation",
+      "directRtpReferences": [],
+      "source": "src/detectors/VideoResolutionChangeDetector.ts"
+    }
+  ]
+}

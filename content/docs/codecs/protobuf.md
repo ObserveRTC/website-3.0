@@ -13,6 +13,8 @@ toc: true
 aliases: ["/docs/samples-protobuf-codec/"]
 ---
 
+Package: [@observertc/samples-protobuf-codec on npm](https://www.npmjs.com/package/@observertc/samples-protobuf-codec).
+
 `@observertc/samples-protobuf-codec` encodes and decodes
 [`ClientSample`](/docs/schema/clientsample/) objects over protobuf. It is a **delta** codec: each
 message on the wire carries the difference between one sample and the one before it, because a

@@ -13,6 +13,8 @@ toc: true
 aliases: ["/docs/samples-json-codec/"]
 ---
 
+Package: [@observertc/samples-json-codec on npm](https://www.npmjs.com/package/@observertc/samples-json-codec).
+
 `@observertc/samples-json-codec` encodes each [`ClientSample`](/docs/schema/clientsample/) as the
 difference from the last one — which is where nearly all of the saving comes from, since a WebRTC
 stats sample is mostly identifiers, codec parameters and slow-moving counters that repeat verbatim

@@ -10,6 +10,8 @@ weight: 30
 toc: true
 ---
 
+Package: [@observertc/observer-js on npm](https://www.npmjs.com/package/@observertc/observer-js).
+
 Observer helps your backend understand a WebRTC call across its monitored endpoints. It accepts decoded `ClientSample` records, maintains live calls and clients, follows their media objects, and exposes events and registered analysis.
 
 {{< component-flow from="Client samples" fromText="Receive observations through your own backend." via="Observer" viaText="Update live calls, clients, tracks, and issues." to="The call picture" toText="Compare endpoints and connect analysis to your tools." caption="From individual endpoints to a shared view of the call." >}}

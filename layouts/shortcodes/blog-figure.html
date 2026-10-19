@@ -1,0 +1,6 @@
+<figure class="blog-diagram">
+  {{- $path := strings.TrimPrefix "/" (.Get "src") -}}
+  {{- with resources.Get $path -}}
+    {{- .Content | safeHTML -}}
+  {{- end -}}
+</figure>

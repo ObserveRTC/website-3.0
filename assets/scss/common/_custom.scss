@@ -405,6 +405,8 @@ html { scrollbar-gutter: stable; }
 }
 
 .component-flow { margin: 1.8rem 0 2rem; }
+.blog-bibliography > .blog-bib-entry { margin: .25rem 0; padding-block: 0; scroll-margin-top: 6rem; font-size: .9rem; }
+.blog-bib-entry p { display: inline; margin: 0; }
 .component-flow ol { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; list-style: none; padding: 0; margin: 0; }
 .component-flow li { border: 1px solid var(--rtc-line); border-radius: 10px; padding: 1.1rem; background: var(--rtc-surface); margin: 0; }
 .component-flow li > span { display: block; color: var(--rtc-accent); font-size: .75rem; font-weight: 600; margin-bottom: .7rem; }
