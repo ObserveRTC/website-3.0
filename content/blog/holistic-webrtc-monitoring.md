@@ -3,14 +3,6 @@ title: "WebRTC Monitoring: The Bigger Picture"
 slug: "holistic-webrtc-monitoring"
 date: 2026-10-16
 draft: false
-# Render for direct-link sharing without adding the post to page collections.
-_build:
-  render: always
-  list: never
-seo:
-  robots: "noindex, nofollow"
-sitemap:
-  disable: true
 description: "A model for WebRTC monitoring that connects connectivity, transport quality, media pipeline disruption, and perceived quality with session context."
 summary: "How can we detect quality issues in WebRTC calls—and understand where they come from?"
 tags: ["WebRTC", "Monitoring", "Observability"]
