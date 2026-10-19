@@ -11,6 +11,13 @@
       <div class="content">
       {{ if and (eq site.Params.doks.containerBreakpoint "fluid") (or (not (in .Site.Params.mainSections .Type)) (.IsNode)) }}<div class="container p-0">{{ end }}
         {{ block "main" . }}{{ end }}
+        {{ if and .IsPage (eq .Section "blog") (not .Params.externalUrl) (ne .Layout "external") }}
+        <div class="row justify-content-center">
+          <div class="col-md-12 col-lg-9">
+            {{ partial "newsletter.html" . }}
+          </div>
+        </div>
+        {{ end }}
       {{ if and (eq site.Params.doks.containerBreakpoint "fluid") (or (not (in .Site.Params.mainSections .Type)) (.IsNode)) }}</div>{{ end }}
       </div>
     </div>
