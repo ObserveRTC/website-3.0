@@ -10,7 +10,10 @@ function analyticsContext() {
     browser: match ? names[match[1]] : 'Other',
     deviceType: /iPad|Tablet|Android(?!.*Mobile)/i.test(ua) ? 'tablet' : /Mobile|iPhone|Android/i.test(ua) ? 'mobile' : 'desktop',
   };
-  if (match) context.browserMajorVersion = Number(match[2]);
+  if (match) {
+    const major = Number(match[2]);
+    if (Number.isInteger(major) && major >= 0 && major <= 9999) context.browserMajorVersion = major;
+  }
   const language = (navigator.language || '').split('-')[0].toLowerCase();
   if (/^[a-z]{2,3}$/.test(language)) context.language = language;
   try {
@@ -20,7 +23,7 @@ function analyticsContext() {
       id = window.crypto.randomUUID();
       window.localStorage.setItem(key, id);
     }
-    context.visitorId = id;
+    context.visitorId = id.toLowerCase();
   } catch { /* Without storage, retain anonymous page views. */ }
   return context;
 }
@@ -35,7 +38,7 @@ if (params.analyticsendpoint &&
       referrerPolicy: 'no-referrer',
       keepalive: true,
       body: JSON.stringify({
-        version: 1,
+        version: 2,
         event: 'page_view',
         ...(params.analyticscontextenabled ? analyticsContext() : {}),
         path: window.location.pathname,
@@ -68,7 +71,7 @@ document.querySelectorAll('[data-subscribe-form]').forEach((form) => {
         referrerPolicy: 'no-referrer',
         signal: controller.signal,
         body: JSON.stringify({
-          version: 1, email, source: 'website',
+          version: 2, email, source: 'website',
           consent: 'monthly-newsletter-v1',
           timestamp: new Date().toISOString(),
         }),

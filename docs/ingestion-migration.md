@@ -1,3 +1,19 @@
+# Current frontend contract — October 20, 2026
+
+The frontend now sends only `version: 2` to both `/analytics` and `/subscribe`,
+with no version-1 retry or fallback, at the author's explicit request. Optional
+analytics context is enabled. Other field names and newsletter consent remain
+unchanged; `monthly-newsletter-v1` is a consent identifier, not a payload version.
+
+The supplied backend contract still requires `version: 1`. Backend version-2
+acceptance must therefore be implemented and confirmed before deploying this
+frontend. Version-2 live ingestion has not been tested. The backend owns session
+grouping, `receivedAt`, and IP collection; the browser must not add those fields.
+An analytics 204 is acceptance, not confirmation of persistence: the backend
+writes page views when sessions end. DNT/GPC requests are not stored.
+
+The notes below are historical and do not override this current frontend decision.
+
 # Ingestion hostname migration
 
 Verified on October 9, 2026. This repository owns a static Hugo/Doks frontend only.

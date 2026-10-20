@@ -11,8 +11,8 @@ mainSections = ["docs"]
   analyticsEndpoint = "https://ingest.observertc.org/analytics"
   subscribeEndpoint = "https://ingest.observertc.org/subscribe"
   analyticsInDevelopment = false
-  # Enable only after backend validation accepts the optional visitor fields.
-  analyticsContextEnabled = false
+  # Optional browser/device/language and browser-profile visitor context.
+  analyticsContextEnabled = true
 
 [social]
   twitter = "observertc"

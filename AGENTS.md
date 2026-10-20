@@ -160,20 +160,23 @@ established preferences; a newer explicit user instruction takes precedence.
 - Configure public URLs centrally in `config/_default/params.toml`:
   - `POST https://ingest.observertc.org/analytics`
   - `POST https://ingest.observertc.org/subscribe`
-- Keep `services.analyticsContextEnabled = false` until backend validation
-  accepts the optional visitor context. The live endpoint rejected `browser`
-  on October 12, 2026. Disabled context sends the original four fields and
-  does not access visitor storage; test both contract modes.
-- Keep the version-1 envelope and subscription contract. Analytics now includes
+- The frontend sends only version 2 for analytics and subscriptions, per the
+  author's October 20 instruction. Do not restore a version-1 fallback.
+  `services.analyticsContextEnabled = true` enables optional browser context.
+  Backend acceptance of version 2 must be confirmed before deployment: the last
+  supplied backend contract required version 1, and no live version-2 acceptance
+  has been verified.
+
+- Keep the version-2 envelope and subscription fields. Analytics includes
   optional `browser`, `browserMajorVersion`, `deviceType`, `language`, and
   `visitorId`; backend validation must accept these before deployment:
 
 ```json
-{"version":1,"event":"page_view","path":"/docs/overview/introduction/","timestamp":"2026-10-09T12:00:00.000Z"}
+{"version":2,"event":"page_view","path":"/docs/overview/introduction/","timestamp":"2026-10-09T12:00:00.000Z"}
 ```
 
 ```json
-{"version":1,"email":"reader@example.com","source":"website","consent":"monthly-newsletter-v1","timestamp":"2026-10-09T12:00:00.000Z"}
+{"version":2,"email":"reader@example.com","source":"website","consent":"monthly-newsletter-v1","timestamp":"2026-10-09T12:00:00.000Z"}
 ```
 
 - Use JSON `fetch`, omit credentials and referrers, and keep storage secrets off
