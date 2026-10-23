@@ -1,0 +1,7 @@
+[Compare] -- unchanged / previous set empty --> [Compare]
+[Compare] -- changed + previous set nonempty --> [Notify]
+[Notify]  -- next collection --> [Compare]
+
+Compare the set of selected local/remote address, port and protocol tuples.
+Notify emits ice-tuple-changed; it never raises an issue.
+A nonempty set becoming empty counts as a change. Growth from empty is skipped.

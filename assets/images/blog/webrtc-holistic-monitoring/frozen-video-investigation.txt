@@ -1,0 +1,7 @@
+Same incoming video stream / same interval / playback expected
+[Packets] -> [Complete frames] -> [Decoded frames] -> [Rendered frames]
+ Increasing   Increasing          Flat               Flat
+ packetsReceived framesReceived   framesDecoded      framesRendered
+                          ^
+                    Investigate here
+Complete does not always mean decodable. Check usable input and decoding.

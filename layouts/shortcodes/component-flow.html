@@ -1,8 +1,10 @@
 <figure class="component-flow" aria-label="{{ .Get "caption" }}">
   <ol>
-    <li><span>01</span><strong>{{ .Get "from" }}</strong><p>{{ .Get "fromText" }}</p></li>
-    <li><span>02</span><strong>{{ .Get "via" }}</strong><p>{{ .Get "viaText" }}</p></li>
-    <li><span>03</span><strong>{{ .Get "to" }}</strong><p>{{ .Get "toText" }}</p></li>
+    <li><svg class="flow-outline" viewBox="0 0 300 180" preserveAspectRatio="none" aria-hidden="true"><path d="M3 4 Q150 1 297 5 L296 176 Q150 179 4 175 Z" /></svg><span>01</span><strong>{{ .Get "from" }}</strong><p>{{ .Get "fromText" }}</p></li>
+    <li><svg class="flow-outline" viewBox="0 0 300 180" preserveAspectRatio="none" aria-hidden="true"><path d="M3 4 Q150 1 297 5 L296 176 Q150 179 4 175 Z" /></svg><span>02</span><strong>{{ .Get "via" }}</strong><p>{{ .Get "viaText" }}</p></li>
+    <li><svg class="flow-outline" viewBox="0 0 300 180" preserveAspectRatio="none" aria-hidden="true"><path d="M3 4 Q150 1 297 5 L296 176 Q150 179 4 175 Z" /></svg><span>03</span><strong>{{ .Get "to" }}</strong><p>{{ .Get "toText" }}</p></li>
   </ol>
   <figcaption>{{ .Get "caption" }}</figcaption>
 </figure>
+{{- $ascii := printf "[%s]\n%s\n    |\n    v\n[%s]\n%s\n    |\n    v\n[%s]\n%s" (.Get "from") (.Get "fromText") (.Get "via") (.Get "viaText") (.Get "to") (.Get "toText") -}}
+{{ partial "figures/ascii.html" $ascii }}

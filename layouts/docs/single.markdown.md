@@ -4,4 +4,4 @@
 
 Version coverage: {{ "docs/reference/versions/" | absURL }}
 
-{{ .RawContent }}
+{{ partial "figures/markdown-content.html" . }}

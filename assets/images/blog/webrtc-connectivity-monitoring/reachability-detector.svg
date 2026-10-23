@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 530" role="img" aria-labelledby="reachability-state-title" style="font-family:Jost,system-ui,sans-serif;width:100%;height:auto;display:block">
+  <title id="reachability-state-title">Reachability detector states: Watching, Raised and Done, with transition conditions</title>
+  <defs>
+    <marker id="reachability-state-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M1 1 L9 5 L1 9" fill="none" stroke="var(--rtc-accent, #bc4319)" stroke-width="1.5" />
+    </marker>
+  </defs>
+  <rect width="1040" height="530" rx="12" fill="var(--rtc-surface, #f6f8fa)" />
+  <g fill="none" stroke="var(--rtc-accent, #bc4319)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#reachability-state-arrow)">
+    <path d="M140 150 C100 30 300 30 260 150" />
+    <path d="M320 175 L720 175" />
+    <path d="M720 215 L320 215" />
+    <path d="M200 240 L440 410" />
+    <path d="M840 240 L600 410" />
+  </g>
+  <g fill="var(--bs-body-color, #28323b)" text-anchor="middle" font-size="21">
+    <text x="200" y="48">Pending / candidate</text>
+    <text x="520" y="128">Empty gathering</text>
+    <text x="520" y="154">+ timeout / failure</text>
+    <text x="520" y="246">Candidate found</text>
+    <text x="220" y="350">Connected / closed</text>
+    <text x="820" y="350">Connected / closed</text>
+  </g>
+  <g fill="var(--bs-body-bg, #fff)" stroke="var(--rtc-accent, #bc4319)" stroke-width="2" stroke-linejoin="round">
+    <path d="M82 152 Q200 149 318 152 L319 238 Q200 241 81 238 Z" />
+    <path d="M722 152 Q840 149 958 152 L959 238 Q840 241 721 238 Z" />
+    <path d="M422 412 Q520 409 618 412 L619 488 Q520 491 421 488 Z" />
+  </g>
+  <g fill="var(--rtc-accent, #bc4319)" text-anchor="middle" font-size="28">
+    <text x="200" y="204">Watching</text>
+    <text x="840" y="204">Raised</text>
+    <text x="520" y="459">Done</text>
+  </g>
+</svg>

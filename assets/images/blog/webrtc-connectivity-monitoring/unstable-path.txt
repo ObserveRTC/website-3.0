@@ -1,0 +1,6 @@
+[Watching] -- Below threshold --> [Watching]
+[Watching] -- Switch threshold --> [Raised]
+[Raised] -- Quiet window --> [Watching]
+[Watching] / [Raised] -- Removed --> [Done]
+
+See the accompanying detector explanation for exact guards, timing and reset behavior.

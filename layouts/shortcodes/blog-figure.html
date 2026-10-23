@@ -1,6 +1,7 @@
+{{- $path := strings.TrimPrefix "/" (.Get "src") -}}
 <figure class="blog-diagram">
-  {{- $path := strings.TrimPrefix "/" (.Get "src") -}}
-  {{- with resources.Get $path -}}
-    {{- .Content | safeHTML -}}
-  {{- end -}}
+  {{- with resources.Get $path -}}{{ .Content | safeHTML }}{{- end -}}
 </figure>
+{{- with resources.Get (replaceRE `\.svg$` ".txt" $path) -}}
+  {{ partial "figures/ascii.html" .Content }}
+{{- end -}}

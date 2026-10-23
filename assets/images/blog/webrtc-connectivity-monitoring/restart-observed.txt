@@ -1,0 +1,5 @@
+[Watching] -- Same / missing fragment --> [Watching]
+[Watching] -- Fragment changed --> [Pending]
+[Pending] -- Recovered / failed --> [Watching]
+
+See the accompanying detector explanation for exact guards, timing and reset behavior.

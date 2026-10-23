@@ -1,0 +1,5 @@
+Your authenticated handler → decode and validate → Observer.accept(sample)
+                                                → find/create call and client
+                                                → update entities and issues
+                                                → events and registered analysis
+                                                → configured sample sink

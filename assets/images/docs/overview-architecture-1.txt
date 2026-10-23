@@ -1,0 +1,16 @@
+ BROWSER                         YOUR BACKEND
++----------------------+        +-----------------------------+
+| Client Monitor       |        | Observer                    |
+|                      |        |                             |
+| getStats()           | sample | Live calls, clients, tracks |
+|   -> adapt           +------->| Client issue lifecycles     |
+|   -> derive metrics  |  via   | Cross-client analysis       |
+|   -> detect issues   |  API   | Publisher / receiver links  |
+|   -> score quality   |        +--------------+--------------+
++----------+-----------+                       |
+           | local events                      | events / sinks
+           v                                   v
++----------------------+        +-----------------------------+
+| In-call diagnostics  |        | Your metrics, alerts,       |
+| and application UI   |        | storage and reporting       |
++----------------------+        +-----------------------------+

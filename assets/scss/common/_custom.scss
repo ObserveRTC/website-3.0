@@ -408,9 +408,18 @@ html { scrollbar-gutter: stable; }
 .blog-bibliography > .blog-bib-entry { margin: .25rem 0; padding-block: 0; scroll-margin-top: 6rem; font-size: .9rem; }
 .blog-bib-entry p { display: inline; margin: 0; }
 .component-flow ol { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; list-style: none; padding: 0; margin: 0; }
-.component-flow li { border: 1px solid var(--rtc-line); border-radius: 10px; padding: 1.1rem; background: var(--rtc-surface); margin: 0; }
+.component-flow li { position: relative; padding: 1.1rem; background: var(--rtc-surface); margin: 0; }
+.component-flow .flow-outline { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; fill: none; stroke: var(--rtc-accent); stroke-width: 1.8; }
 .component-flow li > span { display: block; color: var(--rtc-accent); font-size: .75rem; font-weight: 600; margin-bottom: .7rem; }
 .component-flow strong { display: block; font-size: 1rem; line-height: 1.4; }
 .component-flow li p { color: var(--rtc-muted); font-size: .875rem; line-height: 1.6; margin: .6rem 0 0; }
 .component-flow figcaption { color: var(--rtc-muted); font-size: .8rem; margin-top: .75rem; }
 @media (max-width: 767px) { .component-flow ol { grid-template-columns: 1fr; } }
+
+/* Shared sketch diagrams; keep labels and topology readable on narrow screens. */
+.site-diagram { margin: 1.8rem 0 .65rem; padding: .4rem; background: var(--rtc-surface); border-radius: 12px; overflow-x: auto; }
+.site-diagram > svg { min-width: 640px; }
+.figure-ascii { margin: .65rem 0 1.8rem; }
+.figure-ascii > summary { color: var(--rtc-accent); cursor: pointer; font-size: .9rem; }
+.figure-ascii .highlight { margin-top: .8rem; }
+.component-flow strong { color: var(--rtc-accent); }

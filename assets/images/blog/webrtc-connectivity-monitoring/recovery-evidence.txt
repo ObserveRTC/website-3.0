@@ -1,0 +1,10 @@
+Hypothetical recovery observations; defaults shown
+0 s         Incoming bytes stop; outgoing bytes increase; ICE connected
+  |
+5 s         Stall finding opens: guarded asymmetry persisted
+  |
+10 s        Restart recommended; application decides whether to act
+  |
+Later       Restart detected, then ICE recovered
+  |         Fragment change and ICE outcome observed
+Later still Media resumes; measure traffic and decoding independently

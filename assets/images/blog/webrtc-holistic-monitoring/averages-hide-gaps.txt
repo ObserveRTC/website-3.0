@@ -1,0 +1,4 @@
+Illustrative 60-second interval:
+A: 25 frames/s throughout                    = 1,500 decoded frames
+B: 30 frames/s for 50 seconds + 10-second gap = 1,500 decoded frames
+Both average 25 fps; continuity differs.

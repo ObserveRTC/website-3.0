@@ -1,0 +1,11 @@
+Local diagnostics
+  Client Monitor -> in-call UI
+
+Support history
+  Client Monitor -> your endpoint -> stored samples
+
+Live call analysis
+  Client Monitor -> your endpoint -> Observer -> events / alerts
+                         |               |
+                         v               v
+                   sample archive   call summaries

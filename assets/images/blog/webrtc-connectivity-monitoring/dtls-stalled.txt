@@ -1,0 +1,6 @@
+[Watching] -- No proof / waiting --> [Watching]
+[Watching] -- ICE ready + DTLS timeout --> [Raised]
+[Raised] -- DTLS connected / failed --> [Watching]
+[Watching] / [Raised] -- Removed --> [Done]
+
+See the accompanying detector explanation for exact guards, timing and reset behavior.

@@ -1,0 +1,9 @@
+PeerConnectionSample
+├─ inboundTracks[]              outboundTracks[]
+├─ inboundRtps[]                outboundRtps[]
+├─ remoteInboundRtps[]          remoteOutboundRtps[]
+├─ mediaSources[]               mediaPlayouts[]
+├─ codecs[]                     dataChannels[]
+├─ iceTransports[]              iceCandidates[]
+├─ iceCandidatePairs[]          peerConnectionTransports[]
+└─ certificates[]

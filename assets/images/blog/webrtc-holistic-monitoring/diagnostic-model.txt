@@ -1,0 +1,8 @@
+Connectivity        Can we establish and keep the path?
+Transport quality   Is the path delivering adequately?
+Pipeline disruption Where is expected progress missing?
+Perceived quality   What indicates degraded output?
+
+Context alongside each question:
+Path changes / codecs / resolution / track state / app intent / collection gaps
+Reading order, not a chain of proven causes.

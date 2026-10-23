@@ -1,0 +1,7 @@
+{{- with . -}}
+<details class="figure-ascii">
+  <summary>Copyable ASCII version</summary>
+  {{- $code := highlight . "text" "" -}}
+  <div class="expressive-code"><div class="frame not-content">{{ $code }}</div></div>
+</details>
+{{- end -}}

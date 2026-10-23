@@ -1,0 +1,5 @@
+Source: no new frames -------+
+Encoder: no encoded output --+
+Delivery: no incoming media -+--> Frozen picture at receiver
+Decoder: no decoded output --+
+Different interruption points can produce the same visible symptom.

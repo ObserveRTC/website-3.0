@@ -1,0 +1,18 @@
+[Signaling] Descriptions and candidates delivered and applied
+    |
+    v
+[Reachability] Can we reach the ICE infrastructure?
+    |
+    v
+[Discovery] Local candidates available; gathering state known
+    |
+    v
+[Establishment] Successful pairs, nomination, selected pair
+    |
+    v
+[Transport] Secure transport reaches connected
+    |
+    v
+[Continuity] State, traffic, selected path, restart outcomes
+
+Signaling needs application logs. Check media progress separately.

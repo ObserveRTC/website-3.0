@@ -1,0 +1,6 @@
+[Watching] -- No ICE failure --> [Watching]
+[Watching] -- ICE failed --> [Raised]
+[Raised] -- Recovered / restart --> [Watching]
+[Watching] / [Raised] -- Removed --> [Done]
+
+See the accompanying detector explanation for exact guards, timing and reset behavior.

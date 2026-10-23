@@ -1,0 +1,12 @@
+ClientMonitor — this endpoint
+├── PeerConnectionMonitor — one browser connection
+│   ├── InboundTrackMonitor — received audio/video
+│   │   └── InboundRtpMonitor — received stream measurements
+│   ├── OutboundTrackMonitor — sent audio/video
+│   │   └── OutboundRtpMonitor(s) — one or more encoded streams
+│   ├── Remote RTP reports — the other endpoint's reported measurements
+│   ├── Codecs — encoding used by the streams
+│   ├── Media sources / playout — capture and playback measurements
+│   ├── ICE transports → selected candidate pair → candidates
+│   └── Data channels / certificates / peer-connection statistics
+└── ExtensionStatsMonitor — your additional application measurements

@@ -1,0 +1,5 @@
+[Timing] -- Below threshold --> [Timing]
+[Timing] -- Connecting + timeout --> [Notified]
+[Notified] -- Exit connecting --> [Timing]
+
+See the accompanying detector explanation for exact guards, timing and reset behavior.

@@ -1,0 +1,9 @@
+Observer
+└── ObservedCall
+    └── ObservedClient
+        └── ObservedPeerConnection
+            ├── inbound / outbound tracks and RTP
+            ├── remote inbound / outbound RTP
+            ├── ICE transports, pairs and candidates
+            ├── codecs, media sources and playout
+            └── data channels and certificates

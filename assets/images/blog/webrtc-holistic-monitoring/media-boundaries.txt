@@ -1,0 +1,13 @@
+SENDING
+[Capture] -> [Encode] -> [Transmit]
+Fresh frames Encoded     RTP packets sent
+             output
+                  |
+      Network delivery / optional SFU
+                  |
+                  v
+RECEIVING
+[Receive] -> [Assemble] -> [Decode] -> [Present]
+RTP arrives Complete      Decoded     Fresh displayed
+            frames        output      frames
+Compare progress within each pipeline; check expected activity and inputs.

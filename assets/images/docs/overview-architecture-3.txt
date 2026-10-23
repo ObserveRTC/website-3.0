@@ -1,0 +1,9 @@
+ClientSample -> JSON ----------------------------> ClientSample
+
+ClientSample -> delta encoder -> your transport
+                                      |
+                                      v
+                               delta decoder ----> ClientSample
+                                                       |
+                                                       v
+                                                Observer.accept()

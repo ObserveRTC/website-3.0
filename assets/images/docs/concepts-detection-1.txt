@@ -1,0 +1,7 @@
+Eligible observations → condition confirmed → keyed issue raised
+                                             ↓
+                                      evidence updated
+                                             ↓
+                                      recovery confirmed
+                                             ↓
+                                        issue resolved

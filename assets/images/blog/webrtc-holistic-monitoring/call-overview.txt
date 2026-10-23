@@ -1,0 +1,3 @@
+[Sender]                 [Network]            [Receiver]
+Capture / encode / send -> Media delivery -> Receive / decode / play
+       Measurements + context across the call

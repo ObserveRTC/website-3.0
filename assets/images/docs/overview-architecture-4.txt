@@ -1,0 +1,11 @@
+Observer
++-- ObservedCall
+|   +-- ObservedClient
+|   |   +-- ObservedPeerConnection
+|   |       +-- Tracks and RTP streams
+|   |       +-- Remote RTP reports
+|   |       +-- ICE transports, pairs and candidates
+|   |       +-- Codecs, media sources and playout
+|   |       +-- Data channels and certificates
+|   +-- ObservedClient
++-- ObservedCall

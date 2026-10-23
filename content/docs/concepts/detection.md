@@ -19,15 +19,7 @@ Changing collection cadence changes how much time a window covers. It does not n
 
 ## Follow a stateful issue
 
-```text
-Eligible observations → condition confirmed → keyed issue raised
-                                             ↓
-                                      evidence updated
-                                             ↓
-                                      recovery confirmed
-                                             ↓
-                                        issue resolved
-```
+{{< site-figure src="images/docs/concepts-detection-1.svg" >}}
 
 The issue key identifies the active occurrence. Several tracks can have the same issue type, so the type alone is not a unique key. One-off issue records do not have this ongoing lifecycle.
 

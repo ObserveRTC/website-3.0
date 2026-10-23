@@ -1,0 +1,5 @@
+Your peer connection → browser statistics → adaptation
+                                         → monitor updates
+                                         → detector evaluation
+                                         → quality scores
+                                         → local events / scheduled sample

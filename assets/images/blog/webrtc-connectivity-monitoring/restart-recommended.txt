@@ -1,0 +1,5 @@
+[Watching] -- Restart pending --> [Watching]
+[Watching] -- Failure / timeout --> [Recommended]
+[Recommended] -- Cooldown / recovery --> [Watching]
+
+See the accompanying detector explanation for exact guards, timing and reset behavior.

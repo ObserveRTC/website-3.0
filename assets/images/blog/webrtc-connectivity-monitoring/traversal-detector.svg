@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 310" role="img" aria-labelledby="traversal-title" style="font-family:Jost,system-ui,sans-serif;width:100%;height:auto;display:block">
+<title id="traversal-title">ICE traversal telemetry: compare selected tuples, notify on a change, then compare again</title>
+<defs><marker id="traversal-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="var(--rtc-accent, #bc4319)" stroke-width="1.5"/></marker></defs>
+<rect width="840" height="310" rx="12" fill="var(--rtc-surface, #f6f8fa)"/>
+<g fill="none" stroke="var(--rtc-accent, #bc4319)" stroke-width="2" stroke-linecap="round" marker-end="url(#traversal-arrow)">
+<path d="M150 130 C100 25 300 25 250 130"/>
+<path d="M300 155 L600 155"/>
+<path d="M600 195 L300 195"/>
+</g>
+<g text-anchor="middle" font-size="20" fill="var(--bs-body-color, #28323b)">
+<text x="200" y="37">Unchanged / first selection</text>
+<text x="450" y="110">Changed</text><text x="450" y="136">+ previous set nonempty</text>
+<text x="450" y="226">Next collection</text>
+<text x="420" y="280">Event only: ice-tuple-changed</text>
+</g>
+<g fill="var(--bs-body-bg, #fff)" stroke="var(--rtc-accent, #bc4319)" stroke-width="2" stroke-linejoin="round">
+<path d="M102 132 Q200 129 298 132 L299 218 Q200 221 101 218 Z"/>
+<path d="M602 132 Q700 129 798 132 L799 218 Q700 221 601 218 Z"/>
+</g>
+<g text-anchor="middle" font-size="27" fill="var(--rtc-accent, #bc4319)"><text x="200" y="185">Compare</text><text x="700" y="185">Notify</text></g>
+</svg>

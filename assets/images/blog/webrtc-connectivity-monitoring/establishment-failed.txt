@@ -1,0 +1,5 @@
+[Watching] -- No candidates / waiting --> [Watching]
+[Watching] -- Candidates + timeout --> [Raised]
+[Watching] / [Raised] -- Success / closed --> [Done]
+
+See the accompanying detector explanation for exact guards, timing and reset behavior.

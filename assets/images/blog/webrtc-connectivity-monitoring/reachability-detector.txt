@@ -1,0 +1,10 @@
+[Watching] -- pending / candidate present (reset wait) --> [Watching]
+[Watching] -- empty gathering + timeout/failure --> [Raised]
+[Raised]   -- candidate found: resolve issue, reset wait --> [Watching]
+[Raised]   -- connected/closed: resolve issue --> [Done]
+[Watching] -- connected/closed --> [Done]
+
+Empty gathering: gathering complete, zero local candidates, never connected.
+Timeout/failure: 6,000 ms of stats time without candidates OR disconnected/failed.
+A candidate appearing does not prove connection success. It ends the empty-candidate
+issue; monitoring continues until connected or closed.

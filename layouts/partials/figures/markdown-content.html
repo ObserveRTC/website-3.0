@@ -1,0 +1,10 @@
+{{- $content := .RawContent -}}
+{{- range findRE `\{\{< site-figure src="([^"]+)" >\}\}` $content -}}
+  {{- $tag := . -}}
+  {{- $matches := findRESubmatch `src="([^"]+)"` $tag -}}
+  {{- $src := index (index $matches 0) 1 -}}
+  {{- with resources.Get (replaceRE `\.svg$` ".txt" $src) -}}
+    {{- $content = replace $content $tag (printf "```text\n%s```" .Content) -}}
+  {{- end -}}
+{{- end -}}
+{{- return $content -}}

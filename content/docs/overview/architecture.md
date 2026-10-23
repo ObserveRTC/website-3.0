@@ -12,24 +12,7 @@ toc: true
 
 ObserveRTC adds a monitoring pipeline beside your existing WebRTC application. **Client Monitor** diagnoses an endpoint. **Observer** combines samples from multiple endpoints into a live view of calls and their issues.
 
-```text
- BROWSER                         YOUR BACKEND
-+----------------------+        +-----------------------------+
-| Client Monitor       |        | Observer                    |
-|                      |        |                             |
-| getStats()           | sample | Live calls, clients, tracks  |
-|   -> adapt           +------->| Client issue lifecycles      |
-|   -> derive metrics  |  via   | Cross-client analysis        |
-|   -> detect issues   |  API   | Publisher / receiver links   |
-|   -> score quality   |        +--------------+--------------+
-+----------+-----------+                       |
-           | local events                      | events / sinks
-           v                                   v
-+----------------------+        +-----------------------------+
-| In-call diagnostics  |        | Your metrics, alerts,       |
-| and application UI   |        | storage and reporting       |
-+----------------------+        +-----------------------------+
-```
+{{< site-figure src="images/docs/overview-architecture-1.svg" >}}
 
 The sample arrow carries **telemetry**, not audio or video. Your peer connections, media servers and signaling keep their existing roles.
 
@@ -51,22 +34,7 @@ The server adds scope: which participants have overlapping issues, which publish
 
 Client Monitor attaches to an existing `RTCPeerConnection`, or to mediasoup-client devices and transports. Collection and sampling both default to five seconds, but they are separate operations.
 
-```text
-RTCPeerConnection.getStats()
-            |
-            v
-Browser adapters -> linked monitor graph
-                         |
-                         +--> interval metrics
-                         +--> detectors -> issues / events
-                         +--> quality scores
-                         |
-                         v
-                   createSample()
-                         |
-                         v
-                    ClientSample
-```
+{{< site-figure src="images/docs/overview-architecture-2.svg" >}}
 
 The graph links RTP streams to tracks, codecs, remote reports and ICE transports. A track can have multiple outbound encodings; a peer connection can have multiple transports.
 
@@ -80,17 +48,7 @@ Local code can read metrics after `stats-collected` and react to issue events wi
 
 `ClientSample` is the shared contract. It can travel as ordinary JSON, or through an optional delta codec. The schema defines the record; it is not another processing service.
 
-```text
-ClientSample -> JSON ----------------------------> ClientSample
-
-ClientSample -> delta encoder -> your transport
-                                      |
-                                      v
-                               delta decoder ----> ClientSample
-                                                       |
-                                                       v
-                                                Observer.accept()
-```
+{{< site-figure src="images/docs/overview-architecture-3.svg" >}}
 
 | Representation | Integration choice |
 |---|---|

@@ -1,0 +1,7 @@
+[Sender]          [SFU]                         [Receiver]
+Encoded -> Sent -> Received -> Selected -> Forwarded -> Received
+                                                         |
+                                                         v
+                                           Assembled -> Decoded -> Presented
+Match the stream relationship and the measurement interval.
+Forwarding evidence requires SFU instrumentation.

@@ -1,0 +1,14 @@
+RTCPeerConnection.getStats()
+            |
+            v
+Browser adapters -> linked monitor graph
+                         |
+                         +--> interval metrics
+                         +--> detectors -> issues / events
+                         +--> quality scores
+                         |
+                         v
+                   createSample()
+                         |
+                         v
+                    ClientSample

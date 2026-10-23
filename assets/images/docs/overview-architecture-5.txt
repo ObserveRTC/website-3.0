@@ -1,0 +1,11 @@
+Publisher                 Media path                 Receivers
+outbound track -----------> SFU --------------------> inbound track
+                             +----------------------> inbound track
+
+              Signaling IDs / track attachments
+                             |
+                             v
+                      RemoteTrackResolver
+                             |
+                             v
+             Observer links publisher to receivers

@@ -1,0 +1,6 @@
+[Watching] -- No DTLS failure --> [Watching]
+[Watching] -- DTLS failed --> [Raised]
+[Raised] -- DTLS connected --> [Watching]
+[Watching] / [Raised] -- Removed --> [Done]
+
+See the accompanying detector explanation for exact guards, timing and reset behavior.
