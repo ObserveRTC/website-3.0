@@ -28,3 +28,10 @@ Hugo shortcode attributes in Markdown represent the same detector evidence rende
 {{ with site.GetPage "/docs/overview/introduction" }}{{ with .OutputFormats.Get "Markdown" }}
 - [Monitor your first connection]({{ .Permalink }})
 {{ end }}{{ end }}
+
+## Blog
+{{ range (where site.RegularPages "Section" "blog").ByDate.Reverse }}
+{{ if ne .Params.example true }}
+- [{{ .Title }}]({{ .Permalink }})
+{{ end }}
+{{ end }}

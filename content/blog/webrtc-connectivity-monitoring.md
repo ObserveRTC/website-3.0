@@ -1,15 +1,8 @@
 ---
 title: "WebRTC Monitoring: Are We Connected?"
 slug: "webrtc-connectivity-monitoring"
-date: 2026-10-20
+date: 2026-10-26
 draft: false
-_build:
-  render: always
-  list: never
-seo:
-  robots: "noindex, nofollow"
-sitemap:
-  disable: true
 description: "Troubleshoot WebRTC connectivity step by step: signaling, ICE candidates, STUN and TURN, DTLS, path changes, and recovery with ObserveRTC detectors."
 summary: ""
 tags: ["WebRTC", "Monitoring", "Connectivity", "ICE", "TURN"]
@@ -110,43 +103,37 @@ Client Monitor's [`IceEstablishmentFailedDetector`](https://github.com/ObserveRT
 
 The payload captures current candidate counts by type, pair states, pair count and accumulated time. Host-only candidates suggest checking whether STUN/TURN were configured and attempted; server-reflexive candidates without relay suggest checking expected TURN allocation. Relay candidates without a winner suggest checking remote candidate delivery and responses. These are investigation leads, not proof of a server outage.
 
-## Transport: the secret handshake
+## Transport: do you understand me?
 
-ICE found a working pair. Great! We still need the secure transport.
+Once ICE finds a working pair, [DTLS-SRTP](https://datatracker.ietf.org/doc/html/rfc5764) uses a DTLS handshake to establish SRTP keying material. If ICE succeeds but setup still doesn't complete, check this handshake. The detectors below distinguish an explicit DTLS failure from a handshake that keeps waiting.
 
-For media, [DTLS-SRTP, described in RFC 5764](https://datatracker.ietf.org/doc/html/rfc5764), uses a DTLS handshake to establish SRTP keying material. Passing a STUN connectivity check doesn't prove that this handshake can complete. A peer configuration problem or a device on the path treating the two packet types differently can leave ICE working while DTLS isn't.
+### Case 1: we’re not on speaking terms
 
-ObserveRTC separates a reported failure from a handshake that keeps waiting.
-
-### Case 1: the handshake fell through
-
-The endpoints found a possible network path, but the secure transport reports failure. This is a reason to inspect the handshake and endpoint negotiation logs, rather than treating every failed join as an unreachable ICE candidate.
+The endpoints can reach each other, but they're not on speaking terms yet. The secure hello has ended with a failed DTLS handshake. This is where we look at certificate fingerprints, DTLS roles and endpoint logs to understand why the secure connection couldn't be established.
 
 #### DTLS Handshake Failed Detector
 
-Client Monitor's [`DtlsHandshakeFailedDetector`](https://github.com/ObserveRTC/client-monitor-js/blob/ecbb77277306c35b32ad0d275e193a9687bf764e/src/detectors/DtlsHandshakeFailedDetector.ts) raises **`dtls-handshake-failed`** and emits the same-named live event on the first collection with transport `dtlsState: 'failed'`. There is no sustain threshold: `dtlsHandshakeFailedDetector: {}` enables it and `null` omits it. It reads that verdict directly without first proving ICE healthy, so check the ICE state and selected-pair evidence alongside the DTLS result.
+Client Monitor's [`DtlsHandshakeFailedDetector`](https://github.com/ObserveRTC/client-monitor-js/blob/ecbb77277306c35b32ad0d275e193a9687bf764e/src/detectors/DtlsHandshakeFailedDetector.ts) raises **`dtls-handshake-failed`** and emits the matching event immediately on `dtlsState: 'failed'`. It doesn't require healthy ICE. Configure `dtlsHandshakeFailedDetector` with `{}` to enable it or `null` to omit it.
 
 {{< blog-figure src="/images/blog/webrtc-connectivity-monitoring/dtls-failed.svg" alt="Watching to Raised on DTLS failed. Transition conditions are explained in the text." >}}
 
 *Figure 6. A reported DTLS failure raises immediately; retrying alone does not resolve it.*
 
-DTLS `connected` resolves the issue; `new` or `connecting` leaves it raised. Observed transport removal resolves it too. Use the payload's transport ID, ICE state and selected pair to correlate handshake logs, certificate fingerprints and DTLS roles. An ICE restart doesn't guarantee a new DTLS handshake or repair mismatched configuration; the application may need to rebuild the transport.
+DTLS connected or transport removal resolves the issue; new/connecting doesn't. An ICE restart alone doesn't guarantee a new handshake or repair its configuration.
 
-### Case 2: waiting for a handshake
+### Case 2: the silent treatment
 
-The network checks succeeded, but the secure transport keeps waiting. The participant sees the same spinner as before, yet our next investigation is different: did the handshake reach the far endpoint, and did either side respond?
+The network path is ready, but the secure hello seems to have met with silence. The participant keeps watching the spinner while DTLS remains unfinished, without an explicit failure. Did the handshake packets reach the other endpoint, and did replies come back? We need evidence from both sides before deciding who gave whom the silent treatment.
 
 #### DTLS Handshake Stalled Detector
 
-Client Monitor's [`DtlsHandshakeStalledDetector`](https://github.com/ObserveRTC/client-monitor-js/blob/ecbb77277306c35b32ad0d275e193a9687bf764e/src/detectors/DtlsHandshakeStalledDetector.ts) raises **`dtls-handshake-stalled`** and emits the matching live event when DTLS stays `new` or `connecting` over proven ICE connectivity for **6,000 ms** by default. Configure `dtlsHandshakeStalledDetector.stalledThresholdInMs`. Each transport's first tick is skipped. ICE `connected`/`completed` is the preferred proof; only when `iceState` is absent can a succeeded selected pair substitute. The payload's `iceEvidence` identifies which proof was available.
+Client Monitor's [`DtlsHandshakeStalledDetector`](https://github.com/ObserveRTC/client-monitor-js/blob/ecbb77277306c35b32ad0d275e193a9687bf764e/src/detectors/DtlsHandshakeStalledDetector.ts) raises **`dtls-handshake-stalled`** after **6,000 ms** of DTLS new/connecting over ICE connected/completed. A succeeded selected pair substitutes only when ICE state is absent. It skips the first transport tick; tune the wait through `dtlsHandshakeStalledDetector.stalledThresholdInMs`.
 
 {{< blog-figure src="/images/blog/webrtc-connectivity-monitoring/dtls-stalled.svg" alt="Watching to Raised on ICE ready + DTLS timeout. Transition conditions are explained in the text." >}}
 
 *Figure 7. Healthy ICE plus a sustained unfinished DTLS handshake raises a stall finding.*
 
-DTLS connected or failed resolves the stall; failed is then reported by the sibling detector. Transport removal resolves it too. Losing ICE-health proof, a missing/closed DTLS state, or a changed local username fragment resets accumulation without closing an existing finding.
-
-**Hypothetical example:** ICE stays connected and the selected pair succeeded, but DTLS remains connecting. Compare handshake logs or packet evidence at the browser and SFU to distinguish packets not arriving from an endpoint not responding. If DTLS later connects, check traffic and media progress separately.
+DTLS connected/failed or transport removal resolves the stall. Missing ICE proof, missing/closed DTLS state, or an observed restart resets timing without closing an open finding.
 
 ## Continuity: stay with me
 
@@ -158,9 +145,9 @@ Established ICE paths also use periodic STUN exchanges for [consent freshness](h
 
 The [WebRTC ICE transport states](https://www.w3.org/TR/webrtc/#rtcicetransportstate) distinguish `disconnected`, a potentially transient loss, from `failed`. ObserveRTC gives them separate findings, with separate recovery behavior.
 
-### Case 1: a blip or an outage
+### Case 1: don’t leave me hanging
 
-The call worked, then audio cut out during a Wi-Fi handover. A brief interruption may recover on its own. We want to notice the longer outage without filing every short roam as another incident.
+The conversation was flowing, then the other person disappeared mid-sentence. Perhaps their Wi-Fi is handing over and they'll be back in a moment. ICE reports disconnected, but hasn't given up. We give the interruption a little time before treating it as a sustained outage.
 
 #### Ice Disconnected Detector
 
@@ -172,9 +159,9 @@ Client Monitor's [`IceDisconnectedDetector`](https://github.com/ObserveRTC/clien
 
 ICE connected/completed resolves the issue. A changed local username fragment—falling back to the selected local candidate's fragment—resolves it and restarts timing for the new generation. Transport removal resolves it too. Falling to failed resets the timer but leaves the issue open. Tune the threshold against your application's reconnecting experience: a five-second outage can still recover without a restart.
 
-### Case 2: ICE gave up
+### Case 2: I think we lost them
 
-The browser has stopped trying to make the current ICE generation work. This might be a call that never joined, or a call that ran for minutes before its path disappeared. That history changes what we should investigate next.
+This time, ICE has given up on the current generation: the transport reports failed. Did we lose someone who was already in the conversation, or did they never make it in? Both can end with the same state, so we need the connection's history before deciding what to investigate.
 
 #### Ice Connection Failed Detector
 
@@ -186,9 +173,9 @@ Client Monitor's [`IceConnectionFailedDetector`](https://github.com/ObserveRTC/c
 
 ICE connected/completed, an observed fragment change, or transport removal resolves the issue. A new generation can fail and raise again. This finding can overlap `ice-establishment-failed` during setup or an earlier `ice-disconnected`; correlate their transport IDs and intervals rather than counting each as a separate outage.
 
-### Case 3: connected to silence
+### Case 3: am I talking to myself?
 
-The call was receiving traffic, then incoming bytes stopped while outgoing bytes kept increasing. ICE still looks connected. That mismatch is worth investigating, provided the application still expects incoming media; a paused subscription can look quiet by design.
+We're still sending, but nothing is coming back. ICE insists we're connected, yet a path that was receiving traffic has gone quiet. Before asking whether we're talking to ourselves, check that the application still expects incoming media—a deliberately paused subscription doesn't owe us a reply.
 
 #### Ice Transport Stalled Detector
 
@@ -202,9 +189,9 @@ Incoming bytes, losing the connected-path condition, a detected restart, or tran
 
 Candidate-pair bytes exclude ICE connectivity checks, so this isn't a count of unanswered consent requests. An inbound RTP report also doesn't prove the subscription is still wanted. The taxonomy keeps this asymmetric finding in Connectivity; `BlockedStunRequestsDetector`, `BlockedOutboundMediaDetector` and `BlockedInboundMediaDetector` belong to Transport Quality's delivery-reliability group.
 
-### Case 4: the path won't settle
+### Case 4: make up your mind
 
-The call stays connected, but its selected path keeps moving. One handover may be a useful recovery; repeated movement may line up with the participant's interruptions. We need a count of the movement before deciding whether it explains the complaint.
+ICE picks a path, then another, then changes its mind again. One switch may keep the conversation going during a network change. Repeated switches deserve a closer look, especially if they line up with interruptions. Is the path causing trouble, or is the browser moving because another path already did?
 
 #### Unstable Ice Path Detector
 
