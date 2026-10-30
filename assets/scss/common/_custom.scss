@@ -423,3 +423,15 @@ html { scrollbar-gutter: stable; }
 .figure-ascii > summary { color: var(--rtc-accent); cursor: pointer; font-size: .9rem; }
 .figure-ascii .highlight { margin-top: .8rem; }
 .component-flow strong { color: var(--rtc-accent); }
+
+.rtc-newsletter-archive { margin: 3rem 0; }
+.rtc-newsletter-entry { display: grid; grid-template-columns: 150px 1fr; gap: 1.8rem; padding: 2rem 0; border-top: 1px solid var(--rtc-line); }
+.rtc-newsletter-entry h3 a { color: inherit; }
+.rtc-newsletter-cover { display: flex; flex-direction: column; justify-content: space-between; padding: 1.2rem; min-height: 170px; border: 1px solid var(--rtc-line); border-radius: 6px; background: var(--rtc-surface); }
+.rtc-newsletter-cover span { font-size: .65rem; }
+.rtc-newsletter-cover strong { font-size: 2.4rem; color: var(--rtc-accent); }
+.rtc-newsletter-issue { max-width: 820px; }
+.rtc-newsletter-issue .rtc-section-heading { margin-top: 2rem; }
+.rtc-newsletter-issue .rtc-update-prose > p > strong:only-child { color: var(--rtc-accent); font-size: .75rem; letter-spacing: 2px; font-weight: 600; }
+.rtc-newsletter-issue hr { border: 0; border-top: 2px solid var(--rtc-accent); opacity: 1; margin: 3rem 0 1.8rem; }
+@media (max-width: 600px) { .rtc-newsletter-entry { grid-template-columns: 90px 1fr; gap: 1rem; } .rtc-newsletter-cover { padding: .7rem; } }

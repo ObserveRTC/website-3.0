@@ -1,0 +1,3 @@
+{{ define "main" }}
+<section class="rtc-section"><p class="eyebrow">THE NEWSLETTER ARCHIVE</p><h1>ObserveRTC newsletters</h1><div class="rtc-post-grid">{{ range .RegularPages.ByDate.Reverse }}<article class="rtc-post-card"><p class="eyebrow">{{ .Params.issue }}</p><h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2><p>{{ .Params.summary }}</p>{{ if ne .Params.deliveryStatus "sent" }}<p>Not sent</p>{{ end }}<a href="{{ .RelPermalink }}">Read the newsletter →</a></article>{{ end }}</div></section>
+{{ end }}

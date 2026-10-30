@@ -1,0 +1,11 @@
+{{ define "main" }}
+<article class="rtc-section rtc-newsletter-issue">
+  <a href="{{ "/subscribe/#newsletter-archive" | relURL }}">← All newsletters</a>
+  <header class="rtc-section-heading">
+    <p class="eyebrow">OBSERVERTC / {{ .Params.issue }}</p>
+    <h1>{{ .Title }}</h1>
+    <p>{{ .Params.period }}{{ if ne .Params.deliveryStatus "sent" }} · Not sent{{ end }}</p>
+  </header>
+  <div class="rtc-update-prose">{{ .Content }}</div>
+</article>
+{{ end }}
