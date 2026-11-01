@@ -4,8 +4,8 @@ identifier = "docs"
 url = "/docs/overview/introduction/"
 weight = 10
 [[main]]
-name = "Live example ↗"
-url = "https://webrtc-observer.org/"
+name = "Live examples"
+url = "/live-examples/"
 weight = 20
 [[main]]
 name = "Contact"

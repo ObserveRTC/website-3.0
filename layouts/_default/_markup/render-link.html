@@ -5,5 +5,5 @@
     {{ partial "main/email" (dict "emailAddress" $.Destination) }}
   {{ end -}}
 {{ else -}}
-  <a href="{{ .Destination | safeURL }}"{{ if eq .Destination "https://webrtc-observer.org/" }} target="_blank" rel="noopener noreferrer"{{ end }}{{ with .Title}} title="{{ . }}"{{ end }}>{{ .Text | safeHTML }}</a>
+  <a href="{{ .Destination | safeURL }}"{{ if in (slice "https://webrtc-observer.org/" "https://dashboard.webrtc-observer.org/") .Destination }} target="_blank" rel="noopener noreferrer"{{ end }}{{ with .Title}} title="{{ . }}"{{ end }}>{{ .Text | safeHTML }}</a>
 {{- end -}}
