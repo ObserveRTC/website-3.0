@@ -1,3 +1,24 @@
+# Double opt-in subscription contract — November 1, 2026
+
+`POST https://ingest.observertc.org/subscribe` now returns HTTP 202 with
+`{"status":"check_inbox"}` for every address: new, pending, or already confirmed.
+The request remains unchanged: version 2, email, source `website`, consent
+`monthly-newsletter-v1`, and timestamp. Every 2xx displays exactly:
+"Check your inbox to confirm your subscription. The link expires in 72 hours."
+The form resets only on success. HTTP 429 displays "Too many attempts. Please wait
+a minute and try again." and retains the address; the backend limits signups to
+10 per minute per client. Other failures retain the existing retry message.
+
+The backend sends the confirmation email and hosts the confirmation page at
+`https://ingest.observertc.org/subscribe/confirm/`. It records signup IP addresses
+from requests for abuse prevention; the browser adds no IP field. The signup form
+explains confirmation and IP recording. The 15-second timeout and submission lock
+remain unchanged; no new endpoints or CSP changes are needed.
+
+This frontend must go live together with the backend change; otherwise readers
+are told "You're subscribed" for a pending signup. Backend behavior above is the
+supplied contract, not a claim that live email delivery was tested here.
+
 # Current frontend contract — October 20, 2026
 
 The frontend now sends only `version: 2` to both `/analytics` and `/subscribe`,

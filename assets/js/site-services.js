@@ -76,8 +76,12 @@ document.querySelectorAll('[data-subscribe-form]').forEach((form) => {
           timestamp: new Date().toISOString(),
         }),
       });
+      if (response.status === 429) {
+        status.textContent = 'Too many attempts. Please wait a minute and try again.';
+        return;
+      }
       if (!response.ok) throw new Error('Subscription rejected');
-      status.textContent = 'You’re subscribed. Thank you!';
+      status.textContent = 'Check your inbox to confirm your subscription. The link expires in 72 hours.';
       form.reset();
     } catch {
       status.textContent = 'We couldn’t save your subscription. Please try again.';

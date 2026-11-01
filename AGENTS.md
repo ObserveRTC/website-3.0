@@ -191,8 +191,14 @@ established preferences; a newer explicit user instruction takes precedence.
   hosts, or ad-blocker evasion. Delivery cannot be guaranteed.
 - Subscribe only on explicit form submission, independently of analytics. Preserve
   the 15-second timeout, pending-submission lock, and clear success/error feedback.
-  A successful 2xx means the server recorded the subscription; deduplication is a
-  backend responsibility because retries after timeouts can repeat a request.
+  Subscriptions are double opt-in: a 2xx means only a pending signup, with the same
+  answer for every address, whether new, pending, or already confirmed. Use exactly:
+  "Check your inbox to confirm your subscription. The link expires in 72 hours."
+  The confirmation email and page belong to the backend at ingest.observertc.org
+  (`/subscribe/confirm/`); do not add a frontend confirmation page. HTTP 429 uses
+  "Too many attempts. Please wait a minute and try again." and preserves the address.
+  Deduplication remains a backend responsibility because retries after timeouts can
+  repeat a request.
 - Browser JavaScript does not provide a trustworthy client IP. If separately
   authorized, the backend can derive it from the request using trusted proxy
   configuration; do not add IP collection to the frontend payload.

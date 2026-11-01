@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 
 const code = fs.readFileSync('assets/js/site-services.js', 'utf8').replace("import * as params from '@params';", '');
-function fixture({ params = {}, privacy = {}, ok = true, networkError = false, analyticsError = false, synchronousAnalyticsError = false, timeoutError = false, storage = new Map(), storageBlocked = false } = {}) {
+function fixture({ params = {}, privacy = {}, code: response = 202, networkError = false, analyticsError = false, synchronousAnalyticsError = false, timeoutError = false, storage = new Map(), storageBlocked = false } = {}) {
   const calls = [];
   const button = { disabled: false, textContent: 'Subscribe →' };
   const status = { textContent: '' };
@@ -27,7 +27,7 @@ function fixture({ params = {}, privacy = {}, ok = true, networkError = false, a
         return new Promise((_, reject) => options.signal.addEventListener('abort', () => reject(new Error('timeout'))));
       }
       if (networkError || (analyticsError && url.endsWith('/analytics'))) return Promise.reject(new Error('offline'));
-      return Promise.resolve({ ok });
+      return Promise.resolve({ status: response, ok: response >= 200 && response < 300 });
     },
     Date, AbortController,
     setTimeout: (callback, duration) => {
@@ -58,13 +58,29 @@ assert.equal(success.calls[1].body.version, 2);
 assert.equal(success.calls[1].body.source, 'website');
 assert.equal(success.calls[1].body.email, 'reader@example.com');
 assert.equal(success.calls[1].body.consent, 'monthly-newsletter-v1');
-assert.match(success.status.textContent, /subscribed/);
+assert.equal(success.status.textContent, 'Check your inbox to confirm your subscription. The link expires in 72 hours.');
 assert.equal(success.form.elements.email.value, '');
 assert.equal(success.button.disabled, false);
-for (const failure of [{ ok: false }, { networkError: true }]) {
+for (const code of [200, 202, 204]) {
+  const accepted = fixture({ code });
+  await accepted.submit();
+  assert.equal(accepted.status.textContent, 'Check your inbox to confirm your subscription. The link expires in 72 hours.');
+  assert.doesNotMatch(accepted.status.textContent, /already|subscribed/i);
+  assert.equal(accepted.form.elements.email.value, '');
+  assert.equal(accepted.button.disabled, false);
+  assert.equal(accepted.form.dataset.pending, undefined);
+}
+const limited = fixture({ code: 429 });
+await limited.submit();
+assert.equal(limited.status.textContent, 'Too many attempts. Please wait a minute and try again.');
+assert.equal(limited.form.elements.email.value, ' reader@example.com ');
+assert.equal(limited.button.disabled, false);
+assert.equal(limited.button.textContent, 'Subscribe →');
+assert.equal(limited.form.dataset.pending, undefined);
+for (const failure of [{ code: 400 }, { code: 500 }, { networkError: true }]) {
   const f = fixture(failure);
   await f.submit();
-  assert.match(f.status.textContent, /try again/);
+  assert.equal(f.status.textContent, 'We couldn’t save your subscription. Please try again.');
   assert.equal(f.form.elements.email.value, ' reader@example.com ');
   assert.equal(f.button.disabled, false);
 }
@@ -87,7 +103,7 @@ for (const options of [
 ]) {
   const independent = fixture(options);
   await independent.submit();
-  assert.match(independent.status.textContent, /subscribed/);
+  assert.equal(independent.status.textContent, 'Check your inbox to confirm your subscription. The link expires in 72 hours.');
   assert.equal(independent.calls.filter(call => call.url.endsWith('/subscribe')).length, 1);
 }
 const timed = fixture({ timeoutError: true });
@@ -103,7 +119,7 @@ assert.equal(timed.form.elements.email.value, ' reader@example.com ');
 const config = fs.readFileSync('config/_default/params.toml', 'utf8');
 assert.match(config, /analyticsEndpoint = "https:\/\/ingest\.observertc\.org\/analytics"/);
 assert.match(config, /subscribeEndpoint = "https:\/\/ingest\.observertc\.org\/subscribe"/);
-console.log('Service checks passed: payloads, success, failure, privacy, development, subscription independence, timeout, and duplicate submission.');
+console.log('Service checks passed: payloads, double opt-in 200/202/204, rate limiting, failure, privacy, development, subscription independence, timeout, and duplicate submission.');
 
 const visitorStorage = new Map();
 const firstVisit = fixture({ storage: visitorStorage });
