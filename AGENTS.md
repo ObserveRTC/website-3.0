@@ -264,7 +264,7 @@ established preferences; a newer explicit user instruction takes precedence.
   Observer JS, Client Monitor JS, Client Monitor C++, Stats Dashboard. List
   supported contracts without inventing historical ranges. Keep internal audit
   dates, commit inventories, testing commentary, and package-versus-release
-  research in `docs/compatibility-source-notes.md`, not public reader prose.
+  research in private storage outside this public repository, not public reader prose.
   Public docs retain concise practical limitations and optional source links.
 
 - Every documented npm-published component has a visible npm package link near
