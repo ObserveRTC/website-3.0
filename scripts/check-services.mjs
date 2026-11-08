@@ -7,12 +7,14 @@ function fixture({ params = {}, privacy = {}, code: response = 202, networkError
   const calls = [];
   const button = { disabled: false, textContent: 'Subscribe →' };
   const status = { textContent: '' };
+  const heading = { hidden: true };
+  const feedback = { hidden: true, dataset: {}, focused: false, focus() { this.focused = true; } };
   let submit;
   let expire;
   const form = {
     dataset: {}, elements: { email: { value: ' reader@example.com ' } },
     reportValidity: () => true,
-    querySelector: selector => selector.includes('button') ? button : status,
+    querySelector: selector => selector.includes('button') ? button : selector === '[data-subscribe-feedback]' ? feedback : selector === '[data-subscribe-heading]' ? heading : status,
     reset: () => { form.elements.email.value = ''; },
     addEventListener: (_, handler) => { submit = handler; },
   };
@@ -38,7 +40,7 @@ function fixture({ params = {}, privacy = {}, code: response = 202, networkError
     },
     clearTimeout: timer => { if (!timeoutError) clearTimeout(timer); },
   });
-  return { calls, form, button, status, expire: () => expire(), submit: () => submit({ preventDefault() {} }) };
+  return { calls, form, button, status, feedback, heading, expire: () => expire(), submit: () => submit({ preventDefault() {} }) };
 }
 const success = fixture();
 assert.equal(success.calls[0].url, 'https://ingest.observertc.org/analytics');
@@ -67,14 +69,26 @@ for (const code of [200, 202, 204]) {
   assert.equal(accepted.status.textContent, 'Check your inbox to confirm your subscription. The link expires in 72 hours.');
   assert.doesNotMatch(accepted.status.textContent, /already|subscribed/i);
   assert.equal(accepted.form.elements.email.value, '');
+  assert.equal(accepted.feedback.hidden, false);
+  assert.equal(accepted.feedback.focused, true);
+  assert.equal(accepted.feedback.dataset.state, 'confirmation');
+  assert.equal(accepted.heading.hidden, false);
   assert.equal(accepted.button.disabled, false);
   assert.equal(accepted.form.dataset.pending, undefined);
 }
+success.form.elements.email.value = 'second@example.com';
+await success.submit();
+assert.equal(success.feedback.focused, true);
+assert.equal(success.calls.filter(call => call.url.endsWith('/subscribe')).length, 2);
+
 const limited = fixture({ code: 429 });
 await limited.submit();
 assert.equal(limited.status.textContent, 'Too many attempts. Please wait a minute and try again.');
 assert.equal(limited.form.elements.email.value, ' reader@example.com ');
 assert.equal(limited.button.disabled, false);
+assert.equal(limited.feedback.hidden, false);
+assert.equal(limited.feedback.focused, false);
+assert.equal(limited.heading.hidden, true);
 assert.equal(limited.button.textContent, 'Subscribe →');
 assert.equal(limited.form.dataset.pending, undefined);
 for (const failure of [{ code: 400 }, { code: 500 }, { networkError: true }]) {
@@ -83,6 +97,9 @@ for (const failure of [{ code: 400 }, { code: 500 }, { networkError: true }]) {
   assert.equal(f.status.textContent, 'We couldn’t save your subscription. Please try again.');
   assert.equal(f.form.elements.email.value, ' reader@example.com ');
   assert.equal(f.button.disabled, false);
+  assert.equal(f.feedback.hidden, false);
+  assert.equal(f.heading.hidden, true);
+  assert.equal(f.feedback.dataset.state, undefined);
 }
 for (const options of [
   { privacy: { doNotTrack: '1' } },

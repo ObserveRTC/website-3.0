@@ -57,10 +57,15 @@ document.querySelectorAll('[data-subscribe-form]').forEach((form) => {
     const email = form.elements.email.value.trim();
     const button = form.querySelector('button[type="submit"]');
     const status = form.querySelector('[data-subscribe-status]');
+    const feedback = form.querySelector('[data-subscribe-feedback]');
+    const heading = form.querySelector('[data-subscribe-heading]');
     form.dataset.pending = 'true';
     button.disabled = true;
     button.textContent = 'Subscribing…';
     status.textContent = '';
+    feedback.hidden = true;
+    delete feedback.dataset.state;
+    heading.hidden = true;
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 15000);
     try {
@@ -83,9 +88,14 @@ document.querySelectorAll('[data-subscribe-form]').forEach((form) => {
       if (!response.ok) throw new Error('Subscription rejected');
       status.textContent = 'Check your inbox to confirm your subscription. The link expires in 72 hours.';
       form.reset();
+      heading.hidden = false;
+      feedback.dataset.state = 'confirmation';
+      feedback.hidden = false;
+      feedback.focus();
     } catch {
       status.textContent = 'We couldn’t save your subscription. Please try again.';
     } finally {
+      feedback.hidden = !status.textContent;
       clearTimeout(timeout);
       delete form.dataset.pending;
       button.disabled = false;
