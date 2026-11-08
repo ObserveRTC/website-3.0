@@ -1,0 +1,3 @@
+[Observe] -- Reduce video demand --> [Recheck]
+
+Outgoing RTP bitrate estimate ↓ + packet-send delay ↑   →   transport evidence + far-end playback

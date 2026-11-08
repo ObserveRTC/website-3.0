@@ -1,0 +1,5 @@
+[Watching] -- Loss duration reached --> [Raised]
+[Watching] <-- Loss recovers -- [Raised]
+
+Between thresholds or missing averages: hold
+Below recovery threshold: reset

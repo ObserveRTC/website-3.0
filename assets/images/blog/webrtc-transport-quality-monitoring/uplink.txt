@@ -1,0 +1,4 @@
+[Watching] -- Bandwidth limited + severity high --> [Raised]
+[Watching] <-- Limitation ends or sending stops -- [Raised]
+
+Missing inputs: hold issue; severity unavailable

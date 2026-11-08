@@ -1,0 +1,5 @@
+[Bandwidth] Is there enough bandwidth?     [Delay] How high is the round-trip time?
+
+[Delivery] What went missing?      [Stability] Does it arrive evenly?
+
+Concurrent properties of an established path, not an escalation order.

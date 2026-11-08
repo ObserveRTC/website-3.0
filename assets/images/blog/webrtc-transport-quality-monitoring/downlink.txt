@@ -1,0 +1,4 @@
+[Watching] -- Congestion detected --> [Raised]
+[Watching] <-- Severity falls or no video -- [Raised]
+
+Missing buffer reading: hold issue; severity unavailable

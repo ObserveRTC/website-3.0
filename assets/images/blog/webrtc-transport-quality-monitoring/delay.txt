@@ -1,0 +1,4 @@
+[Watching] -- High mean RTT --> [Raised]
+[Watching] <-- Recovery condition met -- [Raised]
+
+Missing RTT measurements also clear the issue

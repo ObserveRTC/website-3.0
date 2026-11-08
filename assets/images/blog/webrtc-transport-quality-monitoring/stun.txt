@@ -1,0 +1,4 @@
+[Watching] -- STUN response timeout --> [Raised]
+[Watching] <-- Response or stand down -- [Raised]
+
+Requires succeeded pair; missing counters clear, not recover
