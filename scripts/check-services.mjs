@@ -3,25 +3,26 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 
 const code = fs.readFileSync('assets/js/site-services.js', 'utf8').replace("import * as params from '@params';", '');
-function fixture({ params = {}, privacy = {}, code: response = 202, networkError = false, analyticsError = false, synchronousAnalyticsError = false, timeoutError = false, storage = new Map(), storageBlocked = false } = {}) {
+function fixture({ params = {}, privacy = {}, code: response = 202, networkError = false, analyticsError = false, synchronousAnalyticsError = false, timeoutError = false, storage = new Map(), storageBlocked = false, captchaFailure = false } = {}) {
   const calls = [];
   const button = { disabled: false, textContent: 'Subscribe →' };
   const status = { textContent: '' };
   const heading = { hidden: true };
   const feedback = { hidden: true, dataset: {}, focused: false, focus() { this.focused = true; } };
+  let resets = 0;
   let submit;
   let expire;
   const form = {
     dataset: {}, elements: { email: { value: ' reader@example.com ' } },
     reportValidity: () => true,
-    querySelector: selector => selector.includes('button') ? button : selector === '[data-subscribe-feedback]' ? feedback : selector === '[data-subscribe-heading]' ? heading : status,
+    querySelector: selector => selector.includes('button') ? button : selector === '[data-subscribe-feedback]' ? feedback : selector === '[data-subscribe-heading]' ? heading : selector === '[data-turnstile]' ? {} : status,
     reset: () => { form.elements.email.value = ''; },
     addEventListener: (_, handler) => { submit = handler; },
   };
   vm.runInNewContext(code, {
     params: { analyticscontextenabled: true, env: 'production', analyticsendpoint: 'https://ingest.observertc.org/analytics', subscribeendpoint: 'https://ingest.observertc.org/subscribe', ...params },
-    navigator: { userAgent: 'Mozilla/5.0 Firefox/143.0', language: 'en-US', ...privacy }, window: { crypto: { randomUUID: () => '12345678-1234-4123-8123-123456789abc' }, localStorage: { getItem: key => { if (storageBlocked) throw Error('blocked'); return storage.get(key); }, setItem: (key, value) => { if (storageBlocked) throw Error('blocked'); storage.set(key, value); } }, location: { pathname: '/docs/', search: '?secret=hidden' } },
-    document: { querySelectorAll: () => [form] },
+    navigator: { userAgent: 'Mozilla/5.0 Firefox/143.0', language: 'en-US', ...privacy }, window: { turnstile: { render: () => 'widget', getResponse: () => 'test-token', reset: () => { resets++; } }, crypto: { randomUUID: () => '12345678-1234-4123-8123-123456789abc' }, localStorage: { getItem: key => { if (storageBlocked) throw Error('blocked'); return storage.get(key); }, setItem: (key, value) => { if (storageBlocked) throw Error('blocked'); storage.set(key, value); } }, location: { pathname: '/docs/', search: '?secret=hidden' } },
+    document: { querySelectorAll: () => [form], createElement: () => ({}), head: { appendChild: script => script.onload() } },
     fetch: (url, options) => {
       if (synchronousAnalyticsError && url.endsWith("/analytics")) throw new Error("blocked");
       calls.push({ url, ...options, body: JSON.parse(options.body) });
@@ -29,7 +30,7 @@ function fixture({ params = {}, privacy = {}, code: response = 202, networkError
         return new Promise((_, reject) => options.signal.addEventListener('abort', () => reject(new Error('timeout'))));
       }
       if (networkError || (analyticsError && url.endsWith('/analytics'))) return Promise.reject(new Error('offline'));
-      return Promise.resolve({ status: response, ok: response >= 200 && response < 300 });
+      return Promise.resolve({ status: response, ok: response >= 200 && response < 300, json: async () => ({ error: captchaFailure ? 'captcha_failed' : 'invalid_payload' }) });
     },
     Date, AbortController,
     setTimeout: (callback, duration) => {
@@ -40,7 +41,7 @@ function fixture({ params = {}, privacy = {}, code: response = 202, networkError
     },
     clearTimeout: timer => { if (!timeoutError) clearTimeout(timer); },
   });
-  return { calls, form, button, status, feedback, heading, expire: () => expire(), submit: () => submit({ preventDefault() {} }) };
+  return { calls, form, button, status, feedback, heading, resets: () => resets, expire: () => expire(), submit: () => submit({ preventDefault() {} }) };
 }
 const success = fixture();
 assert.equal(success.calls[0].url, 'https://ingest.observertc.org/analytics');
@@ -54,7 +55,7 @@ assert.equal(success.calls[0].body.path, '/docs/');
 assert.deepEqual(Object.keys(success.calls[0].body).sort(), ['browser', 'browserMajorVersion', 'deviceType', 'event', 'language', 'path', 'timestamp', 'version', 'visitorId']);
 await success.submit();
 assert.equal(success.calls[1].url, 'https://ingest.observertc.org/subscribe');
-assert.deepEqual(Object.keys(success.calls[1].body).sort(), ['consent', 'email', 'source', 'timestamp', 'version']);
+assert.deepEqual(Object.keys(success.calls[1].body).sort(), ['company', 'consent', 'email', 'source', 'timestamp', 'version']);
 assert.equal(success.calls[1].credentials, 'omit');
 assert.equal(success.calls[1].body.version, 2);
 assert.equal(success.calls[1].body.source, 'website');
@@ -165,3 +166,12 @@ for (const ua of ['Firefox/9999.0', 'Firefox/10000.0']) {
 }
 assert.ok(Buffer.byteLength(JSON.stringify(success.calls[0].body)) < 4096);
 assert.ok(Buffer.byteLength(JSON.stringify(success.calls[1].body)) < 4096);
+
+const challenged = fixture({ params: { turnstilesitekey: 'public-key' } });
+await challenged.submit();
+assert.equal(challenged.calls[1].body.turnstileToken, 'test-token');
+assert.equal(challenged.resets(), 1);
+const captcha = fixture({ params: { turnstilesitekey: 'public-key' }, code: 400, captchaFailure: true });
+await captcha.submit();
+assert.match(captcha.status.textContent, /security check failed/i);
+assert.equal(captcha.resets(), 1);

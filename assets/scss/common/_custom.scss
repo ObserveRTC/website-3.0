@@ -216,6 +216,7 @@ html { scrollbar-gutter: stable; }
 .newsletter-input-row input { min-width: 0; width: 100%; padding: .8rem; border: 1px solid var(--rtc-line); border-radius: 6px; background: var(--bs-body-bg); color: inherit; font: inherit; font-size: .85rem; }
 .newsletter-input-row input:focus-visible { outline: 2px solid var(--rtc-accent); outline-offset: 2px; }
 .newsletter-input-row .btn { flex-shrink: 0; border-radius: 6px; font-size: .85rem; }
+.newsletter-trap { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
 .newsletter-form .newsletter-consent { display: flex; align-items: flex-start; gap: .5rem; margin: .8rem 0 0; font-size: .75rem; font-weight: 400; }
 .newsletter-consent input { flex-shrink: 0; margin-top: .25rem; accent-color: var(--rtc-accent); }
 .newsletter-form .newsletter-note { font-size: .65rem; line-height: 1.6; margin: .8rem 0 0; }

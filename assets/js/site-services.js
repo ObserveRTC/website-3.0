@@ -51,6 +51,14 @@ if (params.analyticsendpoint &&
 }
 
 document.querySelectorAll('[data-subscribe-form]').forEach((form) => {
+  let widget;
+  if (params.turnstilesitekey) {
+    const script = document.createElement('script');
+    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+    script.async = true;
+    script.onload = () => { widget = window.turnstile.render(form.querySelector('[data-turnstile]'), { sitekey: params.turnstilesitekey, action: 'subscribe', appearance: 'interaction-only' }); };
+    document.head.appendChild(script);
+  }
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
     if (!form.reportValidity() || form.dataset.pending) return;
@@ -69,6 +77,11 @@ document.querySelectorAll('[data-subscribe-form]').forEach((form) => {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 15000);
     try {
+      const token = widget !== undefined ? window.turnstile.getResponse(widget) : '';
+      if (params.turnstilesitekey && !token) {
+        status.textContent = 'Please complete the security check and try again.';
+        return;
+      }
       const response = await fetch(params.subscribeendpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -76,7 +89,8 @@ document.querySelectorAll('[data-subscribe-form]').forEach((form) => {
         referrerPolicy: 'no-referrer',
         signal: controller.signal,
         body: JSON.stringify({
-          version: 2, email, source: 'website',
+          version: 2, email, source: 'website', company: form.elements.company?.value ?? '',
+          ...(token ? { turnstileToken: token } : {}),
           consent: 'monthly-newsletter-v1',
           timestamp: new Date().toISOString(),
         }),
@@ -84,6 +98,13 @@ document.querySelectorAll('[data-subscribe-form]').forEach((form) => {
       if (response.status === 429) {
         status.textContent = 'Too many attempts. Please wait a minute and try again.';
         return;
+      }
+      if (response.status === 400) {
+        const body = await response.json();
+        if (body.error === 'captcha_failed') {
+          status.textContent = 'The security check failed. Please try again.';
+          return;
+        }
       }
       if (!response.ok) throw new Error('Subscription rejected');
       status.textContent = 'Check your inbox to confirm your subscription. The link expires in 72 hours.';
@@ -95,6 +116,7 @@ document.querySelectorAll('[data-subscribe-form]').forEach((form) => {
     } catch {
       status.textContent = 'We couldn’t save your subscription. Please try again.';
     } finally {
+      if (widget !== undefined) window.turnstile.reset(widget);
       feedback.hidden = !status.textContent;
       clearTimeout(timeout);
       delete form.dataset.pending;

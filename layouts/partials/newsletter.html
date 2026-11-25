@@ -21,6 +21,8 @@
       <input id="newsletter-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" maxlength="254" required>
       <button class="btn btn-primary" type="submit">Subscribe →</button>
     </div>
+    <div class="newsletter-trap" aria-hidden="true"><label for="newsletter-company">Company</label><input id="newsletter-company" name="company" type="text" tabindex="-1" autocomplete="off"></div>
+    {{ if site.Params.services.turnstileSiteKey }}<div data-turnstile></div>{{ end }}
     <label class="newsletter-consent" for="newsletter-consent">
       <input id="newsletter-consent" name="consent" type="checkbox" required>
       <span>I agree to receive one ObserveRTC update email each month.</span>

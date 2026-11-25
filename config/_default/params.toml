@@ -10,6 +10,8 @@ mainSections = ["docs"]
 [services]
   analyticsEndpoint = "https://ingest.observertc.org/analytics"
   subscribeEndpoint = "https://ingest.observertc.org/subscribe"
+  # Public Cloudflare Turnstile site key; set before enabling backend verification.
+  turnstileSiteKey = "0x4AAAAAAGSU8xNfmY9an66L"
   analyticsInDevelopment = false
   # Optional browser/device/language and browser-profile visitor context.
   analyticsContextEnabled = true
